@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Painting Grid</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="./myjs.js"></script>
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -29,6 +30,10 @@
       background-color: #555;
       color: white;
       padding: 15px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
     }
     
     /* On small screens, set height to 'auto' for sidenav and grid */
@@ -45,7 +50,7 @@
 	.grid-container {
 	  display: grid;
 	  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-	  background-color: #2196F3;
+	  background-color: unset;
 	  padding: 10px;
 	}
 	.grid-item {
@@ -58,7 +63,7 @@
 		grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
 		grid-template-rows: repeat(auto-fit, minmax(1px, 1fr));
 	}
-	
+
 	.container {
 	  display: grid;
 	  grid-gap: 10px;
@@ -73,10 +78,13 @@
 	  border: 3px solid #a07;
 	}
 
+    .sidenav{
+        height: 190%;
+    }
 	body {
 	  margin:0;
 	}
-	
+
 	</style>
 </head>
 <body>
@@ -95,8 +103,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#">Usage</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -114,115 +121,24 @@
     </div>
     <div class="col-sm-8 text-left"> 
       <h1>Welcome</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>Let us draw a grid of squares which we will color later.</p>
       <hr>
-      <h3>Test</h3>
-      <p>Lorem ipsum...</p>
+      <h3>Draw Below using inputs</h3>
+		<p><canvas id="canvas" width="400" height="400" role="presentation"></canvas></p>
+		<label for="l_x">X:</label>
+		<input type="number" id="l_x" name="l_x"><br><br>
+		<label for="l_y">Y:</label>
+		<input type="number" id="l_y" name="l_y"><br><br>
+		<button type="button" onclick="draw();">Draw grid!</button><br><br>
+        <label for="l_x_i">X:</label>
+        <input type="number" id="l_x_i" name="l_x_i"><br><br>
+        <label for="l_y_i">Y:</label>
+        <input type="number" id="l_y_i" name="l_y_i"><br><br>
+        <button type="button" onclick="fill();">fill rect at above (x, y)!</button>
 	  <div class="grid-container">
-		  <div class="grid-item">1</div>
-		  <div class="grid-item">2</div>
-		  <div class="grid-item">3</div>  
-		  <div class="grid-item">4</div>
-		  <div class="grid-item">5</div>
-		  <div class="grid-item">6</div>  
-		  <div class="grid-item">7</div>
-		  <div class="grid-item">8</div>
-		  <div class="grid-item">9</div>  
-		  <div class="grid-item">10</div>  
-		  <div class="grid-item">11</div>  
-		  <div class="grid-item">12</div>  
-		  <div class="grid-item">13</div>  
-		  <div class="grid-item">14</div>  
-		  <div class="grid-item">15</div>  
-		  <div class="grid-item">16</div>  
-		  <div class="grid-item">17</div>  
-		  <div class="grid-item">18</div>
-		  <div class="grid-item">19</div>
-		  <div class="grid-item">20</div>  
-		  
-		  <div class="grid-item">21</div> 
-		  <div class="grid-item">22</div> 
-		  <div class="grid-item">23</div> 
-		  <div class="grid-item">24</div> 
-		  <div class="grid-item">25</div> 
-		  <div class="grid-item">26</div> 
-		  <div class="grid-item">27</div> 
-		  <div class="grid-item">28</div> 
-		  <div class="grid-item">29</div> 
-		  <div class="grid-item">30</div> 
-		  <div class="grid-item">31</div> 
-		  <div class="grid-item">32</div> 
-		  <div class="grid-item">33</div> 
-		  <div class="grid-item">34</div> 
-		  <div class="grid-item">35</div> 
-		  <div class="grid-item">36</div> 
-		  <div class="grid-item">37</div> 
-		  <div class="grid-item">38</div> 
-		  <div class="grid-item">39</div> 
-		  <div class="grid-item">40</div> 
-		  <div class="grid-item">41</div> 
-		  <div class="grid-item">42</div> 
-		  <div class="grid-item">43</div> 
-		  <div class="grid-item">44</div> 
-		  <div class="grid-item">45</div> 
-		  <div class="grid-item">46</div> 
-		  <div class="grid-item">47</div> 
-		  <div class="grid-item">48</div> 
-		  <div class="grid-item">49</div> 
-		  <div class="grid-item">50</div>
-		  <div class="grid-item">51</div> 
-		  <div class="grid-item">52</div> 
-		  <div class="grid-item">53</div> 
-		  <div class="grid-item">54</div> 
-		  <div class="grid-item">55</div> 
-		  <div class="grid-item">56</div> 
-		  <div class="grid-item">57</div> 
-		  <div class="grid-item">58</div> 
-		  <div class="grid-item">59</div>  
-		  <div class="grid-item">60</div> 
-		  <div class="grid-item">61</div> 
-		  <div class="grid-item">62</div> 
-		  <div class="grid-item">63</div> 
-		  <div class="grid-item">64</div> 
-		  <div class="grid-item">65</div> 
-		  <div class="grid-item">66</div> 
-		  <div class="grid-item">67</div> 
-		  <div class="grid-item">68</div> 
-		  <div class="grid-item">69</div> 
-		  <div class="grid-item">70</div> 
-		  <div class="grid-item">71</div> 
-		  <div class="grid-item">72</div> 
-		  <div class="grid-item">73</div> 
-		  <div class="grid-item">74</div> 
-		  <div class="grid-item">75</div> 
-		  <div class="grid-item">76</div> 
-		  <div class="grid-item">77</div> 
-		  <div class="grid-item">78</div> 
-		  <div class="grid-item">79</div> 
-		  <div class="grid-item">80</div> 
-		  <div class="grid-item">81</div> 
-		  <div class="grid-item">82</div> 
-		  <div class="grid-item">83</div> 
-		  <div class="grid-item">84</div> 
-		  <div class="grid-item">85</div> 
-		  <div class="grid-item">86</div> 
-		  <div class="grid-item">87</div> 
-		  <div class="grid-item">88</div> 
-		  <div class="grid-item">89</div> 
-		  <div class="grid-item">90</div> 
-		  <div class="grid-item">91</div> 
-		  <div class="grid-item">92</div> 
-		  <div class="grid-item">93</div> 
-		  <div class="grid-item">94</div> 
-		  <div class="grid-item">95</div> 
-		  <div class="grid-item">96</div> 
-		  <div class="grid-item">97</div> 
-		  <div class="grid-item">98</div> 
-		  <div class="grid-item">99</div> 
-		  <div class="grid-item">100</div> 
 		</div>
 			</div>
-			<div class="col-sm-2 sidenav">
+			<div class="col-sm-2 sidenav" style="padding-bottom: 60px">
 			  <div class="well">
 				<p>ADS</p>
 			  </div>
