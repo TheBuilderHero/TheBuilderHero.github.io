@@ -52,5 +52,27 @@ function fill(){
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
     }
 }
+function fillXY(x,y,colorChoice){
+    const ctx = document.getElementById("canvas").getContext("2d");
+    if(x>=1 && x<= 40 && y>=1 && y <= 40) {
+        console.log(x);
+        console.log(y);
+        if(colorChoice == 1) ctx.fillStyle = 'rgb(0,0,255)';
+        if(colorChoice == 2) ctx.fillStyle = 'rgb(255,0,0)';
+        if(colorChoice == 3) ctx.fillStyle = 'rgb(0,255,0)';
+        ctx.strokeStyle = `rgb(0, 0, 0)`;
+        ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
+    }
+}
 
-//draw();
+function fillRandomCellWithRandomColor(){
+    var x = document.getElementById("l_x").value;
+    var y = document.getElementById("l_y").value;
+    var randNum1 = Math.floor(Math.random()*x);
+    var randNum2 = Math.floor(Math.random()*y);
+    var colorChoice = Math.floor(Math.random()*3+1);
+    //1 blue
+    //2 red
+    //3 green
+    fillXY(randNum1, randNum2, colorChoice);
+}
