@@ -2,24 +2,27 @@
 //define global variables:
 window.defaultWidthOfCanvas = 400;
 window.defaultHeightOfCanvas = 400;
-window.addEventListener("load", (event) => {
 
+
+window.addEventListener("load", (event) => {
+    let audioItem = document.getElementById("backGroundAudio");
+    audioItem.volume = .10;
     // initialize canvas size:
     setCanvasSize(defaultWidthOfCanvas, defaultHeightOfCanvas);
+    drawInitialShape();
 
 });
 function setCanvasSize(width, height) {
     let canvas = document.getElementById("canvas");
     canvas.width = width;
     canvas.height = height;
-
 }
 
-function draw() {
+function drawInitialShape() {
     const canvas = document.getElementById("canvas")
     const ctx = document.getElementById("canvas").getContext("2d");
-    var x = document.getElementById("l_x").value;
-    var y = document.getElementById("l_y").value;
+    var x = 1;
+    var y = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
     console.log(x);
     console.log(y);
@@ -27,6 +30,31 @@ function draw() {
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
     console.log(canvasBlockSize);
     if(x>=1 && x<= 40 && y>=1 && y <= 40){
+        for (let i = 0; i < y; i++) {
+            for (let j = 0; j < x; j++) {
+                ctx.strokeStyle = `rgb(0, 0, 0)`;
+                ctx.beginPath();
+                ctx.rect(1+canvasBlockSize*j,1+canvasBlockSize*i,canvasBlockSize-2,canvasBlockSize-2);
+                ctx.stroke();
+            }
+        }
+    } else {
+        //output error message
+    }
+}
+
+function draw() {
+    const canvas = document.getElementById("canvas")
+    const ctx = document.getElementById("canvas").getContext("2d");
+    var x = document.getElementById("l_x").value;
+    var y = document.getElementById("l_y").value;
+    console.log(x);
+    console.log(y);
+    //Make block size based on largest length choice:
+    window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
+    console.log(canvasBlockSize);
+    if(x>=1 && x<= 40 && y>=1 && y <= 40){
+        ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
         for (let i = 0; i < y; i++) {
             for (let j = 0; j < x; j++) {
                 ctx.strokeStyle = `rgb(0, 0, 0)`;
@@ -68,9 +96,9 @@ function fillXY(x,y,colorChoice){
 function fillRandomCellWithRandomColor(){
     var x = document.getElementById("l_x").value;
     var y = document.getElementById("l_y").value;
-    var randNum1 = Math.floor(Math.random()*x);
-    var randNum2 = Math.floor(Math.random()*y);
-    var colorChoice = Math.floor(Math.random()*3+1);
+    var randNum1 = Math.floor(Math.random()*x+1); //from 1 to x
+    var randNum2 = Math.floor(Math.random()*y+1);  //from 1 to y
+    var colorChoice = Math.floor(Math.random()*3+1); //from 1 to 3
     //1 blue
     //2 red
     //3 green

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <title>Painting Grid</title>
@@ -7,7 +8,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script src="./home.js"></script>
+	<script src="./myjs.js"></script>
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -78,10 +79,6 @@
 	  border: 3px solid #a07;
 	}
 
-    .formItems{
-        text-align: center;
-    }
-
     .sidenav{
         height: 190%;
     }
@@ -92,6 +89,12 @@
 	</style>
 </head>
 <body>
+
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
 
 
 
@@ -107,8 +110,9 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="./index.html">Home</a></li>
+        <li><a href="./index.html">Home</a></li>
         <li><a href="./usage.html">Usage</a></li>
+          <li class="active"><a href="#">Experiment</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -128,41 +132,30 @@
       <h1>Welcome</h1>
       <p>Let us draw a grid of squares which we will color later.</p>
       <hr>
-      <h3 class="formItems">Please input the required fields for the color experiment!</h3>
-        <form style="padding-top: 1%" action="./run.php" method="post">
-            <div class="row-sm-12">
-                <div class="col-sm-6 formItems">
-                    <label for="dim_x">Dimension X:</label><br>
-                    <input type="number" id="dim_x" name="dim_x"><br><br>
-                    <label for="dim_y">Dimension Y:</label><br>
-                    <input type="number" id="dim_y" name="dim_y"><br><br>
-                </div>
-                <div class="col-sm-6 formItems">
-                    <label for="l_x">X:</label><br>
-                    <input type="number" id="l_x" name="l_x"><br><br>
-                    <label for="l_y">Y:</label><br>
-                    <input type="number" id="l_y" name="l_y"><br><br>
-                </div>
-            </div>
+      <h3>Draw Below using inputs</h3>
+        <?php
+        // The global $_POST variable allows you to access the data sent with the POST method by name
+        // To access the data sent with the GET method, you can use $_GET
+        $dim_x = htmlspecialchars($_POST['dim_x']);
+        $dim_y  = htmlspecialchars($_POST['dim_y']);
 
-            <div class="row-sm-12">
-                <div class="col-sm-6 formItems">
-                    <label for="dim_x_2">Dimension X:</label><br>
-                    <input type="number" id="dim_x_2" name="dim_x_2"><br><br>
-                    <label for="dim_y_2">Dimension Y:</label><br>
-                    <input type="number" id="dim_y_2" name="dim_y_2"><br><br>
-                </div>
-                <div class="col-sm-6 formItems">
-                    <label for="l_x_2">X:</label><br>
-                    <input type="number" id="l_x_2" name="l_x_2"><br><br>
-                    <label for="l_y_2">Y:</label><br>
-                    <input type="number" id="l_y_2" name="l_y_2"><br><br>
-                </div>
-            </div>
-            <div class="formItems">
-                <button type="submit" value="Submit" onclick="confirmInput();" style="margin-bottom: 40px">Run Experiment!</button>
-            </div>
-        </form>
+        //echo  $dim_x, ' ', $dim_y;
+        ?>
+		<p><canvas id="canvas" role="presentation"></canvas></p>  <?php
+        /*
+         * -- The size of Canvas is set in the javascript file on page load. -->
+        */?>
+		<label for="l_x">X:</label>
+		<input type="number" id="l_x" name="l_x" value="<?php echo $dim_x;?>"><br><br>
+		<label for="l_y">Y:</label>
+		<input type="number" id="l_y" name="l_y" value="<?php echo $dim_y;?>"><br><br>
+		<button type="button" onclick="draw();">Draw grid!</button><br><br>
+        <button type="button" onclick="fillRandomCellWithRandomColor();">Random Color Fill!</button><br><br>
+        <label for="l_x_i">X:</label>
+        <input type="number" id="l_x_i" name="l_x_i"><br><br>
+        <label for="l_y_i">Y:</label>
+        <input type="number" id="l_y_i" name="l_y_i"><br><br>
+        <button type="button" onclick="fill();" style="margin-bottom: 40px">fill rect at above (x, y)!</button>
 	  <div class="grid-container">
 		</div>
 			</div>
@@ -179,6 +172,11 @@
 
 <footer class="container-fluid text-center">
   <p>Footer Text</p>
+
+    <audio loop autoplay id="backGroundAudio" name="backGroundAudio">
+        <source src="./Interlude_Larry Owens_The_Joy_Of_Painting.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 </footer>
 
 </body>
