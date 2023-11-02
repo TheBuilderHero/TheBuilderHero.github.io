@@ -9,6 +9,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="./myjs.js"></script>
+    <script src="./color_mixer.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -90,14 +92,6 @@
 </head>
 <body>
 
-<script>
-    if ( window.history.replaceState ) {
-        window.history.replaceState( null, null, window.location.href );
-    }
-</script>
-
-
-
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -124,15 +118,15 @@
 <div class="container-fluid text-center">    
   <div class="row content">
     <div class="col-sm-2 sidenav" style="margin-bottom: 40px">
-      <p><a href="#">Link</a></p>
+      <p><a href="https://youtu.be/sRkzqLudJPE?si=9GGkpoGVIEo4pYeh">Music Resource</a></p>
       <p><a href="#">Link</a></p>
       <p><a href="#">Link</a></p>
     </div>
     <div class="col-sm-8 text-left"> 
-      <h1>Welcome</h1>
-      <p>Let us draw a grid of squares which we will color later.</p>
+      <h1 style="text-align: center;">Running Experiment!</h1>
+      <p style="text-align: center;">Please do not reload the page, or you will be sent back to the previous screen.</p>
       <hr>
-      <h3>Draw Below using inputs</h3>
+      <h3 style="text-align: center;">Draw Below using inputs</h3>
         <?php
         // The global $_POST variable allows you to access the data sent with the POST method by name
         // To access the data sent with the GET method, you can use $_GET
@@ -141,21 +135,27 @@
 
         //echo  $dim_x, ' ', $dim_y;
         ?>
-		<p><canvas id="canvas" role="presentation"></canvas></p>  <?php
+        <?php
         /*
          * -- The size of Canvas is set in the javascript file on page load. -->
         */?>
-		<label for="l_x">X:</label>
-		<input type="number" id="l_x" name="l_x" value="<?php echo $dim_x;?>"><br><br>
-		<label for="l_y">Y:</label>
-		<input type="number" id="l_y" name="l_y" value="<?php echo $dim_y;?>"><br><br>
-		<button type="button" onclick="draw();">Draw grid!</button><br><br>
-        <button type="button" onclick="fillRandomCellWithRandomColor();">Random Color Fill!</button><br><br>
-        <label for="l_x_i">X:</label>
-        <input type="number" id="l_x_i" name="l_x_i"><br><br>
-        <label for="l_y_i">Y:</label>
-        <input type="number" id="l_y_i" name="l_y_i"><br><br>
-        <button type="button" onclick="fill();" style="margin-bottom: 40px">fill rect at above (x, y)!</button>
+
+        <div class="col-sm-4" style="text-align: center">
+            <label for="l_x">X:</label>
+            <input type="number" id="l_x" name="l_x" value="<?php echo $dim_x;?>"><br><br>
+            <label for="l_y">Y:</label>
+            <input type="number" id="l_y" name="l_y" value="<?php echo $dim_y;?>"><br><br>
+            <button type="button" onclick="draw();">Draw grid!</button><br><br>
+            <button type="button" onclick="fillRandomCellWithRandomColor();">Random Color Fill!</button><br><br>
+            <label for="l_x_i">X:</label>
+            <input type="number" id="l_x_i" name="l_x_i"><br><br>
+            <label for="l_y_i">Y:</label>
+            <input type="number" id="l_y_i" name="l_y_i"><br><br>
+            <button type="button" onclick="fill();" style="margin-bottom: 40px">fill rect at above (x, y)!</button>
+        </div>
+        <div class="col-sm-8">
+            <p><canvas id="canvas" role="presentation"></canvas></p>
+        </div>
 	  <div class="grid-container">
 		</div>
 			</div>

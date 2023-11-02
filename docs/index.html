@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
   <title>Painting Grid</title>
   <meta charset="utf-8">
@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="./home.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -119,60 +120,152 @@
   
 <div class="container-fluid text-center">    
   <div class="row content">
-    <div class="col-sm-2 sidenav" style="margin-bottom: 40px">
+    <div class="col-sm-2 sidenav" style="margin-bottom: 60px; background-color: unset;">
+      <p><a href="https://youtu.be/sRkzqLudJPE?si=9GGkpoGVIEo4pYeh">Music Resource</a></p>
       <p><a href="#">Link</a></p>
       <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
+        <p><a href="#">Link</a></p>
     </div>
     <div class="col-sm-8 text-left"> 
-      <h1>Welcome</h1>
-      <p>Let us draw a grid of squares which we will color later.</p>
+      <h1 style="text-align: center">Welcome</h1>
+      <p style="text-align: center">Let us draw a grid of squares which we will color later. Please input the required fields for the color experiment!</p>
       <hr>
-      <h3 class="formItems">Please input the required fields for the color experiment!</h3>
         <form style="padding-top: 1%" action="./run.php" method="post">
-            <div class="row-sm-12">
-                <div class="col-sm-6 formItems">
-                    <label for="dim_x">Dimension X:</label><br>
-                    <input type="number" id="dim_x" name="dim_x"><br><br>
-                    <label for="dim_y">Dimension Y:</label><br>
-                    <input type="number" id="dim_y" name="dim_y"><br><br>
-                </div>
-                <div class="col-sm-6 formItems">
-                    <label for="l_x">X:</label><br>
-                    <input type="number" id="l_x" name="l_x"><br><br>
-                    <label for="l_y">Y:</label><br>
-                    <input type="number" id="l_y" name="l_y"><br><br>
-                </div>
-            </div>
 
-            <div class="row-sm-12">
-                <div class="col-sm-6 formItems">
-                    <label for="dim_x_2">Dimension X:</label><br>
-                    <input type="number" id="dim_x_2" name="dim_x_2"><br><br>
-                    <label for="dim_y_2">Dimension Y:</label><br>
-                    <input type="number" id="dim_y_2" name="dim_y_2"><br><br>
+            <div class="row-sm-12 formItems">
+                <fieldset>
+                    <legend>Dependent and Independent Variables</legend>
+
+                    <div class="col-sm-4 formItems">
+                    <label style="font-size: medium;">Independent</label><br>
+                        <label for="independent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="independent1" name="independent" value="1"><br>
+                        <label for="independent2">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="independent2" name="independent" value="2"><br>
+                        <label for="independent3">R, the number of repetitions in the experiment</label><br><input type="radio" id="independent3" name="independent" value="3"><br><br>
+                    </div>
+
+                    <div class="col-sm-4 formItems">
+                        <select id="dependentList" multiple size="10" style="width: 180px">
+                        </select><br><br>
+                        <input type="number" id="numberInput"><br><br>
+                        <button type="button" id="addNumber" nane="addNumber" onclick="addItemToList();">Add Number</button>
+                        <button type="button" id="removeNumber" nane="removeNumber" onclick="removeItemFromList();">Remove selected Number</button>
+                    </div>
+
+                    <div class="col-sm-4 formItems">
+                    <label style="font-size: medium">Dependent</label><br>
+                        <label for="dependent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="dependent1" name="dependent" value="1"><br>
+                        <label for="dependent2">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="dependent2" name="dependent" value="2"><br>
+                        <label for="dependent3">R, the number of repetitions in the experiment</label><br><input type="radio" id="dependent3" name="dependent" value="3"><br><br>
+                    </div>
+                </fieldset>
+            </div><br><br>
+            <fieldset>
+                <legend class="formItems">Canvas Info</legend>
+
+                <div class="row-sm-12">
+                    <div class="col-sm-6 formItems">
+                        <label for="dim_x">Dimension X:</label><br>
+                        <input type="number" id="dim_x" name="dim_x"><br><br>
+                        <label for="dim_y">Dimension Y:</label><br>
+                        <input type="number" id="dim_y" name="dim_y"><br><br>
+                    </div>
+                    <div class="col-sm-6 formItems">
+                        <label for="color1">Color 1</label><br>
+                        <select id="color1" name="color1" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="red">red</option>
+                            <option value="blue">blue</option>
+                            <option value="green">green</option>
+                            <option value="yellow">yellow</option>
+                            <option value="purple">purple</option>
+                            <option value="orange">orange</option>
+                            <option value="pink">pink</option>
+                            <option value="brown">brown</option>
+                            <option value="black">black</option>
+                        </select><br><br>
+                        <label for="color2">Color 2</label><br>
+                        <select id="color2" name="color2" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="red">red</option>
+                            <option value="blue">blue</option>
+                            <option value="green">green</option>
+                            <option value="yellow">yellow</option>
+                            <option value="purple">purple</option>
+                            <option value="orange">orange</option>
+                            <option value="pink">pink</option>
+                            <option value="brown">brown</option>
+                            <option value="black">black</option>
+                        </select><br><br>
+                        <label for="color3">Color 3</label><br>
+                        <select id="color3" name="color3" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="red">red</option>
+                            <option value="blue">blue</option>
+                            <option value="green">green</option>
+                            <option value="yellow">yellow</option>
+                            <option value="purple">purple</option>
+                            <option value="orange">orange</option>
+                            <option value="pink">pink</option>
+                            <option value="brown">brown</option>
+                            <option value="black">black</option>
+                        </select><br><br>
+                    </div>
                 </div>
-                <div class="col-sm-6 formItems">
-                    <label for="l_x_2">X:</label><br>
-                    <input type="number" id="l_x_2" name="l_x_2"><br><br>
-                    <label for="l_y_2">Y:</label><br>
-                    <input type="number" id="l_y_2" name="l_y_2"><br><br>
+            </fieldset>
+            <br><br>
+            <fieldset>
+                <legend class="formItems">Stopping Criteria</legend>
+                <div class="row-sm-12">
+                    <div class="col-sm-6 formItems">
+                        <label style="font-size: medium">When should the experiment to terminate?</label><br>
+                        <label for="termItem1">Terminate When: the last unpainted square is painted for the first time.</label><br><input type="radio" id="termItem1" name="termItem" value="1"><br>
+                        <label for="termItem2">Terminate When: the first time any square gets its second paint blob.</label><br><input type="radio" id="termItem2" name="termItem" value="2"><br>
+                        <label for="termItem3"> Termination Item 3</label><br><input type="radio" id="termItem3" name="termItem" value="3"><br>
+                        <label for="termItem4"> Termination Item 4</label><br><input type="radio" id="termItem4" name="termItem" value="4"><br>
+                        <label for="termItem5"> Termination Item 5</label><br><input type="radio" id="termItem5" name="termItem" value="5"><br><br>
+                    </div>
+                    <div class="col-sm-6 formItems">
+                        <label for="repetitions">Painting Repetitions</label><br>
+                        <input type="number" id="repetitions" name="repetitions"><br><br>
+                    </div>
                 </div>
-            </div>
+            </fieldset>
             <div class="formItems">
-                <button type="submit" value="Submit" onclick="confirmInput();" style="margin-bottom: 40px">Run Experiment!</button>
+                <button type="submit" value="Submit" onclick="confirmInput();" style="margin-bottom: 60px">Run Experiment!</button>
             </div>
         </form>
 	  <div class="grid-container">
 		</div>
 			</div>
-			<div class="col-sm-2 sidenav" style="margin-bottom: 40px">
+			<div class="col-sm-2 sidenav" style="margin-bottom: 60px; background-color: unset;">
 			  <div class="well">
 				<p>ADS</p>
 			  </div>
 			  <div class="well">
 				<p>ADS</p>
 			  </div>
+                <div class="well">
+                    <p>ADS</p>
+                </div>
+                <div class="well">
+                    <p>ADS</p>
+                </div>
+                <div class="well">
+                    <p>ADS</p>
+                </div>
 			</div>
 		  </div>
 		</div>

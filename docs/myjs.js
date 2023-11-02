@@ -2,8 +2,17 @@
 //define global variables:
 window.defaultWidthOfCanvas = 400;
 window.defaultHeightOfCanvas = 400;
+window.maxXSquares = defaultWidthOfCanvas/10;
+window.maxYSquares = defaultHeightOfCanvas/10;
+window.arrOfColors = new Array(maxXSquares); //max array size. //Note first number means has color, other three are RGB.
 
+let data = window.performance.getEntriesByType("navigation")[0].type;
+console.log(data);
 
+//force back to screen to fill in info if they try to reload or anything:
+if ("navigate" != data){
+    window.location.href = './index.html';
+}
 window.addEventListener("load", (event) => {
     let audioItem = document.getElementById("backGroundAudio");
     audioItem.volume = .10;
@@ -11,9 +20,25 @@ window.addEventListener("load", (event) => {
     setCanvasSize(defaultWidthOfCanvas, defaultHeightOfCanvas);
     drawInitialShape();
 
+    let initialCellValues = [0,0,0,0];
+
+    //setup the array:
+    for (let i = 0; arrOfColors.length > i; i++) { //ignoring 0 index
+        let arrayOfY = new Array(maxYSquares);
+        for (let i2 = 0; arrOfColors.length > i2; i2++) {
+            arrayOfY[i2] = initialCellValues; //initialCellValues;
+        }
+        arrOfColors[i] = arrayOfY;
+    }
+    //At this point array of colors should have all the values initialized to 0.
+    console.log(arrOfColors);
+    console.log(arrOfColors.at(0).at(0).at(0)); //we will use this to check if it is filled.
 });
+
 function setCanvasSize(width, height) {
     let canvas = document.getElementById("canvas");
+    console.log(width);
+    console.log(height);
     canvas.width = width;
     canvas.height = height;
 }
@@ -29,7 +54,7 @@ function drawInitialShape() {
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
     console.log(canvasBlockSize);
-    if(x>=1 && x<= 40 && y>=1 && y <= 40){
+    if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
         for (let i = 0; i < y; i++) {
             for (let j = 0; j < x; j++) {
                 ctx.strokeStyle = `rgb(0, 0, 0)`;
@@ -53,7 +78,7 @@ function draw() {
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
     console.log(canvasBlockSize);
-    if(x>=1 && x<= 40 && y>=1 && y <= 40){
+    if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
         ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
         for (let i = 0; i < y; i++) {
             for (let j = 0; j < x; j++) {
@@ -72,7 +97,7 @@ function fill(){
     const ctx = document.getElementById("canvas").getContext("2d");
     var x = document.getElementById("l_x_i").value;
     var y = document.getElementById("l_y_i").value;
-    if(x>=1 && x<= 40 && y>=1 && y <= 40) {
+    if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares) {
         console.log(x);
         console.log(y);
         ctx.fillStyle = 'rgb(255,0,0)';
@@ -82,7 +107,7 @@ function fill(){
 }
 function fillXY(x,y,colorChoice){
     const ctx = document.getElementById("canvas").getContext("2d");
-    if(x>=1 && x<= 40 && y>=1 && y <= 40) {
+    if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares) {
         console.log(x);
         console.log(y);
         if(colorChoice == 1) ctx.fillStyle = 'rgb(0,0,255)';
@@ -104,3 +129,4 @@ function fillRandomCellWithRandomColor(){
     //3 green
     fillXY(randNum1, randNum2, colorChoice);
 }
+
