@@ -33,6 +33,20 @@ window.addEventListener("load", (event) => {
     //At this point array of colors should have all the values initialized to 0.
     console.log(arrOfColors);
     console.log(arrOfColors.at(0).at(0).at(0)); //we will use this to check if it is filled.
+
+
+    //Load all values:
+    //https://sentry.io/answers/how-to-get-values-from-urls-in-javascript/
+    const searchParams = new URLSearchParams(window.location.search);
+    //console.log(searchParams.has('sort')); // true
+    //console.log(searchParams.get('sort')); // price_descending
+    for (const param of searchParams) {
+        console.log("Data:",param);
+    }
+    var dim_x = searchParams.get('dim_x');
+    document.getElementById("l_x").value = dim_x;
+    var dim_y = searchParams.get('dim_y');
+    document.getElementById("l_y").value = dim_y;
 });
 
 function setCanvasSize(width, height) {
