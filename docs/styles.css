@@ -1,0 +1,15 @@
+.error {
+    color: red;
+}
+
+.neutral {
+    background-color: white;
+}
+
+.false {
+    background-color: pink;
+}
+
+.true {
+    background-color: lightgreen;
+}
