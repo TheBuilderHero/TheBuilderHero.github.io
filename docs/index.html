@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
   <title>Painting Grid</title>
   <meta charset="utf-8">
@@ -7,8 +7,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script src="./home.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!--<script src="./check.js"></script>-->
+      <script src="./home.js"></script>
+    <link href="./styles.css" rel="stylesheet" type="text/css">
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -92,7 +94,7 @@
 
 	</style>
 </head>
-<body>
+<body onload="register();">
 
 
 
@@ -143,7 +145,7 @@
       <h1 style="text-align: center">Welcome</h1>
       <p style="text-align: center">Let us draw a grid of squares which we will color later. Please input the required fields for the color experiment!</p>
       <hr>
-        <form style="padding-top: 1%" action="./run.html" method="get">
+        <form style="padding-top: 1%" action="./run.html" method="get" id="myForm">
 
             <div class="row-sm-12 formItems">
                 <fieldset>
@@ -151,7 +153,7 @@
 
                     <div class="col-sm-4 formItems">
                     <label style="font-size: medium;">Independent</label><br>
-                        <label for="independent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="independent1" name="independent" value="1"><br>
+                        <label for="independent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="independent1" name="independent" value="1" required><br>
                         <label for="independent2">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="independent2" name="independent" value="2"><br>
                         <label for="independent3">R, the number of repetitions in the experiment</label><br><input type="radio" id="independent3" name="independent" value="3"><br><br>
                     </div>
@@ -159,14 +161,21 @@
                     <div class="col-sm-4 formItems">
                         <select id="dependentList" multiple size="10" style="width: 180px">
                         </select><br><br>
+                        <span id="depErr1" class="help-block hide error">Nothing entered</span>
+                        <span id="depErr2" class="help-block hide error">Too few items: a minimum of 4</span>
+                        <span id="depErr3" class="help-block hide error">Too many items: a maximum of 12</span>
+                        <span id="depErr4" class="help-block hide error">Min of 0</span>
+                        <span id="depErr5" class="help-block hide error">Max of 99</span>
+                        <span id="depErr6" class="help-block hide error">X-values must be greater than or equal to previous entered</span>
+                        <p id="depErr7" class="help-block error">Test this!</p>
                         <input type="number" id="numberInput"><br><br>
-                        <button type="button" id="addNumber" nane="addNumber" onclick="addItemToList();">Add Number</button>
-                        <button type="button" id="removeNumber" nane="removeNumber" onclick="removeItemFromList();">Remove selected Number</button>
+                        <button type="button" id="addNumber" name="addNumber" onclick="addItemToList();">Add Number</button>
+                        <button type="button" id="removeNumber" name="removeNumber" onclick="removeItemFromList();">Remove selected Number</button>
                     </div>
 
                     <div class="col-sm-4 formItems">
                     <label style="font-size: medium">Dependent</label><br>
-                        <label for="dependent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="dependent1" name="dependent" value="1"><br>
+                        <label for="dependent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="dependent1" name="dependent" value="1" required><br>
                         <label for="dependent2">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="dependent2" name="dependent" value="2"><br>
                         <label for="dependent3">R, the number of repetitions in the experiment</label><br><input type="radio" id="dependent3" name="dependent" value="3"><br><br>
                     </div>
@@ -177,16 +186,22 @@
 
                 <div class="row-sm-12">
                     <div class="col-sm-6 formItems">
+                        <span id="dimXErr1" class="help-block hide error">Nothing entered for Dimension X</span>
+                        <span id="dimXErr2" class="help-block hide error">Dimension X must be greater than 0</span>
+                        <span id="dimXErr3" class="help-block hide error">Dimension X must be less than 40</span>
                         <label for="dim_x">Dimension X:</label><br>
                         <input type="number" id="dim_x" name="dim_x"><br><br>
+                        <span id="dimYErr1" class="help-block hide error">Nothing entered for Dimension Y</span>
+                        <span id="dimYErr2" class="help-block hide error">Dimension Y must be greater than 0</span>
+                        <span id="dimYErr3" class="help-block hide error">Dimension Y must be less than 40</span>
                         <label for="dim_y">Dimension Y:</label><br>
                         <input type="number" id="dim_y" name="dim_y"><br><br>
                     </div>
                     <div class="col-sm-6 formItems">
                         <label for="color1">Color 1</label><br>
-                        <select id="color1" name="color1" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);">
+                        <select id="color1" name="color1" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
                             <option disabled selected value> -- select an option -- </option>
-                            <option value="red">red</option>
+                            <option value="red" >red</option>
                             <option value="blue">blue</option>
                             <option value="green">green</option>
                             <option value="yellow">yellow</option>
@@ -197,7 +212,7 @@
                             <option value="black">black</option>
                         </select><br><br>
                         <label for="color2">Color 2</label><br>
-                        <select id="color2" name="color2" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);">
+                        <select id="color2" name="color2" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);"required>
                             <option disabled selected value> -- select an option -- </option>
                             <option value="red">red</option>
                             <option value="blue">blue</option>
@@ -210,7 +225,7 @@
                             <option value="black">black</option>
                         </select><br><br>
                         <label for="color3">Color 3</label><br>
-                        <select id="color3" name="color3" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);">
+                        <select id="color3" name="color3" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
                             <option disabled selected value> -- select an option -- </option>
                             <option value="red">red</option>
                             <option value="blue">blue</option>
@@ -231,22 +246,26 @@
                 <div class="row-sm-12">
                     <div class="col-sm-6 formItems">
                         <label style="font-size: medium">When should the experiment to terminate?</label><br>
-                        <label for="termItem1">Terminate When: the last unpainted square is painted for the first time.</label><br><input type="radio" id="termItem1" name="termItem" value="1"><br>
+                        <label for="termItem1">Terminate When: the last unpainted square is painted for the first time.</label><br><input type="radio" id="termItem1" name="termItem" value="1" required><br>
                         <label for="termItem2">Terminate When: the first time any square gets its second paint blob.</label><br><input type="radio" id="termItem2" name="termItem" value="2"><br>
                         <label for="termItem3"> Termination Item 3</label><br><input type="radio" id="termItem3" name="termItem" value="3"><br>
                         <label for="termItem4"> Termination Item 4</label><br><input type="radio" id="termItem4" name="termItem" value="4"><br>
                         <label for="termItem5"> Termination Item 5</label><br><input type="radio" id="termItem5" name="termItem" value="5"><br><br>
                     </div>
                     <div class="col-sm-6 formItems">
+                        <span id="repErr1" class="help-block hide error">Nothing entered for Repetitions</span>
+                        <span id="repErr2" class="help-block hide error">Repetitions must be greater than 0</span>
+                        <span id="repErr3" class="help-block hide error">Repetitions must be less than 40</span>
                         <label for="repetitions">Painting Repetitions</label><br>
                         <input type="number" id="repetitions" name="repetitions"><br><br>
                     </div>
                 </div>
             </fieldset>
             <div class="formItems">
-                <button type="submit" value="Submit" onclick="confirmInput();" style="margin-bottom: 60px">Run Experiment!</button>
+                <button id="submit" type="submit" value="Submit" onclick="confirmInput();" style="margin-bottom: 60px">Run Experiment!</button>
             </div>
         </form>
+
 	  <div class="grid-container">
 		</div>
 			</div>
