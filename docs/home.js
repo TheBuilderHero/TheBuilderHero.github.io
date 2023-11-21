@@ -93,7 +93,7 @@ function addItemToList(){
             }
         }
     }
-    document.getElementById("globalListOfItemsInput").value = JSON.stringify(globalListOfItems);
+    document.getElementById("globalListOfItemsInput").value = globalListOfItems.join(",");
 }
 
 function removeItemFromList(){
@@ -114,7 +114,7 @@ function removeItemFromList(){
     selectedOptions.remove();
 
     change();
-    document.getElementById("globalListOfItemsInput").value = JSON.stringify(globalListOfItems);
+    document.getElementById("globalListOfItemsInput").value = globalListOfItems.join(",");
 }
 
 
