@@ -20,27 +20,11 @@ function addItemToList(){
     globalListOfItems = globalListOfItems.filter(item => item !== undefined && item !== null && item !== ""); //Deletes null inputs in globalListOfItems array
 
     let depErr1 = document.getElementById("depErr1"); //Nothing entered
-    let depErr2 = document.getElementById("depErr2"); //Too few items
-    let depErr3 = document.getElementById("depErr3"); //Too many items
     let depErr4 = document.getElementById("depErr4"); //Input is too small
     let depErr5 = document.getElementById("depErr5"); //Input is too big
     let depErr6 = document.getElementById("depErr6"); //Input smaller than previous input
     
-    let inputValueAsNumber = parseFloat(input.value);
-    
-    //Shows error message based on length
-    if(globalListOfItems.length < 3) {
-        showMessage(depErr2);
-    } 
-    else {
-        hideMessage(depErr2); 
-    }
-    if(globalListOfItems.length > 12) {
-        showMessage(depErr3);
-    } 
-    else {
-        hideMessage(depErr3); 
-    }
+    let inputValueAsNumber = parseInt(input.value);
             
     //If input is correct, push to globalListOfItems, else sho an error message
     if (globalListOfItems.length === 0) {
@@ -70,13 +54,17 @@ function addItemToList(){
         }
     }
     else if (globalListOfItems.length >= 1) {
-        if(input.value !== "" && (inputValueAsNumber >= parseFloat(globalListOfItems[globalListOfItems.length - 1])) && inputValueAsNumber >= 0 && inputValueAsNumber <= 99) {
+        if(input.value !== "" && (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])) && inputValueAsNumber >= 0 && inputValueAsNumber <= 99) {
+
             listOfItems.add(new Option(input.value, input.value), undefined);
             globalListOfItems.push(input.value);
-            checkAll[3] = 1;
+            if (globalListOfItems.length > 3 || globalListOfItems.length < 12) {
+                checkAll[3] = 1; 
+                change();}
         }
         else {
             checkAll[3] = 0;
+            change();
             if(input.value === "") {
                 showMessage(depErr1);
             } 
@@ -87,14 +75,8 @@ function addItemToList(){
                 showMessage(depErr6);
                 //document.getElementById("depErr7").textContent = globalListOfItems; //For Testing!
             } 
-            else {
+            else if (inputValueAsNumber >= parseFloat(globalListOfItems[globalListOfItems.length - 1])) {
                 hideMessage(depErr6);
-            }
-            if(globalListOfItems.length > 12) {
-                showMessage(depErr3);
-            } 
-            else {
-                hideMessage(depErr3); 
             }
 
             if(inputValueAsNumber < 0) {
@@ -111,6 +93,7 @@ function addItemToList(){
             }
         }
     }
+    document.getElementById("globalListOfItemsInput").value = JSON.stringify(globalListOfItems);
 }
 
 function removeItemFromList(){
@@ -130,12 +113,8 @@ function removeItemFromList(){
     // Remove selected items from dependentList
     selectedOptions.remove();
 
-    // Check the length of globalListOfItems
-    if (globalListOfItems.length >= 4 && globalListOfItems.length <= 12) {
-        checkAll[3] = 1;
-    } else {
-        checkAll[3] = 0;
-    }
+    change();
+    document.getElementById("globalListOfItemsInput").value = JSON.stringify(globalListOfItems);
 }
 
 
@@ -292,9 +271,39 @@ function checkRep() {
 }
 
 function change() {
+    let depErr2 = document.getElementById("depErr2"); //Too few items
+    let depErr3 = document.getElementById("depErr3"); //Too many items
+    let depErr6 = document.getElementById("depErr6"); //Input smaller than previous input
+    let input = document.getElementById("numberInput");
+    let inputValueAsNumber = parseInt(input.value);
+    if (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])){
+        hideMessage(depErr6);
+    }
+            
+    if(globalListOfItems.length < 4) {
+        showMessage(depErr2);
+    } 
+    else {
+        hideMessage(depErr2); 
+    }
+    if(globalListOfItems.length > 12) {
+        showMessage(depErr3);
+    } 
+    else {
+        hideMessage(depErr3); 
+    }
     let checkThis = [1, 1, 1, 1];
+    if (globalListOfItems.length < 4 || globalListOfItems.length > 12) {
+        checkAll[3] = 0;
+    } else {
+        checkAll[3] = 1;
+    }
+    //document.getElementById("depErr7").textContent = globalListOfItems.length; 
     if(arraysEqual(checkAll, checkThis)) {
         document.getElementById("submit").disabled = false;
+    }
+    else {
+        document.getElementById("submit").disabled = true;
     }
 }
 
