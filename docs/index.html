@@ -146,7 +146,7 @@
       <p style="text-align: center">Let us draw a grid of squares which we will color later. Please input the required fields for the color experiment!</p>
       <hr>
         <form style="padding-top: 1%" action="./run.html" method="get" id="myForm">
-
+        <input type="hidden" id="globalListOfItemsInput" name="globalListOfItems" value="">
             <div class="row-sm-12 formItems">
                 <fieldset>
                     <legend>Dependent and Independent Variables</legend>
@@ -167,7 +167,7 @@
                         <span id="depErr4" class="help-block hide error">Min of 0</span>
                         <span id="depErr5" class="help-block hide error">Max of 99</span>
                         <span id="depErr6" class="help-block hide error">X-values must be greater than or equal to previous entered</span>
-                        <p id="depErr7" class="help-block error">Test this!</p>
+                        <!--<p id="depErr7" class="help-block error">Test this!</p>-->
                         <input type="number" id="numberInput"><br><br>
                         <button type="button" id="addNumber" name="addNumber" onclick="addItemToList();">Add Number</button>
                         <button type="button" id="removeNumber" name="removeNumber" onclick="removeItemFromList();">Remove selected Number</button>
