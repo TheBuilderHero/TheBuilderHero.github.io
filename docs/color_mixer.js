@@ -1,5 +1,5 @@
 /*!
- * Color_mixer for substractive color mixing
+ * Color_mixer for subtractive color mixing
  * requires jQuery and jQuery color
  * Author: Andy Soiron
  * http://www.andysoiron.de

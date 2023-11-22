@@ -5,6 +5,17 @@ window.defaultHeightOfCanvas = 400;
 window.maxXSquares = defaultWidthOfCanvas/10;
 window.maxYSquares = defaultHeightOfCanvas/10;
 window.arrOfColors = new Array(maxXSquares); //max array size. //Note first number means has color, other three are RGB.
+window.colorRGBMap = {
+	red: 'rgb(255,0,0)',
+	blue: 'rgb(0,0,255)',
+	green: 'rgb(0,255,0)',
+	yellow: 'rgb(255,255,0)',
+	purple: 'rgb(128,0,128)',
+	orange: 'rgb(255,165,0)',
+	pink: 'rgb(255,192,203)',
+	brown: 'rgb(165,42,42)',
+	black: 'rgb(0,0,0)',
+};
 
 let data = window.performance.getEntriesByType("navigation")[0].type;
 console.log(data);
@@ -20,13 +31,11 @@ window.addEventListener("load", (event) => {
     setCanvasSize(defaultWidthOfCanvas, defaultHeightOfCanvas);
     drawInitialShape();
 
-    let initialCellValues = [0,0,0,0];
-
     //setup the array:
     for (let i = 0; arrOfColors.length > i; i++) { //ignoring 0 index
         let arrayOfY = new Array(maxYSquares);
         for (let i2 = 0; arrOfColors.length > i2; i2++) {
-            arrayOfY[i2] = initialCellValues; //initialCellValues;
+            arrayOfY[i2] = [0,0,0,0];
         }
         arrOfColors[i] = arrayOfY;
     }
@@ -47,6 +56,8 @@ window.addEventListener("load", (event) => {
     document.getElementById("l_x").value = dim_x;
     var dim_y = searchParams.get('dim_y');
     document.getElementById("l_y").value = dim_y;
+	
+	window.colorOptions = [searchParams.get('color1'), searchParams.get('color2'), searchParams.get('color3')];
 });
 
 function setCanvasSize(width, height) {
@@ -71,7 +82,7 @@ function drawInitialShape() {
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
         for (let i = 0; i < y; i++) {
             for (let j = 0; j < x; j++) {
-                ctx.strokeStyle = `rgb(0, 0, 0)`;
+                ctx.strokeStyle = 'rgb(0,0,0)';
                 ctx.beginPath();
                 ctx.rect(1+canvasBlockSize*j,1+canvasBlockSize*i,canvasBlockSize-2,canvasBlockSize-2);
                 ctx.stroke();
@@ -96,7 +107,7 @@ function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
         for (let i = 0; i < y; i++) {
             for (let j = 0; j < x; j++) {
-                ctx.strokeStyle = `rgb(0, 0, 0)`;
+                ctx.strokeStyle = 'rgb(0,0,0)';
                 ctx.beginPath();
                 ctx.rect(1+canvasBlockSize*j,1+canvasBlockSize*i,canvasBlockSize-2,canvasBlockSize-2);
                 ctx.stroke();
@@ -115,7 +126,7 @@ function fill(){
         console.log(x);
         console.log(y);
         ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.strokeStyle = `rgb(0, 0, 0)`;
+        ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
     }
 }
@@ -124,10 +135,23 @@ function fillXY(x,y,colorChoice){
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares) {
         console.log(x);
         console.log(y);
-        if(colorChoice == 1) ctx.fillStyle = 'rgb(0,0,255)';
-        if(colorChoice == 2) ctx.fillStyle = 'rgb(255,0,0)';
-        if(colorChoice == 3) ctx.fillStyle = 'rgb(0,255,0)';
-        ctx.strokeStyle = `rgb(0, 0, 0)`;
+		var colorRGB = colorRGBMap[colorChoice];
+		console.log("Color choice is: " + colorChoice);
+		if (arrOfColors.at(x).at(y).at(0) == 1) {
+			console.log("This cell has a color");
+			colorRGB = mixColors(colorRGB, arrOfColors[x][y][1], arrOfColors[x][y][2], arrOfColors[x][y][3]);
+		} else {
+			console.log("This cell does not have a color");
+		}
+		var colorObj = $.Color(colorRGB);
+		arrOfColors[x][y][0] = 1;
+		arrOfColors[x][y][1] = colorObj.red();
+		arrOfColors[x][y][2] = colorObj.green();
+		arrOfColors[x][y][3] = colorObj.blue();
+		ctx.fillStyle = colorRGB;
+		console.log("End result color: " + ctx.fillStyle);
+		hexValue = ctx.fillStyle;
+        ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
     }
 }
@@ -137,10 +161,14 @@ function fillRandomCellWithRandomColor(){
     var y = document.getElementById("l_y").value;
     var randNum1 = Math.floor(Math.random()*x+1); //from 1 to x
     var randNum2 = Math.floor(Math.random()*y+1);  //from 1 to y
-    var colorChoice = Math.floor(Math.random()*3+1); //from 1 to 3
-    //1 blue
-    //2 red
-    //3 green
+    var randomColor = Math.floor(Math.random()*3); //from 0 to 2
+	var colorChoice = colorOptions[randomColor];
     fillXY(randNum1, randNum2, colorChoice);
 }
 
+function mixColors(color1, color2R, color2G, color2B) {
+	color2 = 'rgb(' + color2R + ',' + color2G + ',' + color2B + ')';
+	var mixingRatio = 0.5;
+	var resultColor = mixbox.lerp(color1, color2, mixingRatio);
+	return resultColor;
+}

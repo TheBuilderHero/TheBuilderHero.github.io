@@ -35,7 +35,7 @@ function addItemToList(){
         else {
             if(input.value === "") {
                 showMessage(depErr1);
-            } 
+            }
             else {
                 hideMessage(depErr1); 
             }
