@@ -35,7 +35,7 @@ function addItemToList(){
         else {
             if(input.value === "") {
                 showMessage(depErr1);
-            }
+            } 
             else {
                 hideMessage(depErr1); 
             }
@@ -276,6 +276,7 @@ function change() {
     let depErr6 = document.getElementById("depErr6"); //Input smaller than previous input
     let input = document.getElementById("numberInput");
     let inputValueAsNumber = parseInt(input.value);
+    let input2 = document.getElementById("repetitions");
     if (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])){
         hideMessage(depErr6);
     }
@@ -298,7 +299,7 @@ function change() {
     } else {
         checkAll[3] = 1;
     }
-    //document.getElementById("depErr7").textContent = globalListOfItems.length; 
+    //document.getElementById("depErr7").textContent = checkAll; 
     if(arraysEqual(checkAll, checkThis)) {
         document.getElementById("submit").disabled = false;
     }
@@ -310,8 +311,8 @@ function change() {
  function register()
  {
      document.getElementById("submit").disabled = true;
-     document.getElementById("dim_x").onkeyup = checkDimX;
-     document.getElementById("dim_y").onkeyup = checkDimY;
-     document.getElementById("repetitions").onkeyup = checkRep;
-     document.getElementById("myForm").onkeyup = change;
+     document.getElementById("dim_x").oninput = checkDimX;
+     document.getElementById("dim_y").oninput = checkDimY;
+     document.getElementById("repetitions").oninput = checkRep;
+     document.getElementById("myForm").oninput = change;
  }
