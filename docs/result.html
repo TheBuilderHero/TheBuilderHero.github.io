@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+<!-- https://developer.mozilla.org/fr/docs/Web/API/Cache  maybe use this for cache results-->
+
 <html lang="en">
 <head>
   <title>Painting Grid</title>
@@ -8,17 +10,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script src="./myjs.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  
-  <!-- Color mixing -->
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js" 
-        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" 
-        crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js" 
-        integrity="sha384-Dmia8eQq5QAVU5VL95mpXzGE2n2oYxIv9aFwn+JAtQ3Y/4bWeHSjKUgYSJi/BovQ" 
-        crossorigin="anonymous"></script>
-  <script src="https://scrtwpns.com/mixbox.js"></script>
+
   
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
@@ -134,29 +127,50 @@
       <p><a href="#">Link</a></p>
     </div>
     <div class="col-sm-8 text-left"> 
-      <h1 style="text-align: center;">Running Experiment!</h1>
-      <p style="text-align: center;">WARNING: Please do not reload the page, or you will be sent back to the previous screen.</p>
+      <h1 style="text-align: center;">Experiment Results</h1>
+      <p style="text-align: center;">WARNING: Please do not reload the page, or you will be sent back to the entry screen.</p>
       <hr>
-      <h3 style="text-align: center;">Draw Below using inputs</h3>
+      <h3 style="text-align: center;">Please select an experiment value to be Calculated</h3>
+        <script>
 
-        <div class="col-sm-4" style="text-align: center">
-            <label for="l_x">X:</label>
-            <input type="number" id="l_x" name="l_x"><br><br>
-            <label for="l_y">Y:</label>
-            <input type="number" id="l_y" name="l_y"><br><br>
-            <button type="button" onclick="draw();">Draw grid!</button><br><br>
-            <button type="button" onclick="fillRandomCellWithRandomColor();">Random Color Fill!</button><br><br>
-            <!--
-            <label for="l_x_i">X:</label>
-            <input type="number" id="l_x_i" name="l_x_i"><br><br>
-            <label for="l_y_i">Y:</label>
-            <input type="number" id="l_y_i" name="l_y_i"><br><br>
-            <button type="button" onclick="fill();" style="margin-bottom: 40px">fill rect at above (x, y)!</button>
-            -->
-        </div>
-        <div class="col-sm-8">
-            <p><canvas id="canvas" role="presentation"></canvas></p>
-        </div>
+            function takeScreenshot() {
+            var screenshot = document.documentElement
+            .cloneNode(true);
+            screenshot.style.pointerEvents = 'none';
+            screenshot.style.overflow = 'hidden';
+            screenshot.style.webkitUserSelect = 'none';
+            screenshot.style.mozUserSelect = 'none';
+            screenshot.style.msUserSelect = 'none';
+            screenshot.style.oUserSelect = 'none';
+            screenshot.style.userSelect = 'none';
+            screenshot.dataset.scrollX = window.scrollX;
+            screenshot.dataset.scrollY = window.scrollY;
+            var blob = new Blob([screenshot.outerHTML], {
+            type: 'text/html'
+            });
+            return blob;
+            }
+
+            function generate() {
+            window.URL = window.URL || window.webkitURL;
+            window.open(window.URL
+            .createObjectURL(takeScreenshot()));
+            }
+        </script>
+        <input type="button" onclick="takeScreenshot();" value="Take shot"><br>
+        <input type="button" onclick="generate()();" value="Gen"><br>
+        <form action="result.html">
+            <div class="col-sm-12" style="text-align: center">
+                <label style="font-size: medium; padding-top: 20px">Experiment Value</label><br>
+                <label for="A">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="A" name="calc_val" value="1"><br>
+                <label for="A1">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="A1" name="calc_val" value="2"><br>
+                <label for="A2">R, the number of repetitions in the experiment</label><br><input type="radio" id="A2" name="calc_val" value="3"><br><br>
+                <label for="A3">R, the number of repetitions in the experiment</label><br><input type="radio" id="A3" name="calc_val" value="4"><br><br>
+                <label for="B">R, the number of repetitions in the experiment</label><br><input type="radio" id="B" name="calc_val" value="5"><br><br>
+                <label for="C">R, the number of repetitions in the experiment</label><br><input type="radio" id="C" name="calc_val" value="6" required><br><br>
+                <input type="submit" value="Calculate and Display Chosen Value">
+            </div>
+        </form>
 	  <div class="grid-container">
 		</div>
 			</div>
