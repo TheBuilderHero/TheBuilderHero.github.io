@@ -10,6 +10,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="./myjs.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!--Audio-->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!--<script src="https://cdn.rawgit.com/labnol/files/master/yt.js" defer></script>-->
+
   
   <!-- Color mixing -->
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" 
@@ -33,7 +38,7 @@
     /* Set gray background color and 100% height */
     .sidenav {
       padding-top: 20px;
-      background-color: #f1f1f1;
+        background-color: unset;
       height: 100%;
     }
     
@@ -53,6 +58,7 @@
       .sidenav {
         height: auto;
         padding: 15px;
+          background-color: unset;
       }
       .row.content {height:auto;} 
     }
@@ -92,6 +98,7 @@
 
     .sidenav{
         height: 190%;
+        background-color: unset;
     }
 	body {
 	  margin:0;
@@ -109,7 +116,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#">Logo</a>
+        <a class="navbar-brand" href="#"><img src="img.png" width="50px" height="50px" style="margin-top: -15px !important;  /* 50% of your logo width */"></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -128,56 +135,53 @@
   
 <div class="container-fluid text-center">    
   <div class="row content">
-    <div class="col-sm-2 sidenav" style="margin-bottom: 40px">
-      <p><a href="https://youtu.be/sRkzqLudJPE?si=9GGkpoGVIEo4pYeh">Music Resource</a></p>
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
+    <div class="col-sm-2 sidenav" style="margin-bottom: 40px;">
     </div>
-    <div class="col-sm-8 text-left"> 
-      <h1 style="text-align: center;">Running Experiment!</h1>
-      <p style="text-align: center;">WARNING: Please do not reload the page, or you will be sent back to the previous screen.</p>
-      <hr>
-      <h3 style="text-align: center;">Draw Below using inputs</h3>
+      <div class="col-sm-8 text-left">
+        <h1 style="text-align: center;">Running Experiment!</h1>
+        <p style="text-align: center;">WARNING: Please do not reload the page, or you will be sent back to the previous screen.</p>
+        <hr>
+      </div>
 
-        <div class="col-sm-4" style="text-align: center">
-            <label for="l_x">X:</label>
-            <input type="number" id="l_x" name="l_x"><br><br>
-            <label for="l_y">Y:</label>
-            <input type="number" id="l_y" name="l_y"><br><br>
-            <button type="button" onclick="draw();">Draw grid!</button><br><br>
-            <button type="button" onclick="fillRandomCellWithRandomColor();">Random Color Fill!</button><br><br>
-            <!--
-            <label for="l_x_i">X:</label>
-            <input type="number" id="l_x_i" name="l_x_i"><br><br>
-            <label for="l_y_i">Y:</label>
-            <input type="number" id="l_y_i" name="l_y_i"><br><br>
-            <button type="button" onclick="fill();" style="margin-bottom: 40px">fill rect at above (x, y)!</button>
-            -->
+
+          <div class="col-sm-3" style="text-align: center" id="controls">
+            <h3 style="text-align: center;">Draw Below using inputs</h3>
+              <label for="l_x">X:</label>
+              <input type="number" id="l_x" name="l_x"><br><br>
+              <label for="l_y">Y:</label>
+              <input type="number" id="l_y" name="l_y"><br><br>
+              <button type="button" onclick="draw();">Draw grid!</button><br><br>
+              <button type="button" onclick="fillRandomCellWithRandomColor();">Random Color Fill!</button><br><br>
+              <button type="button" onclick="changeSizeStuff();">Change Size Stuff</button>
+
+
+          </div>
+          <div class="col-sm-5" style="text-align: left;" id="update_canvas">
+              <canvas id="canvas" role="presentation"></canvas>
+          </div>
+    <div class="row col-sm-8" id="after_run_div" style="display: none;">
+
+      <h1 style="text-align: center;">Experiment Results</h1>
+      <p style="text-align: center;">WARNING: Please do not reload the page, or you will be sent back to the entry screen.</p>
+      <hr>
+      <h3 style="text-align: center;">Please select an experiment value to be Calculated</h3>
+      <form action="result.html">
+        <div class="" style="text-align: center">
+          <!--<label style="font-size: medium; padding-top: 20px">Experiment Value</label><br>-->
+          <label for="A" style="font-size: small;">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="A" name="calc_val" value="1"><br>
+          <label for="A1" style="font-size: small;">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="A1" name="calc_val" value="2"><br>
+          <label for="A2" style="font-size: small;">R, the number of repetitions in the experiment</label><br><input type="radio" id="A2" name="calc_val" value="3"><br><br>
+          <label for="A3" style="font-size: small;">R, the number of repetitions in the experiment</label><br><input type="radio" id="A3" name="calc_val" value="4"><br><br>
+          <label for="B" style="font-size: small;">R, the number of repetitions in the experiment</label><br><input type="radio" id="B" name="calc_val" value="5"><br><br>
+          <label for="C" style="font-size: small;">R, the number of repetitions in the experiment</label><br><input type="radio" id="C" name="calc_val" value="6" required><br><br>
+          <input type="submit" value="Calculate and Display Chosen Value" style="margin-bottom: 80px">
         </div>
-        <div class="col-sm-8">
-            <p><canvas id="canvas" role="presentation"></canvas></p>
-        </div>
-	  <div class="grid-container">
-		</div>
-			</div>
-			<div class="col-sm-2 sidenav" style="margin-bottom: 40px">
-			  <div class="well">
-				<p>ADS</p>
-			  </div>
-			  <div class="well">
-				<p>ADS</p>
-			  </div>
-			</div>
-		  </div>
-		</div>
+      </form>
+    </div>
 
 <footer class="container-fluid text-center">
-  <p><a href="https://youtu.be/sRkzqLudJPE?si=9GGkpoGVIEo4pYeh">Music Resource</a></p>
-
-    <audio loop autoplay id="backGroundAudio" name="backGroundAudio">
-        <source src="./Interlude_Larry Owens_The_Joy_Of_Painting.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
+  <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
+    <div data-autoplay="1" data-loop="1" id="youtube-audio" hidden="hidden"></div>
 </footer>
 
 </body>

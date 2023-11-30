@@ -106,7 +106,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#">Logo</a>
+      <a class="navbar-brand" href="#"><img src="img.png" width="50px" height="50px" style="margin-top: -15px !important;  /* 50% of your logo width */"></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -124,44 +124,49 @@
   
 <div class="container-fluid text-center">    
   <div class="row content">
-    <div class="col-sm-2 sidenav" style="margin-bottom: 60px; background-color: unset;">
-      <p><a href="https://youtu.be/sRkzqLudJPE?si=9GGkpoGVIEo4pYeh">Music Resource</a></p>
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
-        <p><a href="#">Link</a></p>
+    <div class="col-sm-2 sidenav" style="margin-bottom: 0px; background-color: unset;">
+        <p>Music Choices:</p>
+        <p><a href="https://www.youtube.com/watch?v=sRkzqLudJPE" target=”_blank”>Larry Owens - The Joy Of Painting</a></p>
+        <p><a href="https://www.youtube.com/watch?v=oy2zDJPIgwc" target=”_blank”>Mozart – Eine kleine Nachtmusik</a></p>
+        <p><a href="https://www.youtube.com/watch?v=DLi25fgVuRs" target=”_blank”>Puccini – 'O mio babbino caro' from Gianni Schicchi</a></p>
     </div>
     <div class="col-sm-8 text-left"> 
-      <h1 style="text-align: center">Welcome</h1>
+      <!--<h1 style="text-align: center">Welcome</h1>
       <p style="text-align: center">Let us draw a grid of squares which we will color later. Please input the required fields for the color experiment!</p>
-      <hr>
-        <form style="padding-top: 1%" action="./run.html" method="get" id="myForm">
+      <hr>-->
+        <form style="padding-top: 1%" action="./run.html" method="get" id="myForm" onsubmit="return submitCheck();">
         <input type="hidden" id="globalListOfItemsInput" name="globalListOfItems" value="">
+            <div class="row-sm-12 formItems">
+                <fieldset>
+                    <h1>Welcome Experiment Painting Website</h1>
+                    <h3>To start you off, the Following Buttons give you an option to run the experiment very quick and easily</h3>
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3">
+                        <button id="submit1" type="submit" style="margin-bottom: 60px">RUN EXPERIMENT</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="button" value="FILL RANDOM EXPERIMENT">
+                    </div>
+                    <div class="col-sm-3"></div>
+                </fieldset>
+            </div>
             <div class="row-sm-12 formItems">
                 <fieldset>
                     <legend>Dependent and Independent Variables</legend>
 
-                    <div class="col-sm-4 formItems">
-                    <label style="font-size: medium;">Independent</label><br>
-                        <label for="independent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="independent1" name="independent" value="1" required><br>
-                        <label for="independent2">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="independent2" name="independent" value="2"><br>
-                        <label for="independent3">R, the number of repetitions in the experiment</label><br><input type="radio" id="independent3" name="independent" value="3"><br><br>
+                    <div class="col-sm-3 formItems">
+                        <label style="font-size: medium;">Independent</label><br>
+                        <label for="independent1" style="font-size: small;">D, a single dimension that is used for square canvases.</label><br>
+                        <input type="radio" id="independent1" name="independent" value="1" onchange="updateOtherLists_Depend_Independ(this);" required><br>
+                        <label for="independent2" style="font-size: small;">X, the x-dimension, with the y-dimension held constant.</label><br>
+                        <input type="radio" id="independent2" name="independent" value="2" onchange="updateOtherLists_Depend_Independ(this);"><br>
+                        <label for="independent3" style="font-size: small;">R, the number of repetitions in the experiment</label><br>
+                        <input type="radio" id="independent3" name="independent" value="3" onchange="updateOtherLists_Depend_Independ(this);"><br><br>
                     </div>
 
-                    <div class="col-sm-4 formItems">
-                        <select id="dependentList" multiple size="10" style="width: 180px">
+                    <div class="col-sm-3 formItems">
+                        <label style="font-size: medium">Independent Value</label><br>
+                        <select id="dependentList" multiple size="3" style="width: 180px">
                         </select><br><br>
                         <span id="depErr1" class="help-block hide error">Nothing entered</span>
                         <span id="depErr2" class="help-block hide error">Too few items: a minimum of 4</span>
@@ -170,36 +175,45 @@
                         <span id="depErr5" class="help-block hide error">Max of 99</span>
                         <span id="depErr6" class="help-block hide error">X-values must be greater than or equal to previous entered</span>
                         <!--<p id="depErr7" class="help-block error">Test this!</p>-->
-                        <input type="number" id="numberInput"><br><br>
+                        <input type="number" id="numberInput" required><br><br>
                         <button type="button" id="addNumber" name="addNumber" onclick="addItemToList();">Add Number</button>
                         <button type="button" id="removeNumber" name="removeNumber" onclick="removeItemFromList();">Remove selected Number</button>
                     </div>
+                    <div class="col-sm-3 formItems">
+                        <label style="font-size: medium" for="repetitions">Dependent Value</label><br>
+                        <span id="repErr1" class="help-block hide error">Nothing entered for Repetitions</span>
+                        <span id="repErr2" class="help-block hide error">Repetitions must be greater than 0</span>
+                        <span id="repErr3" class="help-block hide error">Repetitions must be less than 40</span>
+                        <input type="number" id="repetitions" name="repetitions"><br><br>
+                    </div>
 
-                    <div class="col-sm-4 formItems">
+                    <div class="col-sm-3 formItems">
                     <label style="font-size: medium">Dependent</label><br>
-                        <label for="dependent1">D, a single dimension that is used for square canvases.</label><br><input type="radio" id="dependent1" name="dependent" value="1" required><br>
-                        <label for="dependent2">X, the x-dimension, with the y-dimension held constant.</label><br><input type="radio" id="dependent2" name="dependent" value="2"><br>
-                        <label for="dependent3">R, the number of repetitions in the experiment</label><br><input type="radio" id="dependent3" name="dependent" value="3"><br><br>
+                        <label for="dependent1" style="font-size: small;">D, a single dimension that is used for square canvases.</label><br>
+                        <input type="radio" id="dependent1" name="dependent" value="1" onchange="updateOtherLists_Depend_Independ(this);"required><br>
+                        <label for="dependent2" style="font-size: small;">X, the x-dimension, with the y-dimension held constant.</label><br>
+                        <input type="radio" id="dependent2" name="dependent" value="2" onchange="updateOtherLists_Depend_Independ(this);"><br>
+                        <label for="dependent3" style="font-size: small;">R, the number of repetitions in the experiment</label><br>
+                        <input type="radio" id="dependent3" name="dependent" value="3" onchange="updateOtherLists_Depend_Independ(this);"><br><br>
                     </div>
                 </fieldset>
-            </div><br><br>
+            </div>
             <fieldset>
-                <legend class="formItems">Canvas Info</legend>
-
                 <div class="row-sm-12">
-                    <div class="col-sm-6 formItems">
+                    <!-- <div class="col-sm-6 formItems"> -->
                         <span id="dimXErr1" class="help-block hide error">Nothing entered for Dimension X</span>
                         <span id="dimXErr2" class="help-block hide error">Dimension X must be greater than 0</span>
                         <span id="dimXErr3" class="help-block hide error">Dimension X must be less than 40</span>
-                        <label for="dim_x">Dimension X:</label><br>
-                        <input type="number" id="dim_x" name="dim_x"><br><br>
-                        <span id="dimYErr1" class="help-block hide error">Nothing entered for Dimension Y</span>
-                        <span id="dimYErr2" class="help-block hide error">Dimension Y must be greater than 0</span>
-                        <span id="dimYErr3" class="help-block hide error">Dimension Y must be less than 40</span>
-                        <label for="dim_y">Dimension Y:</label><br>
-                        <input type="number" id="dim_y" name="dim_y"><br><br>
-                    </div>
-                    <div class="col-sm-6 formItems">
+                        <label for="dim_x" hidden="hidden" onload="checkDimX();">Dimension X:</label>
+                         <input type="number" id="dim_x" name="dim_x" hidden="hidden" value="40">
+                         <span id="dimYErr1" class="help-block hide error">Nothing entered for Dimension Y</span>
+                         <span id="dimYErr2" class="help-block hide error">Dimension Y must be greater than 0</span>
+                         <span id="dimYErr3" class="help-block hide error">Dimension Y must be less than 40</span>
+                         <label for="dim_y" hidden="hidden" onload="checkDimY();">Dimension Y:</label>
+                         <input type="number" id="dim_y" name="dim_y" hidden="hidden" value="40">
+                    <!-- </div> -->
+                    <div class="col-sm-3 formItems">
+                        <legend class="formItems">Color Info</legend>
                         <label for="color1">Color 1</label><br>
                         <select id="color1" name="color1" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
                             <option disabled selected value> -- select an option -- </option>
@@ -240,59 +254,66 @@
                             <option value="black">black</option>
                         </select><br><br>
                     </div>
-                </div>
-            </fieldset>
-            <br><br>
-            <fieldset>
-                <legend class="formItems">Stopping Criteria</legend>
-                <div class="row-sm-12">
-                    <div class="col-sm-6 formItems">
+
+                <div class="col-sm-4">
+                    <legend class="formItems">Stopping Criteria</legend>
+                    <div class="formItems">
                         <label style="font-size: medium">When should the experiment to terminate?</label><br>
-                        <label for="termItem1">Terminate When: the last unpainted square is painted for the first time.</label><br><input type="radio" id="termItem1" name="termItem" value="1" required><br>
-                        <label for="termItem2">Terminate When: the first time any square gets its second paint blob.</label><br><input type="radio" id="termItem2" name="termItem" value="2"><br>
-                        <label for="termItem3"> Termination Item 3</label><br><input type="radio" id="termItem3" name="termItem" value="3"><br>
-                        <label for="termItem4"> Termination Item 4</label><br><input type="radio" id="termItem4" name="termItem" value="4"><br>
-                        <label for="termItem5"> Termination Item 5</label><br><input type="radio" id="termItem5" name="termItem" value="5"><br><br>
-                    </div>
-                    <div class="col-sm-6 formItems">
-                        <span id="repErr1" class="help-block hide error">Nothing entered for Repetitions</span>
-                        <span id="repErr2" class="help-block hide error">Repetitions must be greater than 0</span>
-                        <span id="repErr3" class="help-block hide error">Repetitions must be less than 40</span>
-                        <label for="repetitions">Painting Repetitions</label><br>
-                        <input type="number" id="repetitions" name="repetitions"><br><br>
+                        <label for="termItem1" style="font-size: small;">Terminate When: the last unpainted square is painted for the first time.</label><br><input type="radio" id="termItem1" name="termItem" value="1" required><br>
+                        <label for="termItem2" style="font-size: small;">Terminate When: the first time any square gets its second paint blob.</label><br><input type="radio" id="termItem2" name="termItem" value="2"><br>
+                        <label for="termItem3" style="font-size: small;"> Termination Item 3</label><br><input type="radio" id="termItem3" name="termItem" value="3"><br>
+                        <!-- <label for="termItem4"> Termination Item 4</label><br><input type="radio" id="termItem4" name="termItem" value="4"><br>
+                        <label for="termItem5"> Termination Item 5</label><br><input type="radio" id="termItem5" name="termItem" value="5"><br><br> -->
                     </div>
                 </div>
+                <div class="col-sm-5">
+                    <legend class="formItems">Song Choice</legend>
+                    <div class="formItems">
+                        <label style="font-size: medium">What song do you want to play while you paint?</label><br>
+                        <div class="formItems col-sm-6">
+                            <label for="song1" style="font-size: small;">Larry Owens - The Joy Of Painting</label><br><input type="radio" id="song1" name="song" value="sRkzqLudJPE" checked required><br>
+                            <label for="song2" style="font-size: small;">Mozart – Eine kleine Nachtmusik</label><br><input type="radio" id="song2" name="song" value="oy2zDJPIgwc"><br>
+                            <label for="song3" style="font-size: small;">Puccini – 'O mio babbino caro' from Gianni Schicchi</label><br><input type="radio" id="song3" name="song" value="DLi25fgVuRs"><br>
+                        </div>
+                        <div class="formItems col-sm-6">
+                            <label for="song4" style="font-size: small;">J.S. Bach – Toccata and Fugue in D minor</label><br><input type="radio" id="song4" name="song" value="z69C2Jqp42Q"><br>
+                            <label for="song5" style="font-size: small;">Beethoven – Symphony No.5 in C minor (shortened)</label><br><input type="radio" id="song5" name="song" value="W2qW6fOtAMY"><br>
+                            <label for="song6" style="font-size: small;">Johann Strauss II - The Blue Danube Waltz</label><br><input type="radio" id="song6" name="song" value="_CTYymbbEL4"><br>
+                        </div>
+                        <!-- <label for="termItem4"> Termination Item 4</label><br><input type="radio" id="termItem4" name="termItem" value="4"><br>
+                        <label for="termItem5"> Termination Item 5</label><br><input type="radio" id="termItem5" name="termItem" value="5"><br><br> -->
+                    </div>
+                </div>
+            </div>
             </fieldset>
             <div class="formItems">
-                <button id="submit" type="submit" value="Submit" onclick="confirmInput();" style="margin-bottom: 60px">Run Experiment!</button>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2">
+                    <button id="submit" type="submit" style="margin-bottom: 60px">Run Experiment!</button>
+                </div>
+                <div class="col-sm-2">
+                    <button id="reload" type="button" style="margin-bottom: 60px" onclick="location.reload();">Restart Page Inputs</button>
+                </div>
+                <div class="col-sm-4"></div>
             </div>
         </form>
 
 	  <div class="grid-container">
 		</div>
 			</div>
-			<div class="col-sm-2 sidenav" style="margin-bottom: 60px; background-color: unset;">
-			  <div class="well">
-				<p>ADS</p>
-			  </div>
-			  <div class="well">
-				<p>ADS</p>
-			  </div>
-                <div class="well">
-                    <p>ADS</p>
-                </div>
-                <div class="well">
-                    <p>ADS</p>
-                </div>
-                <div class="well">
-                    <p>ADS</p>
-                </div>
+			<div class="col-sm-2 sidenav" style="margin-bottom: 0px; background-color: unset;">
+                <p>Music Choices:</p>
+                <p><a href="https://www.youtube.com/watch?v=z69C2Jqp42Q" target=”_blank”>J.S. Bach – Toccata and Fugue in D minor</a></p>
+                <p><a href="https://www.youtube.com/watch?v=W2qW6fOtAMY" target=”_blank”>Beethoven – Symphony No.5 in C minor (shortened)</a></p>
+                <p><a href="https://www.youtube.com/watch?v=_CTYymbbEL4" target=”_blank”>Johann Strauss II - The Blue Danube Waltz</a></p>
 			</div>
 		  </div>
 		</div>
 
+
 <footer class="container-fluid text-center">
-  <p><a href="https://youtu.be/sRkzqLudJPE?si=9GGkpoGVIEo4pYeh">Music Resource</a></p>
+    <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
+
 </footer>
 
 </body>

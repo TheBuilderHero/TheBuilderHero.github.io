@@ -1,8 +1,27 @@
 var checkAll = [0, 0, 0, 0]; //Acts as a "key" for X-dim, Y-dim, repetitions, and x-values
 
+function change_music(e) {
+    e.preventDefault();
+    let elm = e.target;
+
+    console.log(elm);
+
+    var audio = document.getElementById('backGroundAudio');
+
+    var source = document.getElementById('audio');
+    source.src = elm.getAttribute('data-value');
+
+    audio.load(); //call this to just preload the audio without playing
+    audio.play(); //call this to play the song right away
+    audio.stop();
+};
+
+window.onload = function (){
+};
+
 function confirmInput(){
-    let dimX = document.getElementById("dim_x");
-    let dimY = document.getElementById("dim_y");
+    //let dimX = document.getElementById("dim_x");
+    //let dimY = document.getElementById("dim_y");
 }
 
 function storeOldValue(ele) {
@@ -10,7 +29,6 @@ function storeOldValue(ele) {
         document.previousColorSelected = ele.value;
         console.log("Value stored = ", ele.value);
 }
-
 let globalListOfItems = []; //Ascending list of x-values
 
 //Only checks globalListOfItems when button is clicked 
@@ -148,6 +166,52 @@ function updateOtherLists(ele){ //passed in the element that called the function
         }
     }
 }
+function updateOtherLists_Depend_Independ(ele){ //passed in the element that called the function
+    let depend1 = document.getElementById("dependent1");
+    let depend2 = document.getElementById("dependent2");
+    let depend3 = document.getElementById("dependent3");
+    let independ1 = document.getElementById("independent1");
+    let independ2 = document.getElementById("independent2");
+    let independ3 = document.getElementById("independent3");
+    if(depend1.id === ele.id){
+        independ1.checked = false;
+        independ1.disabled = true;
+        independ2.disabled = false;
+        independ3.disabled = false;
+    }
+    if(depend2.id === ele.id){
+        independ2.checked = false;
+        independ2.disabled = true;
+        independ3.disabled = false;
+        independ1.disabled = false;
+    }
+    if(depend3.id === ele.id){
+        independ3.checked = false;
+        independ3.disabled = true;
+        independ2.disabled = false;
+        independ1.disabled = false;
+    }
+
+
+    if(independ1.id === ele.id){
+        depend1.checked = false;
+        depend1.disabled = true;
+        depend2.disabled = false;
+        depend3.disabled = false;
+    }
+    if(independ2.id === ele.id){
+        depend2.checked = false;
+        depend2.disabled = true;
+        depend1.disabled = false;
+        depend3.disabled = false;
+    }
+    if(independ3.id === ele.id){
+        depend3.checked = false;
+        depend3.disabled = true;
+        depend1.disabled = false;
+        depend2.disabled = false;
+    }
+}
 function removeSelected(selectBox,item) {
     for (let i = 0; selectBox.options.length > i; i++) {
         if(selectBox.options[i].value === item) selectBox.remove(i);
@@ -202,11 +266,12 @@ function checkDimX() {
         } else {
             hideMessage(err3);
         }
-        if (input.value > 0 && input.value !== "" && input.value < 40) {
+        if (input.value > 0 && input.value < 40) {
             checkAll[0] = 1;
         } else {
             checkAll[0] = 0;
         }
+        console.log(input.value);
     }
 }
 
@@ -232,7 +297,7 @@ function checkDimY() {
         } else {
             hideMessage(err3);
         }
-        if (input.value > 0 && input.value !== "" && input.value < 40) {
+        if (input.value > 0 && input.value < 40) {
             checkAll[1] = 1;
         } else {
             checkAll[1] = 0;
@@ -247,7 +312,7 @@ function checkRep() {
     let err3 = document.getElementById("repErr3");
     if (input) {
         
-        if (input.value === "") {
+        if (input.value == "") {
             showMessage(err1);
         } else {
             hideMessage(err1);
@@ -262,7 +327,7 @@ function checkRep() {
         } else {
             hideMessage(err3);
         }
-        if (input.value > 0 && input.value !== "" && input.value < 40) {
+        if (input.value > 0 && input.value != "" && input.value < 40) {
             checkAll[2] = 1;
         } else {
             checkAll[2] = 0;
@@ -279,40 +344,71 @@ function change() {
     let input2 = document.getElementById("repetitions");
     if (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])){
         hideMessage(depErr6);
+        input.required = false;
     }
             
     if(globalListOfItems.length < 4) {
         showMessage(depErr2);
+        input.required = true;
     } 
     else {
-        hideMessage(depErr2); 
+        hideMessage(depErr2);
+        input.required = false;
     }
     if(globalListOfItems.length > 12) {
         showMessage(depErr3);
+        input.required = true;
     } 
     else {
-        hideMessage(depErr3); 
+        hideMessage(depErr3);
+        input.required = false;
     }
     let checkThis = [1, 1, 1, 1];
     if (globalListOfItems.length < 4 || globalListOfItems.length > 12) {
         checkAll[3] = 0;
+        input.required = true;
     } else {
         checkAll[3] = 1;
+        input.required = false;
     }
-    //document.getElementById("depErr7").textContent = checkAll; 
+    //document.getElementById("depErr7").textContent = checkAll;
+    console.log(checkAll);
     if(arraysEqual(checkAll, checkThis)) {
         document.getElementById("submit").disabled = false;
+        return true;
     }
-    else {
-        document.getElementById("submit").disabled = true;
-    }
+    //else {
+        //document.getElementById("submit").disabled = true;
+    //    return false;
+    //}
+    return false;
 }
 
  function register()
  {
-     document.getElementById("submit").disabled = true;
+     document.getElementById("submit").disabled = false;
      document.getElementById("dim_x").oninput = checkDimX;
      document.getElementById("dim_y").oninput = checkDimY;
      document.getElementById("repetitions").oninput = checkRep;
      document.getElementById("myForm").oninput = change;
  }
+
+ //button is always active only deactivate when all values are not correct.
+function submitCheck() {
+    checkDimX();
+    checkDimY();
+    //BYPASSING DIMX AND DIMY:
+    checkAll[0] = 1;
+    checkAll[1] = 1;
+    checkRep();
+    let did_enter_numbers_list = change();
+    let checkThis = [1, 1, 1, 1];
+    console.log(did_enter_numbers_list);
+    if(arraysEqual(checkAll, checkThis) && did_enter_numbers_list) {
+        console.log(did_enter_numbers_list);
+        return true;
+    }
+    // do what you want
+    return false;
+}
+
