@@ -154,17 +154,17 @@
                 <fieldset>
                     <legend>Dependent and Independent Variables</legend>
 
-                    <div class="col-sm-3 formItems">
+                    <div class="col-sm-4 formItems">
                         <label style="font-size: medium;">Independent</label><br>
                         <label for="independent1" style="font-size: small;">D, a single dimension that is used for square canvases.</label><br>
-                        <input type="radio" id="independent1" name="independent" value="1" onchange="updateOtherLists_Depend_Independ(this);" required><br>
+                        <input type="radio" id="independent1" name="independent" value="1" onchange="show_inputs_dependent(this);" required><br>
                         <label for="independent2" style="font-size: small;">X, the x-dimension, with the y-dimension held constant.</label><br>
-                        <input type="radio" id="independent2" name="independent" value="2" onchange="updateOtherLists_Depend_Independ(this);"><br>
+                        <input type="radio" id="independent2" name="independent" value="2" onchange="show_inputs_dependent(this);"><br>
                         <label for="independent3" style="font-size: small;">R, the number of repetitions in the experiment</label><br>
-                        <input type="radio" id="independent3" name="independent" value="3" onchange="updateOtherLists_Depend_Independ(this);"><br><br>
+                        <input type="radio" id="independent3" name="independent" value="3" onchange="show_inputs_dependent(this);"><br><br>
                     </div>
 
-                    <div class="col-sm-3 formItems">
+                    <div class="col-sm-4 formItems">
                         <label style="font-size: medium">Independent Value</label><br>
                         <select id="dependentList" multiple size="3" style="width: 180px">
                         </select><br><br>
@@ -177,17 +177,33 @@
                         <!--<p id="depErr7" class="help-block error">Test this!</p>-->
                         <input type="number" id="numberInput" required><br><br>
                         <button type="button" id="addNumber" name="addNumber" onclick="addItemToList();">Add Number</button>
-                        <button type="button" id="removeNumber" name="removeNumber" onclick="removeItemFromList();">Remove selected Number</button>
+                        <button type="button" id="removeNumber" name="removeNumber" onclick="removeItemFromList();">Remove selected Number</button><br><br>
                     </div>
-                    <div class="col-sm-3 formItems">
-                        <label style="font-size: medium" for="repetitions">Dependent Value</label><br>
+                    <div class="col-sm-4 formItems">
+                        <label id="repetitions_label" style="font-size: small; display: none;" for="repetitions">Dependent Value (Repetitions)</label>
                         <span id="repErr1" class="help-block hide error">Nothing entered for Repetitions</span>
                         <span id="repErr2" class="help-block hide error">Repetitions must be greater than 0</span>
                         <span id="repErr3" class="help-block hide error">Repetitions must be less than 40</span>
-                        <input type="number" id="repetitions" name="repetitions"><br><br>
+                        <input type="number" id="repetitions" name="repetitions" style="display: none;"><br><br>
+                        <span id="dimXErr1" class="help-block hide error">Nothing entered for Dimension X</span>
+                        <span id="dimXErr2" class="help-block hide error">Dimension X must be greater than 0</span>
+                        <span id="dimXErr3" class="help-block hide error">Dimension X must be less than 40</span>
+                        <label id="dim_x_label" for="dim_x" onload="checkDimX();" style="font-size: small;display: none;">Dependent Value (Dimension X)</label>
+                        <input type="number" id="dim_x" name="dim_x" value="" style="display: none;"><br><br>
+                        <span id="dimYErr1" class="help-block hide error">Nothing entered for Dimension Y</span>
+                        <span id="dimYErr2" class="help-block hide error">Dimension Y must be greater than 0</span>
+                        <span id="dimYErr3" class="help-block hide error">Dimension Y must be less than 40</span>
+                        <label id="dim_y_label" for="dim_y" onload="checkDimY();" style="font-size: small;display: none;">Dependent Value (Dimension Y)</label>
+                        <input type="number" id="dim_y" name="dim_y" value="" style="display: none;">
+                        <br><br>
+                        <span id="dimY_XErr1" class="help-block hide error">Nothing entered for Dimension</span>
+                        <span id="dimY_XErr2" class="help-block hide error">Dimension must be greater than 0</span>
+                        <span id="dimY_XErr3" class="help-block hide error">Dimension must be less than 40</span>
+                        <label id="dim_Y_X_label" for="dim_Y_X" style="font-size: small;display: none;">Dependent Value (Square Dimension)</label>
+                        <input type="number" id="dim_Y_X" name="dim_Y_X" value="" style="display: none;" onchange="setDimY_X();">
                     </div>
 
-                    <div class="col-sm-3 formItems">
+                    <!--<div class="col-sm-3 formItems">
                     <label style="font-size: medium">Dependent</label><br>
                         <label for="dependent1" style="font-size: small;">D, a single dimension that is used for square canvases.</label><br>
                         <input type="radio" id="dependent1" name="dependent" value="1" onchange="updateOtherLists_Depend_Independ(this);"required><br>
@@ -195,22 +211,12 @@
                         <input type="radio" id="dependent2" name="dependent" value="2" onchange="updateOtherLists_Depend_Independ(this);"><br>
                         <label for="dependent3" style="font-size: small;">R, the number of repetitions in the experiment</label><br>
                         <input type="radio" id="dependent3" name="dependent" value="3" onchange="updateOtherLists_Depend_Independ(this);"><br><br>
-                    </div>
+                    </div>-->
                 </fieldset>
             </div>
             <fieldset>
                 <div class="row-sm-12">
                     <!-- <div class="col-sm-6 formItems"> -->
-                        <span id="dimXErr1" class="help-block hide error">Nothing entered for Dimension X</span>
-                        <span id="dimXErr2" class="help-block hide error">Dimension X must be greater than 0</span>
-                        <span id="dimXErr3" class="help-block hide error">Dimension X must be less than 40</span>
-                        <label for="dim_x" hidden="hidden" onload="checkDimX();">Dimension X:</label>
-                         <input type="number" id="dim_x" name="dim_x" hidden="hidden" value="40">
-                         <span id="dimYErr1" class="help-block hide error">Nothing entered for Dimension Y</span>
-                         <span id="dimYErr2" class="help-block hide error">Dimension Y must be greater than 0</span>
-                         <span id="dimYErr3" class="help-block hide error">Dimension Y must be less than 40</span>
-                         <label for="dim_y" hidden="hidden" onload="checkDimY();">Dimension Y:</label>
-                         <input type="number" id="dim_y" name="dim_y" hidden="hidden" value="40">
                     <!-- </div> -->
                     <div class="col-sm-3 formItems">
                         <legend class="formItems">Color Info</legend>

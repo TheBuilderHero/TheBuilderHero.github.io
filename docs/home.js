@@ -166,6 +166,63 @@ function updateOtherLists(ele){ //passed in the element that called the function
         }
     }
 }
+
+function show_inputs_dependent(ele){
+    let independ1 = document.getElementById("independent1");
+    let independ2 = document.getElementById("independent2");
+    let independ3 = document.getElementById("independent3");
+    const r_label = document.getElementById('repetitions_label');
+    const r = document.getElementById('repetitions');
+    const dim_y = document.getElementById('dim_y');
+    const dim_y_label = document.getElementById('dim_y_label');
+    const dim_x = document.getElementById('dim_x');
+    const dim_x_label = document.getElementById('dim_x_label');
+    const dim_xy = document.getElementById('dim_Y_X');
+    const dim_xy_label = document.getElementById('dim_Y_X_label');
+
+
+
+    if(independ1.id === ele.id){
+        r.required = true;
+        dim_xy.required = false;
+        dim_xy.value = "";
+        dim_y.required = false;
+        dim_y.value = "";
+        r_label.style.display = 'flex';
+        r.style.display = 'flex';
+        dim_xy.style.display = 'none';
+        dim_xy_label.style.display = 'none';
+        dim_y.style.display = 'none';
+        dim_y_label.style.display = 'none';
+    }
+    if(independ2.id === ele.id){
+        r.required = true;
+        dim_y.required = true;
+        dim_xy.required = false;
+        dim_xy.value = "";
+        r_label.style.display = 'flex';
+        r.style.display = 'flex';
+        dim_y.style.display = 'flex';
+        dim_y_label.style.display = 'flex';
+        dim_xy.style.display = 'none';
+        dim_xy_label.style.display = 'none';
+    }
+    if(independ3.id === ele.id){
+        r.required = false;
+        r.value = "";
+        dim_y.required = false;
+        dim_y.value = "";
+        dim_xy.required = true;
+        dim_xy.style.display = 'flex';
+        dim_xy_label.style.display = 'flex';
+        r.style.display = 'none';
+        r_label.style.display = 'none';
+        dim_y.style.display = 'none';
+        dim_y_label.style.display = 'none';
+    }
+
+}
+/* was used when having two lists: one for independent and the other for dependent
 function updateOtherLists_Depend_Independ(ele){ //passed in the element that called the function
     let depend1 = document.getElementById("dependent1");
     let depend2 = document.getElementById("dependent2");
@@ -173,6 +230,15 @@ function updateOtherLists_Depend_Independ(ele){ //passed in the element that cal
     let independ1 = document.getElementById("independent1");
     let independ2 = document.getElementById("independent2");
     let independ3 = document.getElementById("independent3");
+    const r_label = document.getElementById('repetitions_label');
+    const r = document.getElementById('repetitions');
+    const dim_y = document.getElementById('dim_y');
+    const dim_y_label = document.getElementById('dim_y_label');
+    const dim_x = document.getElementById('dim_x');
+    const dim_x_label = document.getElementById('dim_x_label');
+    const dim_xy = document.getElementById('dim_Y_X');
+    const dim_xy_label = document.getElementById('dim_Y_X_label');
+
     if(depend1.id === ele.id){
         independ1.checked = false;
         independ1.disabled = true;
@@ -198,20 +264,40 @@ function updateOtherLists_Depend_Independ(ele){ //passed in the element that cal
         depend1.disabled = true;
         depend2.disabled = false;
         depend3.disabled = false;
+        r_label.style.display = 'flex';
+        r.style.display = 'flex';
+        dim_xy.style.display = 'none';
+        dim_xy_label.style.display = 'none';
+        dim_y.style.display = 'none';
+        dim_y_label.style.display = 'none';
     }
     if(independ2.id === ele.id){
         depend2.checked = false;
         depend2.disabled = true;
         depend1.disabled = false;
         depend3.disabled = false;
+        r_label.style.display = 'flex';
+        r.style.display = 'flex';
+        dim_y.style.display = 'flex';
+        dim_y_label.style.display = 'flex';
+        dim_xy.style.display = 'none';
+        dim_xy_label.style.display = 'none';
     }
     if(independ3.id === ele.id){
         depend3.checked = false;
         depend3.disabled = true;
         depend1.disabled = false;
         depend2.disabled = false;
+        dim_xy.style.display = 'flex';
+        dim_xy_label.style.display = 'flex';
+        r.style.display = 'none';
+        r_label.style.display = 'none';
+        dim_y.style.display = 'none';
+        dim_y_label.style.display = 'none';
     }
 }
+
+ */
 function removeSelected(selectBox,item) {
     for (let i = 0; selectBox.options.length > i; i++) {
         if(selectBox.options[i].value === item) selectBox.remove(i);
@@ -412,3 +498,10 @@ function submitCheck() {
     return false;
 }
 
+function setDimY_X(){
+    let input_y = document.getElementById("dim_y");
+    let input_x = document.getElementById("dim_x");
+    let input_xy = document.getElementById("dim_Y_X");
+    input_y.value = input_xy.value;
+    input_x.value = input_xy.value;
+}
