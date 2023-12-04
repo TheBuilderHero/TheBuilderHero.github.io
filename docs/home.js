@@ -573,19 +573,20 @@ function three_color_picker(colorItems) {
 }
 
 
-function clearSelectBox(){
+function clearSelectList(){
     let listOfItems = document.getElementById("dependentList");
     //clear select box:
     let i, L = listOfItems.options.length - 1;
     for(i = L; i >= 0; i--) {
         listOfItems.remove(i);
     }
+    globalListOfItems = []; //reset to null.
 }
 
 function randomize_inputs(){
 
     //clear all list options
-    clearSelectBox();
+    clearSelectList();
 
     //set random value for independent:
     let independ1 = document.getElementById("independent1");
