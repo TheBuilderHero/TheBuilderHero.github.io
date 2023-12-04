@@ -145,7 +145,7 @@
                         <button id="submit1" type="submit" style="margin-bottom: 60px">RUN EXPERIMENT</button>
                     </div>
                     <div class="col-sm-3">
-                        <input type="button" value="FILL RANDOM EXPERIMENT">
+                        <input type="button" id="randomize" value="FILL RANDOM EXPERIMENT" onclick="randomize_inputs();">
                     </div>
                     <div class="col-sm-3"></div>
                 </fieldset>
@@ -222,16 +222,16 @@
                         <legend class="formItems">Color Info</legend>
                         <label for="color1">Color 1</label><br>
                         <select id="color1" name="color1" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
-                            <option disabled selected value> -- select an option -- </option>
-                            <option value="red" >red</option>
-                            <option value="blue">blue</option>
-                            <option value="green">green</option>
-                            <option value="yellow">yellow</option>
-                            <option value="purple">purple</option>
-                            <option value="orange">orange</option>
-                            <option value="pink">pink</option>
-                            <option value="brown">brown</option>
-                            <option value="black">black</option>
+                            <option id="option0" disabled selected value> -- select an option -- </option>
+                            <option id="option1" value="red" >red</option>
+                            <option id="option2" value="blue">blue</option>
+                            <option id="option3" value="green">green</option>
+                            <option id="option4" value="yellow">yellow</option>
+                            <option id="option5" value="purple">purple</option>
+                            <option id="option6" value="orange">orange</option>
+                            <option id="option7" value="pink">pink</option>
+                            <option id="option8" value="brown">brown</option>
+                            <option id="option9" value="black">black</option>
                         </select><br><br>
                         <label for="color2">Color 2</label><br>
                         <select id="color2" name="color2" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);"required>
@@ -267,7 +267,7 @@
                         <label style="font-size: medium">When should the experiment to terminate?</label><br>
                         <label for="termItem1" style="font-size: small;">Terminate When: the last unpainted square is painted for the first time.</label><br><input type="radio" id="termItem1" name="termItem" value="1" required><br>
                         <label for="termItem2" style="font-size: small;">Terminate When: the first time any square gets its second paint blob.</label><br><input type="radio" id="termItem2" name="termItem" value="2"><br>
-                        <label for="termItem3" style="font-size: small;"> Termination Item 3</label><br><input type="radio" id="termItem3" name="termItem" value="3"><br>
+                        <label for="termItem3" style="font-size: small;">Terminate When: the first time any square gets its third paint blob.</label><br><input type="radio" id="termItem3" name="termItem" value="3"><br>
                         <!-- <label for="termItem4"> Termination Item 4</label><br><input type="radio" id="termItem4" name="termItem" value="4"><br>
                         <label for="termItem5"> Termination Item 5</label><br><input type="radio" id="termItem5" name="termItem" value="5"><br><br> -->
                     </div>

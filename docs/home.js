@@ -1,10 +1,11 @@
 var checkAll = [0, 0, 0, 0]; //Acts as a "key" for X-dim, Y-dim, repetitions, and x-values
-
+//declare empty array to put the options in
+let optionsArray = new Array();
 function change_music(e) {
     e.preventDefault();
     let elm = e.target;
 
-    console.log(elm);
+    //console.log(elm);
 
     var audio = document.getElementById('backGroundAudio');
 
@@ -16,8 +17,19 @@ function change_music(e) {
     audio.stop();
 };
 
-window.onload = function (){
-};
+window.addEventListener("load", (event) => {
+    //get options from user input and push to array
+    optionsArray.push(document.getElementById("option1").value);
+    optionsArray.push(document.getElementById("option2").value);
+    optionsArray.push(document.getElementById("option3").value);
+    optionsArray.push(document.getElementById("option4").value);
+    optionsArray.push(document.getElementById("option5").value);
+    optionsArray.push(document.getElementById("option6").value);
+    optionsArray.push(document.getElementById("option7").value);
+    optionsArray.push(document.getElementById("option8").value);
+    optionsArray.push(document.getElementById("option9").value);
+    //console.log(optionsArray);
+});
 
 function confirmInput(){
     //let dimX = document.getElementById("dim_x");
@@ -27,7 +39,7 @@ function confirmInput(){
 function storeOldValue(ele) {
         // Store the current value on focus and on change
         document.previousColorSelected = ele.value;
-        console.log("Value stored = ", ele.value);
+        //console.log("Value stored = ", ele.value);
 }
 let globalListOfItems = []; //Ascending list of x-values
 
@@ -504,4 +516,200 @@ function setDimY_X(){
     let input_xy = document.getElementById("dim_Y_X");
     input_y.value = input_xy.value;
     input_x.value = input_xy.value;
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max)+1;
+}
+function three_color_picker(colorItems) {
+    //function for checking for empty user input boxes
+    function checkBoxLength (stringLength) {
+        return stringLength.length != "";
+    }
+
+    //function to remove empty user input boxes
+    let options = optionsArray;
+    let valueChoice = new Array();
+
+    for (let element in colorItems) {
+
+        //randomise number to be used to select array index position
+        let optionsRan = 0;
+        let i = 0;
+        do {
+            optionsRan = Math.floor(Math.random() * options.length)+1;
+            if(i++ > 1000) return;
+        } while (valueChoice.includes(optionsRan));
+        valueChoice.push(optionsRan);
+
+        //alert the user to the option that the function has selected
+        //console.log("Value selected", optionsRan);
+        //console.log("element: ", element);
+        if (optionsRan === 0) {
+            document.getElementById(element).selectedIndex = 0;
+        } else if (optionsRan === 1) {
+            document.getElementById(element).selectedIndex = 1;
+        } else if (optionsRan === 2) {
+            document.getElementById(element).selectedIndex = 2;
+        } else if (optionsRan === 3) {
+            document.getElementById(element).selectedIndex = 3;
+        } else if (optionsRan === 4) {
+            document.getElementById(element).selectedIndex = 4;
+        } else if (optionsRan === 5) {
+            document.getElementById(element).selectedIndex = 5;
+        } else if (optionsRan === 6) {
+            document.getElementById(element).selectedIndex = 6;
+        } else if (optionsRan === 7) {
+            document.getElementById(element).selectedIndex = 7;
+        } else if (optionsRan === 8) {
+            document.getElementById(element).selectedIndex = 8;
+        } else if (optionsRan === 9) {
+            document.getElementById(element).selectedIndex = 9;
+        } else {
+            alert("D'oh!");
+        }
+    }
+
+}
+
+
+function clearSelectBox(){
+    let listOfItems = document.getElementById("dependentList");
+    //clear select box:
+    let i, L = listOfItems.options.length - 1;
+    for(i = L; i >= 0; i--) {
+        listOfItems.remove(i);
+    }
+}
+
+function randomize_inputs(){
+
+    //clear all list options
+    clearSelectBox();
+
+    //set random value for independent:
+    let independ1 = document.getElementById("independent1");
+    let independ2 = document.getElementById("independent2");
+    let independ3 = document.getElementById("independent3");
+    switch (getRandomInt(3)){
+        case 1:{
+            independ1.checked = true;
+            show_inputs_dependent(independ1);
+            independ2.checked = false;
+            independ3.checked = false;
+            let reps = document.getElementById("repetitions");
+            reps.value = getRandomInt(99);
+
+            //numbers in list:
+            let input = document.getElementById("numberInput");
+            let dim_value_list = getRandomInt(5);
+            input.value = dim_value_list;
+            addItemToList();
+            input.value = dim_value_list*2;
+            addItemToList();
+            input.value = dim_value_list*2*2;
+            addItemToList();
+            input.value = dim_value_list*2*2*2;
+            addItemToList();
+            input.value = "";
+
+            break;
+        }
+        case 2:{
+            independ2.checked = true;
+            show_inputs_dependent(independ2);
+            independ1.checked = false;
+            independ3.checked = false;
+
+            //set repetitions
+            let reps = document.getElementById("repetitions");
+            reps.value = getRandomInt(99);
+
+            //numbers in list:
+            let input = document.getElementById("numberInput");
+            let dim_value_list = getRandomInt(5);
+            input.value = dim_value_list;
+            addItemToList();
+            input.value = dim_value_list*2;
+            addItemToList();
+            input.value = dim_value_list*2*2;
+            addItemToList();
+            input.value = dim_value_list*2*2*2;
+            addItemToList();
+            input.value = "";
+
+            //set random value for dimension:
+            let input_y = document.getElementById("dim_y");
+            input_y.value = getRandomInt(40);
+            break;
+        }
+        case 3:{
+            independ3.checked = true;
+            show_inputs_dependent(independ3);
+            independ2.checked = false;
+            independ1.checked = false;
+
+            //numbers in list (repetitions):
+            let input = document.getElementById("numberInput");
+            let rep_value_list = getRandomInt(10);
+            input.value = rep_value_list;
+            addItemToList();
+            input.value = rep_value_list*2;
+            addItemToList();
+            input.value = rep_value_list*2*2;
+            addItemToList();
+            input.value = rep_value_list*2*2*2;
+            addItemToList();
+            input.value = "";
+
+            //set random value for dimension:
+            let input_xy = document.getElementById("dim_Y_X");
+            input_xy.value = getRandomInt(40);
+            break;
+        }
+    }
+
+    //*
+    //color choice:
+    let color1 = document.getElementById("color1");
+    let color2 = document.getElementById("color2");
+    let color3 = document.getElementById("color3");
+    three_color_picker({color1,color2,color3});
+    //*/
+    //select termination option:
+    let termItem1 = document.getElementById("termItem1");
+    let termItem2 = document.getElementById("termItem2");
+    let termItem3 = document.getElementById("termItem3");
+    let termChoice = getRandomInt(3);
+    if(termChoice === 1){
+        termItem1.checked = true;
+    } else if(termChoice === 2){
+        termItem2.checked = true;
+    } else {
+        termItem3.checked = true;
+    }
+
+
+    //select music option:
+    let musicItem1 = document.getElementById("song1");
+    let musicItem2 = document.getElementById("song2");
+    let musicItem3 = document.getElementById("song3");
+    let musicItem4 = document.getElementById("song4");
+    let musicItem5 = document.getElementById("song5");
+    let musicItem6 = document.getElementById("song6");
+    let musicChoice = getRandomInt(6);
+    if(musicChoice === 1){
+        musicItem1.checked = true;
+    } else if(musicChoice === 2){
+        musicItem2.checked = true;
+    } else if(musicChoice === 3){
+        musicItem3.checked = true;
+    } else if(musicChoice === 4){
+        musicItem4.checked = true;
+    } else if(musicChoice === 5){
+        musicItem5.checked = true;
+    }else {
+        musicItem6.checked = true;
+    }
+
 }
