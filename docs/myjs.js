@@ -1,10 +1,10 @@
 
-//define global variables:
+///define global variables:
 window.defaultWidthOfCanvas = 400;
 window.defaultHeightOfCanvas = 400;
 window.maxXSquares = defaultWidthOfCanvas/10;
 window.maxYSquares = defaultHeightOfCanvas/10;
-window.arrOfColors = new Array(maxXSquares); //max array size. //Note first number means has color, other three are RGB.
+window.arrOfColors = new Array(maxXSquares); //max array size. //Note: first number is the amount of times it's been painted, other three number are RGB.
 window.colorRGBMap = {
 	red: 'rgb(255,0,0)',
 	blue: 'rgb(0,0,255)',
@@ -17,8 +17,26 @@ window.colorRGBMap = {
 	black: 'rgb(0,0,0)',
 };
 
+var a = 0; // the total number of paint drops put on the canvas before the stopping criterion stops the painting.
+var a1 = 0; // The number of paint drops on the canvas of Color 1.
+var a2 = 0; // The number of paint drops on the canvas of Color 2.
+var a3 = 0; // The number of paint drops on the canvas of Color 3.
+var b = 0; // the maximum number of paint drops on any given square when the painting halts (that is, looking at all the squares,
+            //what is the largest number of paint drops that fell on one square?)
+var c = 0; // the average number of paint drops over all the squares when the painting halts
+var rands = {randNum1: 0, randNum2: 0};
+var stopId; // id for setinterval
+var computations = {
+    a: 0,
+    a1: 0,
+    a2: 0,
+    a3: 0,
+    b: 0,
+    c: 0
+}
+var s;
+var termItem;
 let data = window.performance.getEntriesByType("navigation")[0].type;
-console.log(data);
 
 //force back to screen to fill in info if they try to reload or anything:
 if ("navigate" != data){
@@ -38,15 +56,10 @@ window.addEventListener("load", (event) => {
         arrOfColors[i] = arrayOfY;
     }
     //At this point array of colors should have all the values initialized to 0.
-    console.log(arrOfColors);
-    console.log(arrOfColors.at(0).at(0).at(0)); //we will use this to check if it is filled.
-
 
     //Load all values:
     //https://sentry.io/answers/how-to-get-values-from-urls-in-javascript/
     const searchParams = new URLSearchParams(window.location.search);
-    //console.log(searchParams.has('sort')); // true
-    //console.log(searchParams.get('sort')); // price_descending
     for (const param of searchParams) {
         console.log("Data:",param);
     }
@@ -64,8 +77,8 @@ window.addEventListener("load", (event) => {
     //audioItem.setAttribute("hidden","hidden");
 
     audioItem.setAttribute('data-video', searchParams.get('song'));
-
-    console.log(searchParams.get('song'));
+    termItem = searchParams.get('termItem');
+    //console.log(searchParams.get('song'));
 
     //Play SONG:
     var e = document.getElementById("youtube-audio")
@@ -108,8 +121,6 @@ window.addEventListener("load", (event) => {
 
 function setCanvasSize(width, height) {
     let canvas = document.getElementById("canvas");
-    console.log(width);
-    console.log(height);
     canvas.width = width;
     canvas.height = height;
 }
@@ -120,11 +131,8 @@ function drawInitialShape() {
     var x = 1;
     var y = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
-    console.log(x);
-    console.log(y);
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
-    console.log(canvasBlockSize);
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
         for (let i = 0; i < y; i++) {
             for (let j = 0; j < x; j++) {
@@ -144,11 +152,8 @@ function draw() {
     const ctx = document.getElementById("canvas").getContext("2d");
     var x = document.getElementById("l_x").value;
     var y = document.getElementById("l_y").value;
-    console.log(x);
-    console.log(y);
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
-    console.log(canvasBlockSize);
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
         ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
         for (let i = 0; i < y; i++) {
@@ -169,8 +174,6 @@ function fill(){
     var x = document.getElementById("l_x_i").value;
     var y = document.getElementById("l_y_i").value;
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares) {
-        console.log(x);
-        console.log(y);
         ctx.fillStyle = 'rgb(255,0,0)';
         ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
@@ -178,38 +181,57 @@ function fill(){
 }
 function fillXY(x,y,colorChoice){
     const ctx = document.getElementById("canvas").getContext("2d");
-    if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares) {
-        console.log(x);
-        console.log(y);
+    if (x >= 1 && x <= maxXSquares && y >= 1 && y <= maxYSquares) {
 		var colorRGB = colorRGBMap[colorChoice];
-		console.log("Color choice is: " + colorChoice);
-		if (arrOfColors.at(x).at(y).at(0) == 1) {
-			console.log("This cell has a color");
-			colorRGB = mixColors(colorRGB, arrOfColors[x][y][1], arrOfColors[x][y][2], arrOfColors[x][y][3]);
-		} else {
-			console.log("This cell does not have a color");
+		//console.log("Painting an element");
+		//console.log("Color choice is: " + colorChoice);
+		if (arrOfColors[x-1][y-1][0] > 0) {
+			colorRGB = mixColors(colorRGB, arrOfColors[x-1][y-1][1], arrOfColors[x-1][y-1][2], arrOfColors[x-1][y-1][3]);
+			console.log("Painted an element for the", arrOfColors[x-1][y-1][0] + 1, "time");
 		}
 		var colorObj = $.Color(colorRGB);
-		arrOfColors[x][y][0] = 1;
-		arrOfColors[x][y][1] = colorObj.red();
-		arrOfColors[x][y][2] = colorObj.green();
-		arrOfColors[x][y][3] = colorObj.blue();
+		arrOfColors[x-1][y-1][0] += 1;
+		arrOfColors[x-1][y-1][1] = colorObj.red();
+		arrOfColors[x-1][y-1][2] = colorObj.green();
+		arrOfColors[x-1][y-1][3] = colorObj.blue();
 		ctx.fillStyle = colorRGB;
-		console.log("End result color: " + ctx.fillStyle);
-		hexValue = ctx.fillStyle;
         ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
+		
+		switch (parseInt(termItem)) {
+			case 1: // Terminate when last unpainted square is painted for the first time
+				if (checkAllElementsPainted()) {
+					clearInterval(stopId);
+					console.log("Stopped1");
+				}
+				break;
+			case 2: // Terminate when a square is painted for the second time
+				if (arrOfColors[x-1][y-1][0] > 1) {
+					console.log("Stopped2");
+					clearInterval(stopId);
+				}
+				break;
+			case 3: // Terminate when a square is painted for the third time
+				if (arrOfColors[x-1][y-1][0] > 2) {
+					console.log("Stopped3");
+					clearInterval(stopId);
+				}
+				break;
+			default:
+				console.log("Invalid termItem:", termItem);
+		}
+		
     }
 }
 
-function fillRandomCellWithRandomColor(){
+function fillRandomCellWithRandomColor(s){
     var x = document.getElementById("l_x").value;
     var y = document.getElementById("l_y").value;
-    var randNum1 = Math.floor(Math.random()*x+1); //from 1 to x
-    var randNum2 = Math.floor(Math.random()*y+1);  //from 1 to y
-    var randomColor = Math.floor(Math.random()*3); //from 0 to 2
+    rands.randNum1 = Math.floor(Math.random()*x+1); // from 1 to x
+    rands.randNum2 = Math.floor(Math.random()*y+1);  // from 1 to y
+    var randomColor = Math.floor(Math.random()*3); // from 0 to 2
 	var colorChoice = colorOptions[randomColor];
-    fillXY(randNum1, randNum2, colorChoice);
+    fillXY(rands.randNum1, rands.randNum2, colorChoice);
 }
 
 function mixColors(color1, color2R, color2G, color2B) {
@@ -229,9 +251,35 @@ function changeSizeStuff() {
     update_div.style.textAlign = 'center';
     update_div.classList.remove('col-sm-5');
     update_div.classList.add('col-sm-8');
-
     controls.style.display = 'none';
-
     radio_choice.style.display = 'block';
+}
 
+function paintOne() {
+    stopId = setInterval(fillRandomCellWithRandomColor, 1000);
+	console.log("Interval started");
+}
+
+function paintMany() {
+    for (var i = 0; i < repititions; i++) {
+        paintOne();
+    }
+}
+
+function startPainting() {
+    paintOne();
+}
+
+function checkAllElementsPainted() {
+	var xMax = document.getElementById("l_x").value;
+    var yMax = document.getElementById("l_y").value;
+	for (let iterX = 0; iterX < xMax; iterX++) {
+		for (let iterY = 0; iterY < yMax; iterY++) {
+			if (arrOfColors[iterX][iterY][0] == 0) {
+				//console.log("arrOfColors[x=" + iterX + "][y=" + iterY + "][0] == 0, is not painted");
+				return false;
+			}
+		}
+	}
+	return true;
 }
