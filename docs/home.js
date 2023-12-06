@@ -351,8 +351,9 @@ function hideMessage(id) {
 }
 
 function change() {
-    let err = document.getElementById("depErr7");
-    err.innerHTML = checkAll;
+    //These two lines were breaking everything:
+    //let err = document.getElementById("depErr7");
+    //err.innerHTML = checkAll;
     
     let depErr2 = document.getElementById("depErr2"); //Too few items
     let depErr3 = document.getElementById("depErr3"); //Too many items
