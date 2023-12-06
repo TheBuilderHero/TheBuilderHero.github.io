@@ -41,10 +41,13 @@ function storeOldValue(ele) {
         document.previousColorSelected = ele.value;
         //console.log("Value stored = ", ele.value);
 }
+
 let globalListOfItems = []; //Ascending list of x-values
+let indValue = "";
 
 //Only checks globalListOfItems when button is clicked 
 function addItemToList(){
+    
     let listOfItems = document.getElementById("dependentList");
     let input = document.getElementById("numberInput");
     globalListOfItems = globalListOfItems.filter(item => item !== undefined && item !== null && item !== ""); //Deletes null inputs in globalListOfItems array
@@ -52,13 +55,25 @@ function addItemToList(){
     let depErr1 = document.getElementById("depErr1"); //Nothing entered
     let depErr4 = document.getElementById("depErr4"); //Input is too small
     let depErr5 = document.getElementById("depErr5"); //Input is too big
+    let depErr8 = document.getElementById("depErr8"); //Input is too big for dimensions
     let depErr6 = document.getElementById("depErr6"); //Input smaller than previous input
+    let tooBigErr;
     
     let inputValueAsNumber = parseInt(input.value);
             
+    let maxNum = 40;
+    
+    if(indValue === "1" || indValue === "2") {
+        maxNum = 40;
+        tooBigErr  = document.getElementById("depErr8"); //Input is too big 40
+    }
+    else {
+        maxNum = 99;
+        tooBigErr  = document.getElementById("depErr5"); //Input is too big 99
+    }
     //If input is correct, push to globalListOfItems, else sho an error message
     if (globalListOfItems.length === 0) {
-        if(input.value !== "" && inputValueAsNumber >= 0 && inputValueAsNumber <= 99) {
+        if(input.value !== "" && inputValueAsNumber >= 0 && inputValueAsNumber <= maxNum) {
             listOfItems.add(new Option(input.value, input.value), undefined);
             globalListOfItems.push(input.value);
         }
@@ -75,25 +90,26 @@ function addItemToList(){
             else {
                 hideMessage(depErr4); 
             }
-            if(inputValueAsNumber > 100) {
-                showMessage(depErr5);
+            if(inputValueAsNumber > maxNum) {
+                showMessage(tooBigErr);
             }
             else {
-                hideMessage(depErr5); 
+                hideMessage(tooBigErr); 
             }
         }
     }
     else if (globalListOfItems.length >= 1) {
-        if(input.value !== "" && (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])) && inputValueAsNumber >= 0 && inputValueAsNumber <= 99) {
+        if(input.value !== "" && (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])) && inputValueAsNumber >= 0 && inputValueAsNumber <= maxNum) {
 
             listOfItems.add(new Option(input.value, input.value), undefined);
             globalListOfItems.push(input.value);
-            if (globalListOfItems.length > 3 || globalListOfItems.length < 12) {
-                checkAll[3] = 1; 
-                change();}
+            if (globalListOfItems.length > 4 || globalListOfItems.length < 12) {
+                //checkAll[0] = 1; 
+                change();
+            }
         }
         else {
-            checkAll[3] = 0;
+            //checkAll[0] = 0;
             change();
             if(input.value === "") {
                 showMessage(depErr1);
@@ -115,14 +131,16 @@ function addItemToList(){
             else {
                 hideMessage(depErr4); 
             }
-            if(inputValueAsNumber > 100) {
-                showMessage(depErr5);
+            if(inputValueAsNumber > maxNum) {
+                showMessage(tooBigErr);
             }
             else {
-                hideMessage(depErr5); 
+                hideMessage(tooBigErr); 
             }
         }
     }
+    //hideMessage(depErr5);
+    //hideMessage(depErr8); 
     document.getElementById("globalListOfItemsInput").value = globalListOfItems.join(",");
 }
 
@@ -145,6 +163,15 @@ function removeItemFromList(){
 
     change();
     document.getElementById("globalListOfItemsInput").value = globalListOfItems.join(",");
+    
+    //Checks the length of globalListOfItems when items are deleted
+    if (globalListOfItems.length < 3 || globalListOfItems.length > 12) {
+        checkAll[0] = 0;
+        input.required = true;
+    } else {
+        checkAll[0] = 1;
+        input.required = false;
+    }
 }
 
 
@@ -191,8 +218,64 @@ function show_inputs_dependent(ele){
     const dim_x_label = document.getElementById('dim_x_label');
     const dim_xy = document.getElementById('dim_Y_X');
     const dim_xy_label = document.getElementById('dim_Y_X_label');
+    
+    let depErr1 = document.getElementById("depErr1"); //Nothing entered
+    let depErr4 = document.getElementById("depErr4"); //Input is too small
+    let depErr5 = document.getElementById("depErr5"); //Input is too big
+    let depErr8 = document.getElementById("depErr8"); //Input is too big for dimensions
+    let depErr6 = document.getElementById("depErr6"); //Input smaller than previous input
 
-
+    var ind = document.querySelector('input[name="independent"]:checked').value;
+    let listOfItems = document.getElementById("dependentList");
+    hideMessage(depErr1);
+    hideMessage(depErr4);
+    hideMessage(depErr5);
+    hideMessage(depErr8);
+    hideMessage(depErr6);
+    
+    indValue = ind;
+    
+    globalListOfItems = [];
+    listOfItems.innerHTML = "";
+    
+    if (indValue === "1") {
+        checkAll[1] = 0;
+        checkAll[2] = 1;
+        checkAll[3] = 1;
+        
+        hideMessage(document.getElementById("dimYErr1"));
+        hideMessage(document.getElementById("dimYErr2"));
+        hideMessage(document.getElementById("dimYErr3"));
+        
+        hideMessage(document.getElementById("dimY_XErr1"));
+        hideMessage(document.getElementById("dimY_XErr1"));
+        hideMessage(document.getElementById("dimY_XErr1"));
+    }
+    if (indValue === "2") {
+        checkAll[1] = 0;
+        checkAll[2] = 0;
+        checkAll[3] = 1;
+        
+        hideMessage(document.getElementById("dimY_XErr1"));
+        hideMessage(document.getElementById("dimY_XErr1"));
+        hideMessage(document.getElementById("dimY_XErr1"));
+    }
+    if (indValue === "3") {
+        checkAll[1] = 1;
+        checkAll[2] = 1;
+        checkAll[3] = 0;
+        
+        hideMessage(document.getElementById("dimYErr1"));
+        hideMessage(document.getElementById("dimYErr2"));
+        hideMessage(document.getElementById("dimYErr3"));
+        
+        hideMessage(document.getElementById("repErr1"));
+        hideMessage(document.getElementById("repErr2"));
+        hideMessage(document.getElementById("repErr3"));
+    }
+    
+    //let err = document.getElementById("depErr7");
+    //err.innerHTML = checkAll;
 
     if(independ1.id === ele.id){
         r.required = true;
@@ -234,82 +317,7 @@ function show_inputs_dependent(ele){
     }
 
 }
-/* was used when having two lists: one for independent and the other for dependent
-function updateOtherLists_Depend_Independ(ele){ //passed in the element that called the function
-    let depend1 = document.getElementById("dependent1");
-    let depend2 = document.getElementById("dependent2");
-    let depend3 = document.getElementById("dependent3");
-    let independ1 = document.getElementById("independent1");
-    let independ2 = document.getElementById("independent2");
-    let independ3 = document.getElementById("independent3");
-    const r_label = document.getElementById('repetitions_label');
-    const r = document.getElementById('repetitions');
-    const dim_y = document.getElementById('dim_y');
-    const dim_y_label = document.getElementById('dim_y_label');
-    const dim_x = document.getElementById('dim_x');
-    const dim_x_label = document.getElementById('dim_x_label');
-    const dim_xy = document.getElementById('dim_Y_X');
-    const dim_xy_label = document.getElementById('dim_Y_X_label');
 
-    if(depend1.id === ele.id){
-        independ1.checked = false;
-        independ1.disabled = true;
-        independ2.disabled = false;
-        independ3.disabled = false;
-    }
-    if(depend2.id === ele.id){
-        independ2.checked = false;
-        independ2.disabled = true;
-        independ3.disabled = false;
-        independ1.disabled = false;
-    }
-    if(depend3.id === ele.id){
-        independ3.checked = false;
-        independ3.disabled = true;
-        independ2.disabled = false;
-        independ1.disabled = false;
-    }
-
-
-    if(independ1.id === ele.id){
-        depend1.checked = false;
-        depend1.disabled = true;
-        depend2.disabled = false;
-        depend3.disabled = false;
-        r_label.style.display = 'flex';
-        r.style.display = 'flex';
-        dim_xy.style.display = 'none';
-        dim_xy_label.style.display = 'none';
-        dim_y.style.display = 'none';
-        dim_y_label.style.display = 'none';
-    }
-    if(independ2.id === ele.id){
-        depend2.checked = false;
-        depend2.disabled = true;
-        depend1.disabled = false;
-        depend3.disabled = false;
-        r_label.style.display = 'flex';
-        r.style.display = 'flex';
-        dim_y.style.display = 'flex';
-        dim_y_label.style.display = 'flex';
-        dim_xy.style.display = 'none';
-        dim_xy_label.style.display = 'none';
-    }
-    if(independ3.id === ele.id){
-        depend3.checked = false;
-        depend3.disabled = true;
-        depend1.disabled = false;
-        depend2.disabled = false;
-        dim_xy.style.display = 'flex';
-        dim_xy_label.style.display = 'flex';
-        r.style.display = 'none';
-        r_label.style.display = 'none';
-        dim_y.style.display = 'none';
-        dim_y_label.style.display = 'none';
-    }
-}
-
- */
 function removeSelected(selectBox,item) {
     for (let i = 0; selectBox.options.length > i; i++) {
         if(selectBox.options[i].value === item) selectBox.remove(i);
@@ -342,11 +350,74 @@ function hideMessage(id) {
     id.classList.add("hide");
 }
 
-function checkDimX() {
-    let input = document.getElementById("dim_x");
-    let err1 = document.getElementById("dimXErr1");
-    let err2 = document.getElementById("dimXErr2");
-    let err3 = document.getElementById("dimXErr3");
+function change() {
+    let err = document.getElementById("depErr7");
+    err.innerHTML = checkAll;
+    
+    let depErr2 = document.getElementById("depErr2"); //Too few items
+    let depErr3 = document.getElementById("depErr3"); //Too many items
+    let depErr6 = document.getElementById("depErr6"); //Input smaller than previous input
+    let input = document.getElementById("numberInput");
+    let inputValueAsNumber = parseInt(input.value);
+    if (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])){
+        hideMessage(depErr6);
+        input.required = false;
+    }
+            
+    if(globalListOfItems.length < 4) {
+        showMessage(depErr2);
+        input.required = true;
+    } 
+    else {
+        hideMessage(depErr2);
+        input.required = false;
+    }
+    if(globalListOfItems.length > 12) {
+        showMessage(depErr3);
+        input.required = true;
+    } 
+    else {
+        hideMessage(depErr3);
+        input.required = false;
+    }
+    let checkThis = [1, 1, 1, 1];
+    
+    if (globalListOfItems.length < 3 || globalListOfItems.length > 12) {
+        checkAll[0] = 0;
+        input.required = true;
+    } else {
+        checkAll[0] = 1;
+        input.required = false;
+    }
+    
+    //document.getElementById("depErr7").textContent = checkAll;
+    console.log(checkAll);
+    if(arraysEqual(checkAll, checkThis)) {
+        document.getElementById("submit").disabled = false;
+        return true;
+    }
+    //else {
+        //document.getElementById("submit").disabled = true;
+    //    return false;
+    //}
+    return false;
+}
+
+ function register()
+ {
+     //document.getElementById("submit").disabled = false;
+     document.getElementById("dim_y").oninput = checkDimY;
+     document.getElementById("repetitions").oninput = checkRep;
+     document.getElementById("dim_Y_X").oninput = checkDimXY;
+     //document.getElementById("repetitions").addEventListener("input", checkRep);
+     document.getElementById("myForm").oninput = change;
+ }
+ 
+ function checkDimXY() {
+    let input = document.getElementById("dim_Y_X");
+    let err1 = document.getElementById("dimY_XErr1");
+    let err2 = document.getElementById("dimY_XErr2");
+    let err3 = document.getElementById("dimY_XErr3");
     if (input) {
         
         if (input.value === "") {
@@ -365,13 +436,12 @@ function checkDimX() {
             hideMessage(err3);
         }
         if (input.value > 0 && input.value < 40) {
-            checkAll[0] = 1;
+            checkAll[3] = 1;
         } else {
-            checkAll[0] = 0;
+            checkAll[3] = 0;
         }
-        console.log(input.value);
     }
-}
+ }
 
 function checkDimY() {
     let input = document.getElementById("dim_y");
@@ -396,21 +466,22 @@ function checkDimY() {
             hideMessage(err3);
         }
         if (input.value > 0 && input.value < 40) {
-            checkAll[1] = 1;
+            checkAll[2] = 1;
         } else {
-            checkAll[1] = 0;
+            checkAll[2] = 0;
         }
     }
 }
 
 function checkRep() {
+    
     let input = document.getElementById("repetitions");
     let err1 = document.getElementById("repErr1");
     let err2 = document.getElementById("repErr2");
     let err3 = document.getElementById("repErr3");
     if (input) {
         
-        if (input.value == "") {
+        if (input.value === "") {
             showMessage(err1);
         } else {
             hideMessage(err1);
@@ -420,85 +491,28 @@ function checkRep() {
         } else {
             hideMessage(err2);
         }
-        if (input.value > 40) {
+        if (input.value > 99) {
             showMessage(err3);
         } else {
             hideMessage(err3);
         }
-        if (input.value > 0 && input.value != "" && input.value < 40) {
-            checkAll[2] = 1;
+        if (input.value > 0 && input.value !== "" && input.value < 99) {
+            checkAll[1] = 1;
         } else {
-            checkAll[2] = 0;
+            checkAll[1] = 0;
         }
+
     }
 }
-
-function change() {
-    let depErr2 = document.getElementById("depErr2"); //Too few items
-    let depErr3 = document.getElementById("depErr3"); //Too many items
-    let depErr6 = document.getElementById("depErr6"); //Input smaller than previous input
-    let input = document.getElementById("numberInput");
-    let inputValueAsNumber = parseInt(input.value);
-    let input2 = document.getElementById("repetitions");
-    if (inputValueAsNumber >= parseInt(globalListOfItems[globalListOfItems.length - 1])){
-        hideMessage(depErr6);
-        input.required = false;
-    }
-            
-    if(globalListOfItems.length < 4) {
-        showMessage(depErr2);
-        input.required = true;
-    } 
-    else {
-        hideMessage(depErr2);
-        input.required = false;
-    }
-    if(globalListOfItems.length > 12) {
-        showMessage(depErr3);
-        input.required = true;
-    } 
-    else {
-        hideMessage(depErr3);
-        input.required = false;
-    }
-    let checkThis = [1, 1, 1, 1];
-    if (globalListOfItems.length < 4 || globalListOfItems.length > 12) {
-        checkAll[3] = 0;
-        input.required = true;
-    } else {
-        checkAll[3] = 1;
-        input.required = false;
-    }
-    //document.getElementById("depErr7").textContent = checkAll;
-    console.log(checkAll);
-    if(arraysEqual(checkAll, checkThis)) {
-        document.getElementById("submit").disabled = false;
-        return true;
-    }
-    //else {
-        //document.getElementById("submit").disabled = true;
-    //    return false;
-    //}
-    return false;
-}
-
- function register()
- {
-     document.getElementById("submit").disabled = false;
-     document.getElementById("dim_x").oninput = checkDimX;
-     document.getElementById("dim_y").oninput = checkDimY;
-     document.getElementById("repetitions").oninput = checkRep;
-     document.getElementById("myForm").oninput = change;
- }
 
  //button is always active only deactivate when all values are not correct.
 function submitCheck() {
-    checkDimX();
-    checkDimY();
+    //checkDimX();
+    //checkDimY();
     //BYPASSING DIMX AND DIMY:
-    checkAll[0] = 1;
-    checkAll[1] = 1;
-    checkRep();
+    //checkAll[0] = 1;
+    //checkAll[1] = 1;
+    //checkRep();
     let did_enter_numbers_list = change();
     let checkThis = [1, 1, 1, 1];
     console.log(did_enter_numbers_list);
@@ -506,6 +520,7 @@ function submitCheck() {
         console.log(did_enter_numbers_list);
         return true;
     }
+    
     // do what you want
     return false;
 }
