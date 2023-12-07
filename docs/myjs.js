@@ -17,6 +17,9 @@ window.colorRGBMap = {
 	black: 'rgb(0,0,0)',
 };
 window.totalPaintDrops = 0;
+//used for size of grid:
+window.x_value = 0;
+window.y_value = 0;
 
 var a = 0; // the total number of paint drops put on the canvas before the stopping criterion stops the painting.
 var a1 = 0; // The number of paint drops on the canvas of Color 1.
@@ -46,7 +49,6 @@ if ("navigate" != data){
 window.addEventListener("load", (event) => {
     // initialize canvas size:
     setCanvasSize(defaultWidthOfCanvas, defaultHeightOfCanvas);
-    drawInitialShape();
 
     //setup the array:
     for (let i = 0; arrOfColors.length > i; i++) { //ignoring 0 index
@@ -61,13 +63,15 @@ window.addEventListener("load", (event) => {
     //Load all values:
     //https://sentry.io/answers/how-to-get-values-from-urls-in-javascript/
     const searchParams = new URLSearchParams(window.location.search);
+    window.searchParams = searchParams;
+
     for (const param of searchParams) {
         console.log("Data:",param);
     }
-    var dim_x = searchParams.get('dim_x');
-    document.getElementById("l_x").value = dim_x;
-    var dim_y = searchParams.get('dim_y');
-    document.getElementById("l_y").value = dim_y;
+    //var dim_x = searchParams.get('dim_x');
+    //document.getElementById("l_x").value = dim_x;
+    //var dim_y = searchParams.get('dim_y');
+    //document.getElementById("l_y").value = dim_y;
 	
 	window.colorOptions = [searchParams.get('color1'), searchParams.get('color2'), searchParams.get('color3')];
 
@@ -118,6 +122,25 @@ window.addEventListener("load", (event) => {
         }
     })
     audioItem.volume = .10;
+
+    window.current_pos = 0;
+    startPainting(searchParams);
+});
+
+window.addEventListener("DOMContentLoaded", (event) => {
+    const display_value = document.getElementById("showspeed");
+    const speed = document.getElementById("speed");
+    window.delay = 1000/speed.value;
+    speed.addEventListener("input", (event) => {
+        display_value.textContent = speed.value;
+        display_value.textContent = event.target.value;
+    });
+
+    speed.addEventListener("change", (event) => {
+        console.log(window.performance.now());
+        console.log(1000/speed.value, "ms");
+        window.delay = 1000/speed.value;
+    });
 });
 
 function setCanvasSize(width, height) {
@@ -126,11 +149,9 @@ function setCanvasSize(width, height) {
     canvas.height = height;
 }
 
-function drawInitialShape() {
+function drawInitialShape(x,y) {
     const canvas = document.getElementById("canvas")
     const ctx = document.getElementById("canvas").getContext("2d");
-    var x = 1;
-    var y = 1;
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
@@ -149,10 +170,10 @@ function drawInitialShape() {
 }
 
 function draw() {
+    x = window.x_value;
+    y = window.y_value;
     const canvas = document.getElementById("canvas")
     const ctx = document.getElementById("canvas").getContext("2d");
-    var x = document.getElementById("l_x").value;
-    var y = document.getElementById("l_y").value;
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
@@ -170,16 +191,7 @@ function draw() {
     }
 }
 
-function fill(){
-    const ctx = document.getElementById("canvas").getContext("2d");
-    var x = document.getElementById("l_x_i").value;
-    var y = document.getElementById("l_y_i").value;
-    if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares) {
-        ctx.fillStyle = 'rgb(255,0,0)';
-        ctx.strokeStyle = 'rgb(0,0,0)';
-        ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
-    }
-}
+
 function fillXY(x,y,colorChoice){
     const ctx = document.getElementById("canvas").getContext("2d");
     if (x >= 1 && x <= maxXSquares && y >= 1 && y <= maxYSquares) {
@@ -198,25 +210,66 @@ function fillXY(x,y,colorChoice){
 		ctx.fillStyle = colorRGB;
         ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
-		
+
+        window.current_repititions += 1;
+
 		switch (parseInt(termItem)) {
 			case 1: // Terminate when last unpainted square is painted for the first time
 				if (checkAllElementsPainted()) {
 					clearInterval(stopId);
+                    clearTimeout(stopId);
 					console.log("Stopped1");
-				}
+                    window.fullStop = true;
+
+                    window.current_pos += 1;
+                    startPainting(window.searchParams);
+				} else if(window.repititions <= window.current_repititions){
+                    clearInterval(stopId);
+                    clearTimeout(stopId);
+                    console.log("REPETITION STOP");
+                    window.fullStop = true;
+
+                    window.current_pos += 1;
+                    startPainting(window.searchParams);
+                }
 				break;
 			case 2: // Terminate when a square is painted for the second time
 				if (arrOfColors[x-1][y-1][0] > 1) {
 					console.log("Stopped2");
+                    window.fullStop = true;
 					clearInterval(stopId);
-				}
+                    clearTimeout(stopId);
+
+                    window.current_pos += 1;
+                    startPainting(window.searchParams);
+				} else if(window.repititions <= window.current_repititions){
+                    clearInterval(stopId);
+                    clearTimeout(stopId);
+                    console.log("REPETITION STOP");
+                    window.fullStop = true;
+
+                    window.current_pos += 1;
+                    startPainting(window.searchParams);
+                }
 				break;
 			case 3: // Terminate when a square is painted for the third time
 				if (arrOfColors[x-1][y-1][0] > 2) {
 					console.log("Stopped3");
+                    window.fullStop = true;
 					clearInterval(stopId);
-				}
+                    clearTimeout(stopId);
+
+                    window.current_pos += 1;
+                    startPainting(window.searchParams);
+				} else if(window.repititions <= window.current_repititions){
+                    clearInterval(stopId);
+                    clearTimeout(stopId);
+                    console.log("REPETITION STOP");
+                    window.fullStop = true;
+
+                    window.current_pos += 1;
+                    startPainting(window.searchParams);
+                }
 				break;
 			default:
 				console.log("Invalid termItem:", termItem);
@@ -225,11 +278,9 @@ function fillXY(x,y,colorChoice){
     }
 }
 
-function fillRandomCellWithRandomColor(s){
-    var x = document.getElementById("l_x").value;
-    var y = document.getElementById("l_y").value;
-    rands.randNum1 = Math.floor(Math.random()*x+1); // from 1 to x
-    rands.randNum2 = Math.floor(Math.random()*y+1);  // from 1 to y
+function fillRandomCellWithRandomColor(){
+    rands.randNum1 = Math.floor(Math.random()*window.x_value+1); // from 1 to x
+    rands.randNum2 = Math.floor(Math.random()*window.y_value+1);  // from 1 to y
     var randomColor = Math.floor(Math.random()*3); // from 0 to 2
 	var colorChoice = colorOptions[randomColor];
     fillXY(rands.randNum1, rands.randNum2, colorChoice);
@@ -257,23 +308,84 @@ function changeSizeStuff() {
 }
 
 function paintOne() {
-    stopId = setInterval(fillRandomCellWithRandomColor, 1000);
+    //stopId = setInterval(fillRandomCellWithRandomColor, 1000);
+    fillRandomCellWithRandomColor();
 	console.log("Interval started");
 }
 
 function paintMany() {
-    for (var i = 0; i < repititions; i++) {
+        for (var i = 0; i < repititions; i++) {
+            paintOne();
+        }
+}
+
+function checkPaint(){
+    if(window.timeStamp + window.delay <= window.performance.now()) {
+        //console.log(window.timeStamp + window.delay, " VS ", window.performance.now());
+        //console.log("TIME STAMP HIT!");
+        window.timeStamp = window.performance.now();
         paintOne();
+    }
+    clearInterval(stopId);
+    console.log(!window.fullStop);
+    if(!window.fullStop){
+        stopId = setInterval(checkPaint, 25);
     }
 }
 
-function startPainting() {
-    paintOne();
+function startPainting(searchParams) {
+    let independent_value = searchParams.get('independent');
+    if(searchParams.get('independent') == 1){
+        let DIMS = searchParams.get('globalListOfItems').split(',');
+        const dim_XY = DIMS[window.current_pos];
+        console.log("Running", dim_XY);
+        window.x_value = dim_XY;
+        window.y_value = dim_XY;
+        window.fullStop = false;
+        draw();
+        window.repititions = searchParams.get('repetitions');
+        window.current_repititions = 0;
+        window.timeStamp = window.performance.now();
+        checkPaint();
+        //stopId = setInterval(checkPaint, 25);
+    } else if(searchParams.get('independent') == 2){
+        let DIMXS = searchParams.get('globalListOfItems').split(',');
+        const dim_X = DIMXS[window.current_pos];
+        console.log("Running", dim_X);
+        window.fullStop = false;
+        let dim_y = searchParams.get('dim_y');
+        window.x_value = dim_X;
+        window.y_value = dim_y;
+        draw();
+        window.repititions = searchParams.get('repetitions');
+        window.current_repititions = 0;
+        window.timeStamp = window.performance.now();
+        checkPaint();
+        //stopId = setInterval(checkPaint, 25);
+    } else if(searchParams.get('independent') == 3){
+        let REPS = searchParams.get('globalListOfItems').split(',');
+        const rep_value = REPS[window.current_pos];
+        console.log("Running", rep_value);
+        window.repititions = rep_value;
+        console.log([searchParams.get('globalListOfItems').split(',')]);
+        console.log(Number(rep_value));
+        window.fullStop = false;
+        let dim_XY = searchParams.get('dim_Y_X');
+        window.x_value = dim_XY;
+        window.y_value = dim_XY;
+        draw();
+        window.current_repititions = 0;
+        window.timeStamp = window.performance.now();
+        checkPaint();
+        //stopId = setInterval(checkPaint, 25);
+    } else {
+        console.log("INVALID INDEPENDENT VALUE: ", independent_value);
+    }
 }
 
 function checkAllElementsPainted() {
-	var xMax = document.getElementById("l_x").value;
-    var yMax = document.getElementById("l_y").value;
+	var xMax = window.x_value;
+    var yMax = window.y_value;
 	for (let iterX = 0; iterX < xMax; iterX++) {
 		for (let iterY = 0; iterY < yMax; iterY++) {
 			if (arrOfColors[iterX][iterY][0] == 0) {
@@ -296,3 +408,15 @@ function getTotalPaintDrops(){
     }
     return window.totalPaintDrops;
 }
+
+function pause(){
+    clearInterval(stopId);
+
+}
+
+function unpause(){
+    window.timeStamp = window.performance.now();
+    checkPaint();
+}
+
+

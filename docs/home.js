@@ -436,7 +436,7 @@ function change() {
         } else {
             hideMessage(err3);
         }
-        if (input.value > 0 && input.value < 40) {
+        if (input.value > 0 && input.value <= 40) {
             checkAll[3] = 1;
         } else {
             checkAll[3] = 0;
@@ -514,6 +514,7 @@ function submitCheck() {
     //checkAll[0] = 1;
     //checkAll[1] = 1;
     //checkRep();
+    checkDimXY();
     let did_enter_numbers_list = change();
     let checkThis = [1, 1, 1, 1];
     console.log(did_enter_numbers_list);

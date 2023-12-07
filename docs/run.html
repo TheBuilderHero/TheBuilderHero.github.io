@@ -145,13 +145,37 @@
 
 
           <div class="col-sm-3" style="text-align: center" id="controls">
-            <h3 style="text-align: center;">Draw Below using inputs</h3>
-              <label for="l_x">X:</label>
+            <h3 style="text-align: center;">Experiment Controls</h3>
+            <div class="slider" style="margin-bottom: 20px;">
+              <label for="speed">Speed Control<output id="showspeed"></output></label>
+              <input type="range" min=".25" max="4" value="1" id="speed" name="speed" step=".25" list="speedsettings">
+              <datalist id="speedsettings">
+                <option>.25</option>
+                <option>.5</option>
+                <option>.75</option>
+                <option>1</option>
+                <option>1.25</option>
+                <option>1.5</option>
+                <option>1.75</option>
+                <option>2</option>
+                <option>2.25</option>
+                <option>2.5</option>
+                <option>2.75</option>
+                <option>3</option>
+                <option>3.25</option>
+                <option>3.5</option>
+                <option>3.75</option>
+                <option>4</option>
+              </datalist>
+            </div>
+
+            <!--
+            <label for="l_x">X:</label>
               <input type="number" id="l_x" name="l_x"><br><br>
               <label for="l_y">Y:</label>
-              <input type="number" id="l_y" name="l_y"><br><br>
-              <button type="button" onclick="draw();">Draw grid!</button><br><br>
-              <button type="button" onclick="startPainting();">Random Color Fill!</button><br><br>
+              <input type="number" id="l_y" name="l_y"><br><br>-->
+              <button type="button" onclick="pause();">Stop</button>
+              <button type="button" onclick="unpause();">Start</button><br><br>
               <button type="button" onclick="changeSizeStuff();">Change Size Stuff</button>
 
 
