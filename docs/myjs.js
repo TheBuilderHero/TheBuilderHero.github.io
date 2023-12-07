@@ -5,6 +5,7 @@ window.defaultHeightOfCanvas = 400;
 window.maxXSquares = defaultWidthOfCanvas/10;
 window.maxYSquares = defaultHeightOfCanvas/10;
 window.arrOfColors = new Array(maxXSquares); //max array size. //Note: first number is the amount of times it's been painted, other three number are RGB.
+window.tempArrOfColors = new Array(maxXSquares); //same as above just used for each experiment.
 window.colorRGBMap = {
 	red: 'rgb(255,0,0)',
 	blue: 'rgb(0,0,255)',
@@ -121,6 +122,22 @@ window.addEventListener("load", (event) => {
             }
         }
     })
+
+
+
+    if(window.searchParams.get('termItem') == 1){
+        document.getElementById("t1").hidden = false;
+    } else if(window.searchParams.get('termItem') == 2){
+        document.getElementById("t2").hidden = false;
+    } else if(window.searchParams.get('termItem') == 3){
+        document.getElementById("t3").hidden = false;
+    }
+
+    window.current_repititions = 1;
+    window.endExperiment = false;
+    window.isPaused = false;
+
+
     audioItem.volume = .10;
 
     window.current_pos = 0;
@@ -131,6 +148,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     const display_value = document.getElementById("showspeed");
     const speed = document.getElementById("speed");
     window.delay = 1000/speed.value;
+
     speed.addEventListener("input", (event) => {
         display_value.textContent = speed.value;
         display_value.textContent = event.target.value;
@@ -170,6 +188,7 @@ function drawInitialShape(x,y) {
 }
 
 function draw() {
+    resetTempArrayOfColors();
     x = window.x_value;
     y = window.y_value;
     const canvas = document.getElementById("canvas")
@@ -198,75 +217,99 @@ function fillXY(x,y,colorChoice){
 		var colorRGB = colorRGBMap[colorChoice];
 		//console.log("Painting an element");
 		//console.log("Color choice is: " + colorChoice);
-		if (arrOfColors[x-1][y-1][0] > 0) {
-			colorRGB = mixColors(colorRGB, arrOfColors[x-1][y-1][1], arrOfColors[x-1][y-1][2], arrOfColors[x-1][y-1][3]);
-			console.log("Painted an element for the", arrOfColors[x-1][y-1][0] + 1, "time");
+		if (window.tempArrOfColors[x-1][y-1][0] > 0) {
+			colorRGB = mixColors(colorRGB, window.tempArrOfColors[x-1][y-1][1], window.tempArrOfColors[x-1][y-1][2], window.tempArrOfColors[x-1][y-1][3]);
+			console.log("Painted an element for the", window.tempArrOfColors[x-1][y-1][0] + 1, "time");
 		}
 		var colorObj = $.Color(colorRGB);
-		arrOfColors[x-1][y-1][0] += 1;
-		arrOfColors[x-1][y-1][1] = colorObj.red();
-		arrOfColors[x-1][y-1][2] = colorObj.green();
-		arrOfColors[x-1][y-1][3] = colorObj.blue();
+		arrOfColors[x-1][y-1][0] += 1; //keep track of total paints
+        window.tempArrOfColors[x-1][y-1][0] += 1;
+        window.tempArrOfColors[x-1][y-1][1] = colorObj.red();
+        window.tempArrOfColors[x-1][y-1][2] = colorObj.green();
+        window.tempArrOfColors[x-1][y-1][3] = colorObj.blue();
 		ctx.fillStyle = colorRGB;
         ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
 
 		switch (parseInt(termItem)) {
 			case 1: // Terminate when last unpainted square is painted for the first time
+                console.log("R V: ", window.repititions, "AND", window.current_repititions);
 				if (checkAllElementsPainted()) {
 					clearInterval(stopId);
                     clearTimeout(stopId);
 					console.log("Stopped1");
                     window.fullStop = true;
                     window.current_repititions += 1;
-                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
-				} else if(window.repititions <= window.current_repititions){
+				}
+                if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
+                    window.current_repititions = 1;
                     console.log("REPETITION STOP");
                     window.fullStop = true;
 
                     window.current_pos += 1;
-                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
+                    console.log("POS:",window.current_pos, " vs ", window.max_pos);
+                    if(window.current_pos != window.max_pos){
+                        startPainting(window.searchParams);
+                    } else {
+                        window.endExperiment = true;
+                    }
                 }
+                if(window.current_pos != window.max_pos && checkAllElementsPainted()) startPainting(window.searchParams);
 				break;
 			case 2: // Terminate when a square is painted for the second time
-				if (arrOfColors[x-1][y-1][0] > 1) {
+                console.log("R V: ", window.repititions, "AND", window.current_repititions);
+				if (window.tempArrOfColors[x-1][y-1][0] > 1) {
 					console.log("Stopped2");
                     window.fullStop = true;
 					clearInterval(stopId);
                     clearTimeout(stopId);
                     window.current_repititions += 1;
-
-                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
-				} else if(window.repititions <= window.current_repititions){
+				}
+                if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
+                    window.current_repititions = 1;
                     console.log("REPETITION STOP");
                     window.fullStop = true;
 
                     window.current_pos += 1;
-                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
+                    console.log("POS:",window.current_pos, " vs ", window.max_pos);
+                    if(window.current_pos != window.max_pos){
+                        startPainting(window.searchParams);
+                    } else {
+                        window.endExperiment = true;
+                    }
                 }
+                if(window.current_pos != window.max_pos && window.tempArrOfColors[x-1][y-1][0] > 1) startPainting(window.searchParams);
 				break;
 			case 3: // Terminate when a square is painted for the third time
-				if (arrOfColors[x-1][y-1][0] > 2) {
+                console.log("R V: ", window.repititions, "AND", window.current_repititions);
+				if (window.tempArrOfColors[x-1][y-1][0] > 2) {
 					console.log("Stopped3");
                     window.fullStop = true;
 					clearInterval(stopId);
                     clearTimeout(stopId);
                     window.current_repititions += 1;
-
-                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
-				} else if(window.repititions <= window.current_repititions){
+				}
+                if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
+                    window.current_repititions = 1;
                     console.log("REPETITION STOP");
                     window.fullStop = true;
 
                     window.current_pos += 1;
-                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
+                    console.log("POS:",window.current_pos, " vs ", window.max_pos);
+                    if(window.current_pos != window.max_pos){
+                        startPainting(window.searchParams);
+                    } else {
+                        window.endExperiment = true;
+                    }
                 }
+
+                if(window.current_pos != window.max_pos && window.tempArrOfColors[x-1][y-1][0] > 2) startPainting(window.searchParams);
 				break;
 			default:
 				console.log("Invalid termItem:", termItem);
@@ -325,12 +368,16 @@ function checkPaint(){
     }
     clearInterval(stopId);
     console.log(!window.fullStop);
-    if(!window.fullStop){
+    if(!window.fullStop && (window.current_pos != window.max_pos)){
         stopId = setInterval(checkPaint, 25);
+    } else if (window.current_pos == window.max_pos) {
+        console.log("COMPLETED EXPERIMENT!");
+        changeSizeStuff();
     }
 }
 
 function startPainting(searchParams) {
+    console.log("CALL TO START PAINT!");
     let independent_value = searchParams.get('independent');
     if(searchParams.get('independent') == 1){
         let DIMS = searchParams.get('globalListOfItems').split(',');
@@ -340,9 +387,8 @@ function startPainting(searchParams) {
         window.x_value = dim_XY;
         window.y_value = dim_XY;
         window.fullStop = false;
-        draw();
+        if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
-        window.current_repititions = 0;
         window.timeStamp = window.performance.now();
         checkPaint();
         //stopId = setInterval(checkPaint, 25);
@@ -355,9 +401,8 @@ function startPainting(searchParams) {
         let dim_y = searchParams.get('dim_y');
         window.x_value = dim_X;
         window.y_value = dim_y;
-        draw();
+        if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
-        window.current_repititions = 0;
         window.timeStamp = window.performance.now();
         checkPaint();
         //stopId = setInterval(checkPaint, 25);
@@ -373,8 +418,7 @@ function startPainting(searchParams) {
         let dim_XY = searchParams.get('dim_Y_X');
         window.x_value = dim_XY;
         window.y_value = dim_XY;
-        draw();
-        window.current_repititions = 0;
+        if(!window.endExperiment) draw();
         window.timeStamp = window.performance.now();
         checkPaint();
         //stopId = setInterval(checkPaint, 25);
@@ -388,8 +432,8 @@ function checkAllElementsPainted() {
     var yMax = window.y_value;
 	for (let iterX = 0; iterX < xMax; iterX++) {
 		for (let iterY = 0; iterY < yMax; iterY++) {
-			if (arrOfColors[iterX][iterY][0] == 0) {
-				//console.log("arrOfColors[x=" + iterX + "][y=" + iterY + "][0] == 0, is not painted");
+			if (window.tempArrOfColors[iterX][iterY][0] == 0) {
+				//console.log("window.tempArrOfColors[x=" + iterX + "][y=" + iterY + "][0] == 0, is not painted");
 				return false;
 			}
 		}
@@ -411,12 +455,27 @@ function getTotalPaintDrops(){
 
 function pause(){
     clearInterval(stopId);
-
+    window.isPaused = true;
 }
 
 function unpause(){
-    window.timeStamp = window.performance.now();
-    checkPaint();
+    if(window.isPaused){
+        window.timeStamp = window.performance.now();
+        window.isPaused = false;
+        checkPaint();
+    }
+}
+
+function resetTempArrayOfColors(){
+    //setup the array:
+    for (let i = 0; window.tempArrOfColors.length > i; i++) { //ignoring 0 index
+        let arrayOfY = new Array(maxYSquares);
+        for (let i2 = 0; window.tempArrOfColors.length > i2; i2++) {
+            arrayOfY[i2] = [0,0,0,0];
+        }
+        window.tempArrOfColors[i] = arrayOfY;
+    }
+    //At this point array of colors should have all the values initialized to 0.
 }
 
 

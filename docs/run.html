@@ -146,6 +146,9 @@
 
           <div class="col-sm-3" style="text-align: center" id="controls">
             <h3 style="text-align: center;">Experiment Controls</h3>
+            <p id="t1" hidden>Terminating When: the last unpainted square is painted for the first time.</p>
+            <p id="t2" hidden>Terminating When: the first time any square gets its second paint blob.</p>
+            <p id="t3" hidden>Terminating When: the first time any square gets its third paint blob.</p>
             <div class="slider" style="margin-bottom: 20px;">
               <label for="speed">Speed Control<output id="showspeed"></output></label>
               <input type="range" min=".25" max="10" value="1" id="speed" name="speed" step=".25" list="speedsettings">
@@ -200,7 +203,7 @@
               <input type="number" id="l_y" name="l_y"><br><br>-->
               <button type="button" onclick="pause();">Stop</button>
               <button type="button" onclick="unpause();">Start</button><br><br>
-              <button type="button" onclick="changeSizeStuff();">Change Size Stuff</button>
+              <!--<button type="button" onclick="changeSizeStuff();">Change Size Stuff</button>-->
 
 
           </div>
