@@ -16,6 +16,7 @@ window.colorRGBMap = {
 	brown: 'rgb(165,42,42)',
 	black: 'rgb(0,0,0)',
 };
+window.totalPaintDrops = 0;
 
 var a = 0; // the total number of paint drops put on the canvas before the stopping criterion stops the painting.
 var a1 = 0; // The number of paint drops on the canvas of Color 1.
@@ -282,4 +283,16 @@ function checkAllElementsPainted() {
 		}
 	}
 	return true;
+}
+
+function getTotalPaintDrops(){
+    window.totalPaintDrops = 0;
+    var xMax = document.getElementById("l_x").value;
+    var yMax = document.getElementById("l_y").value;
+    for (let iterX = 0; iterX < xMax; iterX++) {
+        for (let iterY = 0; iterY < yMax; iterY++) {
+            window.totalPaintDrops += arrOfColors[iterX][iterY][0];
+        }
+    }
+    return window.totalPaintDrops;
 }
