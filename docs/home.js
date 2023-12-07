@@ -351,7 +351,6 @@ function hideMessage(id) {
 }
 
 function change() {
-    //These two lines were breaking everything:
     //let err = document.getElementById("depErr7");
     //err.innerHTML = checkAll;
     
@@ -407,10 +406,12 @@ function change() {
  function register()
  {
      //document.getElementById("submit").disabled = false;
-     document.getElementById("dim_y").oninput = checkDimY;
-     document.getElementById("repetitions").oninput = checkRep;
-     document.getElementById("dim_Y_X").oninput = checkDimXY;
-     //document.getElementById("repetitions").addEventListener("input", checkRep);
+     //document.getElementById("dim_y").oninput = checkDimY;
+     //document.getElementById("repetitions").oninput = checkRep;
+     //document.getElementById("dim_Y_X").oninput = checkDimXY;
+     document.getElementById("repetitions").addEventListener("input", checkRep);
+     document.getElementById("dim_y").addEventListener("input", checkDimY);
+     document.getElementById("dim_Y_X").addEventListener("input", checkDimXY);
      document.getElementById("myForm").oninput = change;
  }
  
@@ -436,7 +437,7 @@ function change() {
         } else {
             hideMessage(err3);
         }
-        if (input.value > 0 && input.value <= 40) {
+        if (input.value > 0 && input.value < 40) {
             checkAll[3] = 1;
         } else {
             checkAll[3] = 0;
@@ -508,13 +509,26 @@ function checkRep() {
 
  //button is always active only deactivate when all values are not correct.
 function submitCheck() {
+    
+    if(indValue === "1")
+    {
+        checkRep();
+    }
+    if(indValue === "2")
+    {
+        checkDimY();
+        checkRep();
+    }
+    if(indValue === "3")
+    {
+        checkDimXY();
+    }
     //checkDimX();
     //checkDimY();
     //BYPASSING DIMX AND DIMY:
     //checkAll[0] = 1;
     //checkAll[1] = 1;
     //checkRep();
-    checkDimXY();
     let did_enter_numbers_list = change();
     let checkThis = [1, 1, 1, 1];
     console.log(did_enter_numbers_list);
