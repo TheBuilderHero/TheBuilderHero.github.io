@@ -211,8 +211,6 @@ function fillXY(x,y,colorChoice){
         ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
 
-        window.current_repititions += 1;
-
 		switch (parseInt(termItem)) {
 			case 1: // Terminate when last unpainted square is painted for the first time
 				if (checkAllElementsPainted()) {
@@ -220,9 +218,8 @@ function fillXY(x,y,colorChoice){
                     clearTimeout(stopId);
 					console.log("Stopped1");
                     window.fullStop = true;
-
-                    window.current_pos += 1;
-                    startPainting(window.searchParams);
+                    window.current_repititions += 1;
+                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
 				} else if(window.repititions <= window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
@@ -230,7 +227,7 @@ function fillXY(x,y,colorChoice){
                     window.fullStop = true;
 
                     window.current_pos += 1;
-                    startPainting(window.searchParams);
+                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
                 }
 				break;
 			case 2: // Terminate when a square is painted for the second time
@@ -239,9 +236,9 @@ function fillXY(x,y,colorChoice){
                     window.fullStop = true;
 					clearInterval(stopId);
                     clearTimeout(stopId);
+                    window.current_repititions += 1;
 
-                    window.current_pos += 1;
-                    startPainting(window.searchParams);
+                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
 				} else if(window.repititions <= window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
@@ -249,7 +246,7 @@ function fillXY(x,y,colorChoice){
                     window.fullStop = true;
 
                     window.current_pos += 1;
-                    startPainting(window.searchParams);
+                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
                 }
 				break;
 			case 3: // Terminate when a square is painted for the third time
@@ -258,9 +255,9 @@ function fillXY(x,y,colorChoice){
                     window.fullStop = true;
 					clearInterval(stopId);
                     clearTimeout(stopId);
+                    window.current_repititions += 1;
 
-                    window.current_pos += 1;
-                    startPainting(window.searchParams);
+                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
 				} else if(window.repititions <= window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
@@ -268,7 +265,7 @@ function fillXY(x,y,colorChoice){
                     window.fullStop = true;
 
                     window.current_pos += 1;
-                    startPainting(window.searchParams);
+                    if(window.current_pos != window.max_pos) startPainting(window.searchParams);
                 }
 				break;
 			default:
@@ -337,6 +334,7 @@ function startPainting(searchParams) {
     let independent_value = searchParams.get('independent');
     if(searchParams.get('independent') == 1){
         let DIMS = searchParams.get('globalListOfItems').split(',');
+        window.max_pos = DIMS.length;
         const dim_XY = DIMS[window.current_pos];
         console.log("Running", dim_XY);
         window.x_value = dim_XY;
@@ -350,6 +348,7 @@ function startPainting(searchParams) {
         //stopId = setInterval(checkPaint, 25);
     } else if(searchParams.get('independent') == 2){
         let DIMXS = searchParams.get('globalListOfItems').split(',');
+        window.max_pos = DIMXS.length;
         const dim_X = DIMXS[window.current_pos];
         console.log("Running", dim_X);
         window.fullStop = false;
@@ -364,6 +363,7 @@ function startPainting(searchParams) {
         //stopId = setInterval(checkPaint, 25);
     } else if(searchParams.get('independent') == 3){
         let REPS = searchParams.get('globalListOfItems').split(',');
+        window.max_pos = REPS.length;
         const rep_value = REPS[window.current_pos];
         console.log("Running", rep_value);
         window.repititions = rep_value;
