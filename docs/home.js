@@ -211,12 +211,12 @@ function show_inputs_dependent(ele){
     let independ2 = document.getElementById("independent2");
     let independ3 = document.getElementById("independent3");
     const r_label = document.getElementById('repetitions_label');
-    const r = document.getElementById('repetitions');
-    const dim_y = document.getElementById('dim_y');
+    //const r = document.getElementById('repetitions');
+    //const dim_y = document.getElementById('dim_y');
     const dim_y_label = document.getElementById('dim_y_label');
-    const dim_x = document.getElementById('dim_x');
+    //const dim_x = document.getElementById('dim_x');
     const dim_x_label = document.getElementById('dim_x_label');
-    const dim_xy = document.getElementById('dim_Y_X');
+    //const dim_xy = document.getElementById('dim_Y_X');
     const dim_xy_label = document.getElementById('dim_Y_X_label');
     
     let depErr1 = document.getElementById("depErr1"); //Nothing entered
@@ -239,9 +239,9 @@ function show_inputs_dependent(ele){
     listOfItems.innerHTML = "";
     
     if (indValue === "1") {
-        checkAll[1] = 0;
-        checkAll[2] = 1;
-        checkAll[3] = 1;
+        //checkAll[1] = 0;
+        //checkAll[2] = 1;
+        //checkAll[3] = 1;
         
         hideMessage(document.getElementById("dimYErr1"));
         hideMessage(document.getElementById("dimYErr2"));
@@ -252,18 +252,18 @@ function show_inputs_dependent(ele){
         hideMessage(document.getElementById("dimY_XErr1"));
     }
     if (indValue === "2") {
-        checkAll[1] = 0;
-        checkAll[2] = 0;
-        checkAll[3] = 1;
+        //checkAll[1] = 0;
+        //checkAll[2] = 0;
+        //checkAll[3] = 1;
         
         hideMessage(document.getElementById("dimY_XErr1"));
         hideMessage(document.getElementById("dimY_XErr1"));
         hideMessage(document.getElementById("dimY_XErr1"));
     }
     if (indValue === "3") {
-        checkAll[1] = 1;
-        checkAll[2] = 1;
-        checkAll[3] = 0;
+        //checkAll[1] = 1;
+        //checkAll[2] = 1;
+        //checkAll[3] = 0;
         
         hideMessage(document.getElementById("dimYErr1"));
         hideMessage(document.getElementById("dimYErr2"));
@@ -276,43 +276,45 @@ function show_inputs_dependent(ele){
     
     //let err = document.getElementById("depErr7");
     //err.innerHTML = checkAll;
-
+    //r.required = false;
+    //dim_xy.required = false;
+    //dim_y.required = false;
     if(independ1.id === ele.id){
-        r.required = true;
-        dim_xy.required = false;
-        dim_xy.value = "";
-        dim_y.required = false;
-        dim_y.value = "";
+        //r.required = true;
+        //dim_xy.required = false;
+        //dim_xy.value = "";
+        //dim_y.required = false;
+        //dim_y.value = "";
         r_label.style.display = 'flex';
-        r.style.display = 'flex';
-        dim_xy.style.display = 'none';
+        //r.style.display = 'flex';
+        //dim_xy.style.display = 'none';
         dim_xy_label.style.display = 'none';
-        dim_y.style.display = 'none';
+        //dim_y.style.display = 'none';
         dim_y_label.style.display = 'none';
     }
     if(independ2.id === ele.id){
-        r.required = true;
-        dim_y.required = true;
-        dim_xy.required = false;
-        dim_xy.value = "";
+        //r.required = true;
+        //dim_y.required = true;
+        //dim_xy.required = false;
+        //dim_xy.value = "";
         r_label.style.display = 'flex';
-        r.style.display = 'flex';
-        dim_y.style.display = 'flex';
+        //r.style.display = 'flex';
+        //dim_y.style.display = 'flex';
         dim_y_label.style.display = 'flex';
-        dim_xy.style.display = 'none';
+        //dim_xy.style.display = 'none';
         dim_xy_label.style.display = 'none';
     }
     if(independ3.id === ele.id){
-        r.required = false;
-        r.value = "";
-        dim_y.required = false;
-        dim_y.value = "";
-        dim_xy.required = true;
-        dim_xy.style.display = 'flex';
+        //r.required = false;
+        //r.value = "";
+        //dim_y.required = false;
+        //dim_y.value = "";
+        //dim_xy.required = true;
+        //dim_xy.style.display = 'flex';
         dim_xy_label.style.display = 'flex';
-        r.style.display = 'none';
+        //r.style.display = 'none';
         r_label.style.display = 'none';
-        dim_y.style.display = 'none';
+        //dim_y.style.display = 'none';
         dim_y_label.style.display = 'none';
     }
 
@@ -409,9 +411,9 @@ function change() {
      //document.getElementById("dim_y").oninput = checkDimY;
      //document.getElementById("repetitions").oninput = checkRep;
      //document.getElementById("dim_Y_X").oninput = checkDimXY;
-     document.getElementById("repetitions").addEventListener("input", checkRep);
-     document.getElementById("dim_y").addEventListener("input", checkDimY);
-     document.getElementById("dim_Y_X").addEventListener("input", checkDimXY);
+     //document.getElementById("repetitions").addEventListener("input", checkRep);
+     //document.getElementById("dim_y").addEventListener("input", checkDimY);
+     //document.getElementById("dim_Y_X").addEventListener("input", checkDimXY);
      document.getElementById("myForm").oninput = change;
  }
  
@@ -510,7 +512,7 @@ function checkRep() {
  //button is always active only deactivate when all values are not correct.
 function submitCheck() {
     
-    if(indValue === "1")
+    /*if(indValue === "1")
     {
         checkRep();
     }
@@ -522,18 +524,16 @@ function submitCheck() {
     if(indValue === "3")
     {
         checkDimXY();
-    }
+    }*/
     //checkDimX();
     //checkDimY();
     //BYPASSING DIMX AND DIMY:
     //checkAll[0] = 1;
     //checkAll[1] = 1;
     //checkRep();
-    let did_enter_numbers_list = change();
-    let checkThis = [1, 1, 1, 1];
-    console.log(did_enter_numbers_list);
-    if(arraysEqual(checkAll, checkThis) && did_enter_numbers_list) {
-        console.log(did_enter_numbers_list);
+    //let did_enter_numbers_list = change();
+    let checkThis = [1, 0, 0, 0];
+    if(arraysEqual(checkAll, checkThis)) {
         return true;
     }
     
@@ -629,8 +629,8 @@ function randomize_inputs(){
             show_inputs_dependent(independ1);
             independ2.checked = false;
             independ3.checked = false;
-            let reps = document.getElementById("repetitions");
-            reps.value = getRandomInt(99);
+            //let reps = document.getElementById("repetitions");
+            //reps.value = getRandomInt(99);
 
             //numbers in list:
             let input = document.getElementById("numberInput");
@@ -654,8 +654,8 @@ function randomize_inputs(){
             independ3.checked = false;
 
             //set repetitions
-            let reps = document.getElementById("repetitions");
-            reps.value = getRandomInt(99);
+            //let reps = document.getElementById("repetitions");
+            //reps.value = getRandomInt(99);
 
             //numbers in list:
             let input = document.getElementById("numberInput");
@@ -671,8 +671,8 @@ function randomize_inputs(){
             input.value = "";
 
             //set random value for dimension:
-            let input_y = document.getElementById("dim_y");
-            input_y.value = getRandomInt(40);
+            //let input_y = document.getElementById("dim_y");
+            //input_y.value = getRandomInt(40);
             break;
         }
         case 3:{
@@ -695,8 +695,8 @@ function randomize_inputs(){
             input.value = "";
 
             //set random value for dimension:
-            let input_xy = document.getElementById("dim_Y_X");
-            input_xy.value = getRandomInt(40);
+            //let input_xy = document.getElementById("dim_Y_X");
+            //input_xy.value = getRandomInt(40);
             break;
         }
     }
