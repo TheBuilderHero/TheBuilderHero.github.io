@@ -90,6 +90,8 @@
     }
 	body {
 	  margin:0;
+        color: white;
+        background-color: #023f3f;
 	}
 
 	</style>
@@ -101,7 +103,7 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="color: white; background-color: blue;">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
@@ -129,6 +131,7 @@
         <p><a href="https://www.youtube.com/watch?v=sRkzqLudJPE" target=”_blank”>Larry Owens - The Joy Of Painting</a></p>
         <p><a href="https://www.youtube.com/watch?v=oy2zDJPIgwc" target=”_blank”>Mozart – Eine kleine Nachtmusik</a></p>
         <p><a href="https://www.youtube.com/watch?v=DLi25fgVuRs" target=”_blank”>Puccini – 'O mio babbino caro' from Gianni Schicchi</a></p>
+        <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
     </div>
     <div class="col-sm-8 text-left"> 
       <!--<h1 style="text-align: center">Welcome</h1>
@@ -142,10 +145,10 @@
                     <h3>To start you off, the Following Buttons give you an option to run the experiment very quick and easily</h3>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-3">
-                        <button id="submit1" type="submit" style="margin-bottom: 60px">RUN EXPERIMENT</button>
+                        <button id="submit1" type="submit" style="margin-bottom: 60px; color: white; background-color: blue;">RUN EXPERIMENT</button>
                     </div>
                     <div class="col-sm-3">
-                        <input type="button" id="randomize" value="FILL RANDOM EXPERIMENT" onclick="randomize_inputs();">
+                        <input type="button" id="randomize" value="FILL RANDOM EXPERIMENT" style=" color: white; background-color: blue;" onclick="randomize_inputs();">
                     </div>
                     <div class="col-sm-3"></div>
                 </fieldset>
@@ -166,7 +169,7 @@
 
                     <div class="col-sm-4 formItems">
                         <label style="font-size: medium">Independent Value</label><br>
-                        <select id="dependentList" multiple size="3" style="width: 180px">
+                        <select id="dependentList" multiple size="3" style="width: 180px; color: black;">
                         </select><br><br>
                         <span id="depErr1" class=" hide error">Nothing entered</span>
                         <span id="depErr2" class="block hide error">Too few items: a minimum of 4</span>
@@ -176,30 +179,30 @@
                         <span id="depErr8" class=" hide error">Max of 40</span>
                         <span id="depErr6" class=" hide error">X-values must be greater than or equal to previous entered</span><br>
                         <!--<p id="depErr7" class="help-block error">Test this!</p>-->
-                        <input type="number" id="numberInput" required><br><br>
-                        <button type="button" id="addNumber" name="addNumber" onclick="addItemToList();">Add Number</button>
-                        <button type="button" id="removeNumber" name="removeNumber" onclick="removeItemFromList();">Remove selected Number</button><br><br>
+                        <input type="number" id="numberInput" style="color: black;" required><br><br>
+                        <button type="button" id="addNumber" name="addNumber" style="color: white; background-color: blue;" onclick="addItemToList();">Add Number</button>
+                        <button type="button" id="removeNumber" name="removeNumber" style="color: white; background-color: blue;" onclick="removeItemFromList();">Remove selected Number</button><br><br>
                     </div>
                     <div class="col-sm-4 formItems">
                         <label id="repetitions_label" style="font-size: small; display: none;" for="repetitions">Repetitions Value</label>
                         <span id="repErr1" class="help-block hide error">Nothing entered for Repetitions</span>
                         <span id="repErr2" class="help-block hide error">Repetitions must be greater than 0</span>
                         <span id="repErr3" class="help-block hide error">Repetitions must be less than 99</span>
-                        <input type="number" id="repetitions" name="repetitions" style="display: none;">
+                        <input type="number" id="repetitions" name="repetitions" style="display: none; color: black;">
                         <br><br>
                         
                         <label id="dim_y_label" for="dim_y" onload="checkDimY();" style="font-size: small;display: none;">Dimension Y Value</label>
                         <span id="dimYErr1" class="help-block hide error">Nothing entered for Dimension Y</span>
                         <span id="dimYErr2" class="help-block hide error">Dimension Y must be greater than 0</span>
                         <span id="dimYErr3" class="help-block hide error">Dimension Y must be less than 40</span>
-                        <input type="number" id="dim_y" name="dim_y" value="" style="display: none;">
+                        <input type="number" id="dim_y" name="dim_y" value="" style="display: none; color: black;">
                         <br><br>
                         
                         <label id="dim_Y_X_label" for="dim_Y_X" style="font-size: small;display: none;">Square Dimension Value</label>
                         <span id="dimY_XErr1" class="help-block hide error">Nothing entered for Dimension</span>
                         <span id="dimY_XErr2" class="help-block hide error">Dimension must be greater than 0</span>
                         <span id="dimY_XErr3" class="help-block hide error">Dimension must be less than 40</span>
-                        <input type="number" id="dim_Y_X" name="dim_Y_X" value="" style="display: none;" onchange="setDimY_X();">
+                        <input type="number" id="dim_Y_X" name="dim_Y_X" value="" style="display: none; color: black;" onchange="setDimY_X();">
                     </div>
 
                     <!--<div class="col-sm-3 formItems">
@@ -220,9 +223,9 @@
                     <div class="col-sm-3 formItems">
                         <legend class="formItems">Color Info</legend>
                         <label for="color1">Color 1</label><br>
-                        <select id="color1" name="color1" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
+                        <select id="color1" name="color1" style="color: black;" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
                             <option id="option0" disabled selected value> -- select an option -- </option>
-                            <option id="option1" value="red" >red</option>
+                            <option id="option1" value="red">red</option>
                             <option id="option2" value="blue">blue</option>
                             <option id="option3" value="green">green</option>
                             <option id="option4" value="yellow">yellow</option>
@@ -233,7 +236,7 @@
                             <option id="option9" value="black">black</option>
                         </select><br><br>
                         <label for="color2">Color 2</label><br>
-                        <select id="color2" name="color2" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);"required>
+                        <select id="color2" name="color2" style="color: black;" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);"required>
                             <option disabled selected value> -- select an option -- </option>
                             <option value="red">red</option>
                             <option value="blue">blue</option>
@@ -246,7 +249,7 @@
                             <option value="black">black</option>
                         </select><br><br>
                         <label for="color3">Color 3</label><br>
-                        <select id="color3" name="color3" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
+                        <select id="color3" name="color3" style="color: black;" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
                             <option disabled selected value> -- select an option -- </option>
                             <option value="red">red</option>
                             <option value="blue">blue</option>
@@ -294,10 +297,10 @@
             <div class="formItems">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-2">
-                    <button id="submit" type="submit" style="margin-bottom: 60px">Run Experiment!</button>
+                    <button id="submit" type="submit" style="margin-bottom: 60px;color: white; background-color: blue;">Run Experiment!</button>
                 </div>
                 <div class="col-sm-2">
-                    <button id="reload" type="button" style="margin-bottom: 60px" onclick="location.reload();">Restart Page Inputs</button>
+                    <button id="reload" type="button" style="margin-bottom: 60px;color: white; background-color: blue;" onclick="location.reload();">Restart Page Inputs</button>
                 </div>
                 <div class="col-sm-4"></div>
             </div>
@@ -311,13 +314,15 @@
                 <p><a href="https://www.youtube.com/watch?v=z69C2Jqp42Q" target=”_blank”>J.S. Bach – Toccata and Fugue in D minor</a></p>
                 <p><a href="https://www.youtube.com/watch?v=W2qW6fOtAMY" target=”_blank”>Beethoven – Symphony No.5 in C minor (shortened)</a></p>
                 <p><a href="https://www.youtube.com/watch?v=_CTYymbbEL4" target=”_blank”>Johann Strauss II - The Blue Danube Waltz</a></p>
+                <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
 			</div>
 		  </div>
 		</div>
 
 
 <footer class="container-fluid text-center">
-    <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
+
+    <p style = "font-size: 14px;"> Copyright © 2023 Darkest Error </p>
 
 </footer>
 

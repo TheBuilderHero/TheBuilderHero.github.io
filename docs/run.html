@@ -102,6 +102,8 @@
     }
 	body {
 	  margin:0;
+      color: white;
+      background-color: #023f3f;
 	}
 
 	</style>
@@ -111,7 +113,7 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="color: black;">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
@@ -150,7 +152,7 @@
             <p id="t2" hidden>Terminating When: the first time any square gets its second paint blob.</p>
             <p id="t3" hidden>Terminating When: the first time any square gets its third paint blob.</p>
             <div class="slider" style="margin-bottom: 20px;">
-              <label for="speed">Speed Control<output id="showspeed"></output></label>
+              <label for="speed">Speed Control<output id="showspeed" style="color: white;"></output></label>
               <input type="range" min=".25" max="10" value="1" id="speed" name="speed" step=".25" list="speedsettings">
               <datalist id="speedsettings">
                 <option>.25</option>
@@ -201,8 +203,8 @@
               <input type="number" id="l_x" name="l_x"><br><br>
               <label for="l_y">Y:</label>
               <input type="number" id="l_y" name="l_y"><br><br>-->
-              <button type="button" onclick="pause();">Stop</button>
-              <button type="button" onclick="unpause();">Start</button><br><br>
+              <button type="button" onclick="pause();" style="color: black;">Stop</button>
+              <button type="button" onclick="unpause();" style="color: black;">Start</button><br><br>
               <!--<button type="button" onclick="changeSizeStuff();">Change Size Stuff</button>-->
 
 
@@ -225,13 +227,13 @@
           <label for="A3" style="font-size: small;">R, the number of repetitions in the experiment</label><br><input type="radio" id="A3" name="calc_val" value="4"><br><br>
           <label for="B" style="font-size: small;">R, the number of repetitions in the experiment</label><br><input type="radio" id="B" name="calc_val" value="5"><br><br>
           <label for="C" style="font-size: small;">R, the number of repetitions in the experiment</label><br><input type="radio" id="C" name="calc_val" value="6" required><br><br>
-          <input type="submit" value="Calculate and Display Chosen Value" style="margin-bottom: 80px">
+          <input type="submit" value="Calculate and Display Chosen Value" style="margin-bottom: 80px; color: black;">
         </div>
       </form>
     </div>
 
 <footer class="container-fluid text-center">
-  <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
+  <p style = "font-size: 14px;"> Copyright © 2023 Darkest Error </p>
     <div data-autoplay="1" data-loop="1" id="youtube-audio" hidden="hidden"></div>
 </footer>
 
