@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Painting Experiment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="./myjs.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  
+  <!-- Color mixing -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" 
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" 
+        crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.min.js" 
+        integrity="sha384-Dmia8eQq5QAVU5VL95mpXzGE2n2oYxIv9aFwn+JAtQ3Y/4bWeHSjKUgYSJi/BovQ" 
+        crossorigin="anonymous"></script>
+  <script src="https://scrtwpns.com/mixbox.js"></script>
+  
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+        background-color: unset;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+          background-color: unset;
+      }
+      .row.content {height:auto;} 
+    }
+  </style>
+  
+	<style>
+	.grid-container {
+	  display: grid;
+	  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+	  background-color: unset;
+	  padding: 10px;
+	}
+	.grid-item {
+		display:grid;
+		  background-color: rgba(255, 255, 255, 0.8);
+		  border: 1px solid rgba(0, 0, 0, 0.8);
+		  padding: 20px;
+		  font-size: 30px;
+		  text-align: center;
+		grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
+		grid-template-rows: repeat(auto-fit, minmax(1px, 1fr));
+	}
+
+	.container {
+	  display: grid;
+	  grid-gap: 10px;
+	  grid-template-columns: repeat(auto-fill, minmax(min(200px,100%), 1fr));
+	}
+
+	.child {
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 5px;
+	  border: 3px solid #a07;
+	}
+
+    .sidenav{
+        height: 190%;
+        background-color: unset;
+    }
+	body {
+	  margin:0;
+	}
+
+    #experiment-container{
+     margin-left: 0rem;
+        text-align: center;
+    }
+
+    #table-container{
+        display: block;
+        text-align: center;
+    }
+	</style>
+</head>
+    <style>
+        #table-container {
+            display: none;
+        }
+
+        #graph-container {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+              <a class="navbar-brand" href="#"><img src="img.png" width="50px" height="50px" style="margin-top: -15px !important;  /* 50% of your logo width */"></a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./usage.html">Usage</a></li>
+                <li class="active"><a href="#">Table</a></li>
+            </ul>
+              <!-- Remove Login feature
+                <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul>
+              -->
+          </div>
+        </div>
+      </nav>
+
+    
+    <div id="experiment-container">
+        <h1>Painting Experiment</h1>
+        <button onclick="startExperiment()">Start Experiment</button>
+        <canvas id="myChart" style="width:100%;max-width:700px;margin-left: 16rem;
+        margin-top: 1rem;"></canvas>
+    </div>
+
+    <div id="table-container">
+        <h2>Experiment Results</h2>
+        <table id="experiment-table">
+            <!-- Table content will be dynamically generated here -->
+        </table>
+        <div>
+            <button onclick="showGraph()">CONTINUE</button>
+        </div>
+    </div>
+
+    <div id="graph-container">
+        <h2>Experiment Graph</h2>
+        <canvas id="experiment-graph" width="400" height="100"></canvas>
+        <div>
+            <button class="btn btn-success" onclick="newTable()">Make a new table/graph</button>
+            <button class="btn btn-warning" onclick="newExperiment()">Abandon this experiment</button>
+            <button class="btn btn-danger" onclick="quitProgram()">Quit the program</button>
+        </div>
+    </div>
+
+    <script>
+        let independentVariable;
+        let dependentVariables;
+
+        function startExperiment() {
+            // Code for setting up and running the experiment
+            // Populate the experiment results in the table
+            showTable();
+        }
+
+        function showTable() {
+            // Code for displaying the experiment table
+            document.getElementById("table-container").style.display = "block";
+        }
+
+        function showGraph() {
+            // Code for generating and displaying the graph
+            document.getElementById("table-container").style.display = "none";
+            document.getElementById("graph-container").style.display = "block";
+        }
+
+        function newTable() {
+            // Code for creating a new table/graph from the current experimental data
+            // This might involve recalculating or updating values
+            showTable();
+        }
+
+        function newExperiment() {
+            // Code for abandoning the current experiment and starting a new one
+            document.getElementById("experiment-container").style.display = "block";
+            document.getElementById("table-container").style.display = "none";
+            document.getElementById("graph-container").style.display = "none";
+        }
+
+        function quitProgram() {
+            // Code for quitting the program
+            alert("Thanks for using the program!");
+            // Redirect to the opening page of the website
+            window.location.href = "index.html";
+        }
+
+        const xyValues = [
+          {x:50, y:7},
+          {x:60, y:8},
+          {x:70, y:8},
+          {x:80, y:9},
+          {x:90, y:9},
+          {x:100, y:9},
+          {x:110, y:10},
+          {x:120, y:11},
+          {x:130, y:14},
+          {x:140, y:14},
+          {x:150, y:15}
+        ];
+
+        new Chart("myChart", {
+          type: "scatter",
+          data: {
+            datasets: [{
+              pointRadius: 4,
+              pointBackgroundColor: "rgb(0,0,255)",
+              data: xyValues
+            }]
+          },
+          options: {
+            legend: {display: false},
+            scales: {
+              xAxes: [{ticks: {min: 40, max:160}}],
+              yAxes: [{ticks: {min: 6, max:16}}],
+            }
+          }
+        });
+    </script>
+
+    <footer class="container-fluid text-center" style="margin-top: 3rem;">
+        <p style = "font-size: 14px;"> Copyright © 2023 Darkest Error </p>
+        <!-- <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p> -->
+    </footer>
+</body>
+</html>
