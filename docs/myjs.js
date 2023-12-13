@@ -25,6 +25,8 @@ window.totalPaintDrops = [0];
 window.maxPaintDrops = [0];
 window.averagePaintDrops = [0];
 window.data_points_max = 60;
+document.y_title = ["",""];
+document.table_title = ["",""];
 //used for size of grid:
 window.x_value = 0;
 window.y_value = 0;
@@ -378,13 +380,15 @@ function changeSizeStuff() {
     const update_div = document.getElementById('update_canvas');
     const controls = document.getElementById('controls');
     const radio_choice = document.getElementById('after_run_div');
-    can.style.width = '200px';
-    can.style.height = '200px';
+    const radio_choice_heading = document.getElementById('after_run_div1');
+    can.style.width = '300px';
+    can.style.height = '300px';
     update_div.style.textAlign = 'center';
-    update_div.classList.remove('col-sm-5');
-    update_div.classList.add('col-sm-8');
+    update_div.classList.remove('col-sm-4');
+    update_div.classList.add('col-sm-6');
     controls.hidden = true;
     radio_choice.hidden = false;
+    radio_choice_heading.hidden = false;
 }
 
 function paintOne() {
@@ -508,13 +512,18 @@ function resetTempArrayOfColors(){
 }
 
 function graph_table_show(){
-    document.getElementById('canvas').hidden = true;
-    document.getElementById('update_canvas').hidden = true;
-    document.getElementById('after_run_div').hidden = true;
-    document.getElementById('graph_table').hidden = false;
-    document.getElementById('graph-container').hidden = false;
-    set_graph_values();
-    produce_graph();
+    if(validate_selection()) {
+        document.getElementById('canvas').hidden = true;
+        document.getElementById('update_canvas').hidden = true;
+        document.getElementById('after_run_div').hidden = true;
+        document.getElementById('after_run_div1').hidden = true;
+        document.getElementById('graph_table').hidden = false;
+        document.getElementById('graph-container').hidden = false;
+        set_graph_values();
+        produce_graph();
+    } else {
+        alert("Please only select One or Two and no more than that for results!");
+    }
 }
 
 
@@ -564,62 +573,118 @@ function show_option(){
     document.getElementById('canvas').hidden = false;
     document.getElementById('update_canvas').hidden = false;
     document.getElementById('after_run_div').hidden = false;
+    document.getElementById('after_run_div1').hidden = false;
     document.getElementById('graph_table').hidden = true;
     document.getElementById('graph-container').hidden = true;
 
 }
 
 function produce_graph() {
-    var chart = new CanvasJS.Chart("chartContainer", {
-        animationEnabled: true,
-        zoomEnabled: true,
-        theme: "dark2",
-        title: {
-            text: document.table_title
-        },
-        axisX: {
-            title: document.x_title,
-            titleFontColor: "#6D78AD",
-            lineColor: "#6D78AD",
-            minimum: 0,
-            //maximum: window.data_points_max+10,
-            //valueFormatString: "##",
+    if(document.y_title[0] != "" && document.y_title[1] != ""){
+        let new_string = document.y_title[0] + " and " + document.y_title[1];
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            zoomEnabled: true,
+            theme: "dark2",
+            title: {
+                text: document.table_title,
+                fontSize: 20
+            },
+            axisX: {
+                title: document.x_title,
+                titleFontColor: "#6D78AD",
+                lineColor: "#6D78AD",
+                minimum: 0,
+                //maximum: window.data_points_max+10,
+                //valueFormatString: "##",
 
-            interval: 10
-        },
-        axisY: {
-            //logarithmic: true, //change it to false
-            title: document.y_title,
-            titleFontColor: "#6D78AD",
-            lineColor: "#6D78AD",
-            //gridThickness: 0,
-            //lineThickness: 1,
-            //labelFormatter: addSymbols
-        }/*,
-        legend: {
-            verticalAlign: "top",
-            fontSize: 16,
-            dockInsidePlotArea: true
-        }*/,
-        data: [{
-            type: "line",
-            //xValueFormatString: "##",
-            //showInLegend: true,
-            //name: "Experiment Change",
-            dataPoints: window.data_points
-        }
-        //,
-        //             {
-        //                 type: "line",
-        //                 xValueFormatString: "####",
-        //                 axisYType: "secondary",
-        //                 showInLegend: true,
-        //                 name: "Linear Scale",
-        //                 dataPoints: window.data_points
-        //             }
-        ]
-    });
-    chart.render();
+                interval: 10
+            },
+            axisY: {
+                //logarithmic: true, //change it to false
+                title: new_string,
+                titleFontColor: "#6D78AD",
+                lineColor: "#6D78AD",
+                //gridThickness: 0,
+                //lineThickness: 1,
+                //labelFormatter: addSymbols
+            },
+            legend: {
+                verticalAlign: "top",
+                fontSize: 16,
+                dockInsidePlotArea: true
+            },
+            data: [{
+                type: "line",
+                //xValueFormatString: "##",
+                showInLegend: true,
+                name: document.y_title[0],
+                dataPoints: window.data_points1
+            },
+            {
+                type: "line",
+                //xValueFormatString: "####",
+                //axisYType: "secondary",
+                showInLegend: true,
+                name: document.y_title[1],
+                dataPoints: window.data_points2
+            }
+            ]
+        });
+        chart.render();
+    } else {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            zoomEnabled: true,
+            theme: "dark2",
+            title: {
+                text: document.table_title,
+                fontSize: 20
+            },
+            axisX: {
+                title: document.x_title,
+                titleFontColor: "#6D78AD",
+                lineColor: "#6D78AD",
+                minimum: 0,
+                //maximum: window.data_points_max+10,
+                //valueFormatString: "##",
+
+                interval: 10
+            },
+            axisY: {
+                //logarithmic: true, //change it to false
+                title: document.y_title[0],
+                titleFontColor: "#6D78AD",
+                lineColor: "#6D78AD",
+                //gridThickness: 0,
+                //lineThickness: 1,
+                //labelFormatter: addSymbols
+            }/*,
+            legend: {
+                verticalAlign: "top",
+                fontSize: 16,
+                dockInsidePlotArea: true
+            }*/,
+            data: [{
+                type: "line",
+                //xValueFormatString: "##",
+                //showInLegend: true,
+                //name: "Experiment Change",
+                dataPoints: window.data_points1
+            },
+                {
+                    type: "line",
+                    //xValueFormatString: "####",
+                    //axisYType: "secondary",
+                    //showInLegend: true,
+                    //name: "Linear Scale",
+                    dataPoints: window.data_points2
+                }
+            ]
+        });
+        chart.render();
+
+    }
 
     function addSymbols(e) {
         var suffixes = ["", "K", "M", "B", "T"];
@@ -632,42 +697,71 @@ function produce_graph() {
         return CanvasJS.formatNumber(e.value / Math.pow(1000, order), "#,##0.##") + suffix;
     }
 
+
 }
 
 
 function set_graph_values(){
-    let calc_value = 0;
+    let calc_value = [0,0];
     var ele = document.getElementsByName('calc_val');
 
+    let index_temp_checked = 0;
     for (let i = 0; i < ele.length; i++) {
         if (ele[i].checked) {
-            calc_value = ele[i].value;
+            calc_value[index_temp_checked++] = ele[i].value;
         }
     }
     console.log("calc_value (dependent)",calc_value);
-    if(calc_value == 1){
-        document.table_title = "A: The number of paint drops put on the canvas before the painting halted";
-        document.y_title = "Total Paint Drops";
+    if(calc_value[0] == 1){
+        document.table_title[0] = "A: The number of paint drops put on the canvas before the painting halted";
+        document.y_title[0] = "Total Paint Drops";
 
-    } else if(calc_value == 2){
-        document.table_title = "A1. The number of paint drops on the canvas of Color 1";
-        document.y_title = "Total Color 1 Paint Drops";
+    } else if(calc_value[0] == 2){
+        document.table_title[0] = "A1. The number of paint drops on the canvas of Color 1";
+        document.y_title[0] = "Total Color 1 Paint Drops";
 
-    } else if(calc_value == 3){
-        document.table_title = "A2. The number of paint drops on the canvas of Color 2";
-        document.y_title = "Total Color 2 Paint Drops";
+    } else if(calc_value[0] == 3){
+        document.table_title[0] = "A2. The number of paint drops on the canvas of Color 2";
+        document.y_title[0] = "Total Color 2 Paint Drops";
 
-    } else if(calc_value == 4){
-        document.table_title = "A3. The number of paint drops on the canvas of Color 3";
-        document.y_title = "Total Color 3 Paint Drops";
+    } else if(calc_value[0] == 4){
+        document.table_title[0] = "A3. The number of paint drops on the canvas of Color 3";
+        document.y_title[0] = "Total Color 3 Paint Drops";
 
-    } else if(calc_value == 5){
-        document.table_title = "B: the maximum number of paint drops on any given square when the painting halted";
-        document.y_title = "Max Paint Drops (single square)";
+    } else if(calc_value[0] == 5){
+        document.table_title[0] = "B: the maximum number of paint drops on any given square when the painting halted";
+        document.y_title[0] = "Max Paint Drops (single square)";
 
-    } else if(calc_value == 6){
-        document.table_title = "C. the average number of paint drops over all the squares when the painting for this canvas halted";
-        document.y_title = "Average Paint Drops";
+    } else if(calc_value[0] == 6){
+        document.table_title[0] = "C. the average number of paint drops over all the squares when the painting for this canvas halted";
+        document.y_title[0] = "Average Paint Drops";
+
+    }
+
+
+    if(calc_value[1] == 1){
+        document.table_title[1] = "A: The number of paint drops put on the canvas before the painting halted";
+        document.y_title[1] = "Total Paint Drops";
+
+    } else if(calc_value[1] == 2){
+        document.table_title[1] = "A1. The number of paint drops on the canvas of Color 1";
+        document.y_title[1] = "Total Color 1 Paint Drops";
+
+    } else if(calc_value[1] == 3){
+        document.table_title[1] = "A2. The number of paint drops on the canvas of Color 2";
+        document.y_title[1] = "Total Color 2 Paint Drops";
+
+    } else if(calc_value[1] == 4){
+        document.table_title[1] = "A3. The number of paint drops on the canvas of Color 3";
+        document.y_title[1] = "Total Color 3 Paint Drops";
+
+    } else if(calc_value[1] == 5){
+        document.table_title[1] = "B: the maximum number of paint drops on any given square when the painting halted";
+        document.y_title[1] = "Max Paint Drops (single square)";
+
+    } else if(calc_value[1] == 6){
+        document.table_title[1] = "C. the average number of paint drops over all the squares when the painting for this canvas halted";
+        document.y_title[1] = "Average Paint Drops";
 
     }
 
@@ -675,7 +769,8 @@ function set_graph_values(){
     console.log("independent option",searchParams.get('independent'));
     window.graph_array = Array();
     let independent_value = searchParams.get('independent');
-    window.data_points = Array();
+    window.data_points1 = Array();
+    window.data_points2 = Array();
     if(searchParams.get('independent') == 1){
         let DIMS = searchParams.get('globalListOfItems').split(',');
         window.max_pos = DIMS.length;
@@ -684,11 +779,18 @@ function set_graph_values(){
         for(let i = 0; i < DIMS.length; i++){
             let max = 0;
             if(DIMS[i] > max) window.data_points_max = DIMS[i];
-            let values = {
+            let values1 = {
                 x: DIMS[i],
-                y: getyvalue(calc_value,i)
+                y: getyvalue(calc_value[0],i)
             }
-            window.data_points.push(values);
+            window.data_points1.push(values1);
+            if(calc_value[1] > 0) {
+                let values2 = {
+                    x: DIMS[i],
+                    y: getyvalue(calc_value[1], i)
+                }
+                window.data_points2.push(values2);
+            }
         }
         //window.data_points = [{ x: 1994, y: 25437639 }, { x: 1995, y: 44866595 }, { x: 1996, y: 77583866 }];
         /*
@@ -711,11 +813,18 @@ function set_graph_values(){
         for(let i = 0; i < DIMXS.length; i++){
             let max = 0;
             if(DIMXS[i] > max) window.data_points_max = DIMXS[i];
-            let values = {
+            let values1 = {
                 x: DIMXS[i],
-                y: getyvalue(calc_value,i)
+                y: getyvalue(calc_value[0],i)
             }
-            window.data_points.push(values);
+            window.data_points1.push(values1);
+            if(calc_value[1] > 0) {
+                let values2 = {
+                    x: DIMXS[i],
+                    y: getyvalue(calc_value[1], i)
+                }
+                window.data_points2.push(values2);
+            }
         }
         /*
         console.log("Running", dim_X);
@@ -737,11 +846,18 @@ function set_graph_values(){
         for(let i = 0; i < REPS.length; i++){
             let max = 0;
             if(REPS[i] > max) window.data_points_max = REPS[i];
-            let values = {
+            let values1 = {
                 x: REPS[i],
                 y: getyvalue(calc_value,i)
             }
-            window.data_points.push(values);
+            window.data_points1.push(values1);
+            if(calc_value[1] > 0) {
+                let values2 = {
+                    x: REPS[i],
+                    y: getyvalue(calc_value[1], i)
+                }
+                window.data_points2.push(values2);
+            }
         }
         /*
         console.log("Running", rep_value);
@@ -817,4 +933,16 @@ function saveAllValues(){
     window.maxPaintDrops[window.stage_index] = getMaxPaintDrops();
     window.averagePaintDrops[window.stage_index] = getAveragePaintDrops();
 
+}
+
+function validate_selection(){
+    var ele = document.getElementsByName('calc_val');
+
+    let index_temp_checked = 0;
+    for (let i = 0; i < ele.length; i++) {
+        if (ele[i].checked) {
+            if(++index_temp_checked > 2) return false;
+        }
+    }
+    return true;
 }
