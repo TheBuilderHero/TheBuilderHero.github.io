@@ -17,6 +17,9 @@ window.colorRGBMap = {
 	brown: 'rgb(165,42,42)',
 	black: 'rgb(0,0,0)',
 };
+window.color1_drops = 0;
+window.color2_drops = 0;
+window.color3_drops = 0;
 window.totalPaintDrops = 0;
 //used for size of grid:
 window.x_value = 0;
@@ -322,6 +325,10 @@ function fillRandomCellWithRandomColor(){
     rands.randNum1 = Math.floor(Math.random()*window.x_value+1); // from 1 to x
     rands.randNum2 = Math.floor(Math.random()*window.y_value+1);  // from 1 to y
     var randomColor = Math.floor(Math.random()*3); // from 0 to 2
+
+    if(randomColor == 0) window.color1_drops += 1;
+    if(randomColor == 1) window.color2_drops += 1;
+    if(randomColor == 2) window.color3_drops += 1;
 	var colorChoice = colorOptions[randomColor];
     fillXY(rands.randNum1, rands.randNum2, colorChoice);
 }
@@ -343,8 +350,8 @@ function changeSizeStuff() {
     update_div.style.textAlign = 'center';
     update_div.classList.remove('col-sm-5');
     update_div.classList.add('col-sm-8');
-    controls.style.display = 'none';
-    radio_choice.style.display = 'block';
+    controls.hidden = true;
+    radio_choice.hidden = false;
 }
 
 function paintOne() {
@@ -478,4 +485,229 @@ function resetTempArrayOfColors(){
     //At this point array of colors should have all the values initialized to 0.
 }
 
+function graph_table_show(){
+    document.getElementById('canvas').hidden = true;
+    document.getElementById('update_canvas').hidden = true;
+    document.getElementById('after_run_div').hidden = true;
+    document.getElementById('graph_table').hidden = false;
+    document.getElementById('graph-container').hidden = false;
+    set_graph_values();
+    produce_graph();
+}
 
+
+
+let independentVariable;
+let dependentVariables;
+
+function startExperiment() {
+    // Code for setting up and running the experiment
+    // Populate the experiment results in the table
+    showTable();
+}
+
+function showTable() {
+    // Code for displaying the experiment table
+    //document.getElementById("table-container").hidden = false;
+}
+
+function showGraph() {
+    // Code for generating and displaying the graph
+    //document.getElementById("table-container").hidden = true;
+    //document.getElementById("graph-container").hidden = false;;
+}
+
+function newTable() {
+    // Code for creating a new table/graph from the current experimental data
+    // This might involve recalculating or updating values
+    showTable();
+}
+
+function newExperiment() {
+    // Code for abandoning the current experiment and starting a new one
+    window.location.href = "index.html";
+}
+
+function quitProgram() {
+    // Code for quitting the program
+    alert("Thanks for using the program!");
+    // Redirect to the opening page of the website
+    window.location.href = "usage.html";
+}
+
+function show_option(){
+    //document.getElementById("table-container").hidden = false;
+    //document.getElementById("graph-container").hidden = false;
+
+    document.getElementById('canvas').hidden = false;
+    document.getElementById('update_canvas').hidden = false;
+    document.getElementById('after_run_div').hidden = false;
+    document.getElementById('graph_table').hidden = true;
+    document.getElementById('graph-container').hidden = true;
+
+}
+
+function produce_graph() {
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        zoomEnabled: true,
+        theme: "dark2",
+        title: {
+            text: document.table_title
+        },
+        axisX: {
+            title: document.x_title,
+            valueFormatString: "####",
+            interval: 2
+        },
+        axisY: {
+            logarithmic: true, //change it to false
+            title: document.y_title,
+            titleFontColor: "#6D78AD",
+            lineColor: "#6D78AD",
+            gridThickness: 0,
+            lineThickness: 1,
+            labelFormatter: addSymbols
+        },
+        legend: {
+            verticalAlign: "top",
+            fontSize: 16,
+            dockInsidePlotArea: true
+        },
+        data: [{
+            type: "line",
+            xValueFormatString: "####",
+            showInLegend: true,
+            name: "Log Scale",
+            dataPoints: [
+                { x: 1994, y: 25437639 },
+                { x: 1995, y: 44866595 },
+                { x: 1996, y: 77583866 }
+            ]
+        },
+            {
+                type: "line",
+                xValueFormatString: "####",
+                axisYType: "secondary",
+                showInLegend: true,
+                name: "Linear Scale",
+                dataPoints: [
+                    { x: 1994, y: 25437639 },
+                    { x: 1995, y: 44866595 },
+                    { x: 1996, y: 77583866 }
+                ]
+            }]
+    });
+    chart.render();
+
+    function addSymbols(e) {
+        var suffixes = ["", "K", "M", "B", "T"];
+
+        var order = Math.max(Math.floor(Math.log(Math.abs(e.value)) / Math.log(1000)), 0);
+        if(order > suffixes.length - 1)
+            order = suffixes.length - 1;
+
+        var suffix = suffixes[order];
+        return CanvasJS.formatNumber(e.value / Math.pow(1000, order), "#,##0.##") + suffix;
+    }
+
+}
+
+
+function set_graph_values(){
+    let calc_value = 0;
+    var ele = document.getElementsByName('calc_val');
+
+    for (let i = 0; i < ele.length; i++) {
+        if (ele[i].checked) {
+            calc_value = ele[i].value;
+        }
+    }
+    console.log(calc_value);
+    if(calc_value == 1){
+        document.table_title = "A: The number of paint drops put on the canvas before the painting halted";
+        document.y_title = "Total Paint Drops";
+
+    } else if(calc_value == 2){
+        document.table_title = "A1. The number of paint drops on the canvas of Color 1";
+        document.y_title = "Total Color 1 Paint Drops";
+
+    } else if(calc_value == 3){
+        document.table_title = "A2. The number of paint drops on the canvas of Color 2";
+        document.y_title = "Total Color 2 Paint Drops";
+
+    } else if(calc_value == 4){
+        document.table_title = "A3. The number of paint drops on the canvas of Color 3";
+        document.y_title = "Total Color 3 Paint Drops";
+
+    } else if(calc_value == 5){
+        document.table_title = "B: the maximum number of paint drops on any given square when the painting halted";
+        document.y_title = "Max Paint Drops (single square)";
+
+    } else if(calc_value == 6){
+        document.table_title = "C. the average number of paint drops over all the squares when the painting for this canvas halted";
+        document.y_title = "Average Paint Drops";
+
+    }
+
+
+    console.log(searchParams.get('independent'));
+    let independent_value = searchParams.get('independent');
+    if(searchParams.get('independent') == 1){
+        let DIMS = searchParams.get('globalListOfItems').split(',');
+        window.max_pos = DIMS.length;
+        const dim_XY = DIMS[window.current_pos];
+        document.x_title = "Square Dimension (x,y)";
+        /*
+        console.log("Running", dim_XY);
+        window.x_value = dim_XY;
+        window.y_value = dim_XY;
+        window.fullStop = false;
+        if(!window.endExperiment) draw();
+        window.repititions = searchParams.get('repetitions');
+        window.timeStamp = window.performance.now();
+        checkPaint();
+        */
+        //stopId = setInterval(checkPaint, 25);
+    } else if(searchParams.get('independent') == 2){
+        let DIMXS = searchParams.get('globalListOfItems').split(',');
+        window.max_pos = DIMXS.length;
+        const dim_X = DIMXS[window.current_pos];
+
+        document.x_title = "Dimension X";
+        /*
+        console.log("Running", dim_X);
+        window.fullStop = false;
+        let dim_y = searchParams.get('dim_y');
+        window.x_value = dim_X;
+        window.y_value = dim_y;
+        if(!window.endExperiment) draw();
+        window.repititions = searchParams.get('repetitions');
+        window.timeStamp = window.performance.now();
+        checkPaint();*/
+        //stopId = setInterval(checkPaint, 25);
+    } else if(searchParams.get('independent') == 3){
+        let REPS = searchParams.get('globalListOfItems').split(',');
+        window.max_pos = REPS.length;
+        const rep_value = REPS[window.current_pos];
+
+        document.x_title = "Repetitions";
+        /*
+        console.log("Running", rep_value);
+        window.repititions = rep_value;
+        console.log([searchParams.get('globalListOfItems').split(',')]);
+        console.log(Number(rep_value));
+        window.fullStop = false;
+        let dim_XY = searchParams.get('dim_Y_X');
+        window.x_value = dim_XY;
+        window.y_value = dim_XY;
+        if(!window.endExperiment) draw();
+        window.timeStamp = window.performance.now();
+        checkPaint();*/
+        //stopId = setInterval(checkPaint, 25);
+    } else {
+        console.log("INVALID INDEPENDENT VALUE: ", independent_value);
+    }
+
+}
