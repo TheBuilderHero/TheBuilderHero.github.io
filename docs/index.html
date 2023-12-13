@@ -180,6 +180,18 @@
                         <span id="depErr6" class=" hide error">X-values must be greater than or equal to previous entered</span><br>
                         <!--<p id="depErr7" class="help-block error">Test this!</p>-->
                         <input type="number" id="numberInput" style="color: black;" required><br><br>
+                        <script>
+                            document.getElementById('numberInput').addEventListener('keypress', function(event) {
+                                if (event.key === 'Enter' || event.keyCode == 13) {
+                                    addItemToList();
+                                    event.preventDefault();
+                                }
+                            });
+
+                            // e.key is the modern way of detecting keys
+                            // e.keyCode is deprecated (left here for for legacy browsers support)
+                            // keyup is not compatible with Jquery select(), Keydown is.
+                        </script>
                         <button type="button" id="addNumber" name="addNumber" style="color: white; background-color: blue;" onclick="addItemToList();">Add Number</button>
                         <button type="button" id="removeNumber" name="removeNumber" style="color: white; background-color: blue;" onclick="removeItemFromList();">Remove selected Number</button><br><br>
                     </div>
@@ -314,7 +326,7 @@
                 <p><a href="https://www.youtube.com/watch?v=z69C2Jqp42Q" target=”_blank”>J.S. Bach – Toccata and Fugue in D minor</a></p>
                 <p><a href="https://www.youtube.com/watch?v=W2qW6fOtAMY" target=”_blank”>Beethoven – Symphony No.5 in C minor (shortened)</a></p>
                 <p><a href="https://www.youtube.com/watch?v=_CTYymbbEL4" target=”_blank”>Johann Strauss II - The Blue Danube Waltz</a></p>
-                <p><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
+                <p style="margin-bottom: 14%;"><a href="https://youtube.com/playlist?list=PLerDLiFhFsuoFwuThFGOFCLLtThSREnRx&si=ye_u-Zc4iDUVIXil" target=”_blank”>Painting Music Playlist</a></p>
 			</div>
 		  </div>
 		</div>

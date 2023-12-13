@@ -142,6 +142,7 @@ function addItemToList(){
     //hideMessage(depErr5);
     //hideMessage(depErr8); 
     document.getElementById("globalListOfItemsInput").value = globalListOfItems.join(",");
+    input.value = ""; //finish by resetting value of input feild.
 }
 
 function removeItemFromList(){
