@@ -848,7 +848,7 @@ function set_graph_values(){
             if(REPS[i] > max) window.data_points_max = REPS[i];
             let values1 = {
                 x: REPS[i],
-                y: getyvalue(calc_value,i)
+                y: getyvalue(calc_value[0],i)
             }
             window.data_points1.push(values1);
             if(calc_value[1] > 0) {
@@ -879,7 +879,7 @@ function set_graph_values(){
 }
 
 function getyvalue(calc_value,rep){
-    console.log(calc_value);
+    console.log("CALC_VALUE: ",calc_value);
     if(calc_value == 1){ //total point drops in a given run.
         return window.totalPaintDrops[rep];
 
