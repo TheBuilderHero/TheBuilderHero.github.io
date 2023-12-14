@@ -96,10 +96,54 @@
 	  border: 3px solid #a07;
 	}
 
-    .sidenav{
-        height: 190%;
-        background-color: unset;
+  .sidenav{
+      height: 190%;
+      background-color: unset;
+  }
+
+  #html-data-table {
+    border: 1px solid white; /* Add white border around the table */
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #32373A;
+    color: white; 
+  }
+
+  /* Style table header cells */
+  #html-data-table th {
+    border: 1px solid white; /* Add border to header cells */
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Style table cells */
+  #html-data-table td {
+    border: 1px solid white; /* Add border to data cells */
+    padding: 8px;
     }
+
+  #reduced-html-data-table {
+    border: 1px solid white; /* Add white border around the table */
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #32373A;
+    color: white; 
+  }
+
+  /* Style table header cells */
+  #reduced-html-data-table th {
+    border: 1px solid white; /* Add border to header cells */
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Style table cells */
+  #reduced-html-data-table td {
+    border: 1px solid white; /* Add border to data cells */
+    padding: 8px;
+    }
+
+
 	body {
 	  margin:0;
       color: white;
@@ -319,7 +363,63 @@
           <div id="chartContainer" style="height: 370px; width: 100%;"></div>
           <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
         </div>
-        <div class="col-sm-6" style="text-align: center"></div>
+        <div class="col-sm-6" style="text-align: center">
+          <table id="html-data-table">
+            <tr>
+                <th>Independent Variable</th>
+                <th>X-Dim</th>
+                <th>Y-Dim</th>
+                <th>Colors</th>
+                <th>Stopping Criteria</th>
+                <th>Repetitions</th>
+                <th>A Min</th>
+                <th>A Max</th>
+                <th>A Avg</th>
+                <th>B Max</th>
+                <th>C Avg</th>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>3</td>
+                <td>Red, Green, Blue</td>
+                <td>2nd Paint Blob</td>
+                <td>4</td>
+                <td>34</td>
+                <td>32</td>
+                <td>54</td>
+                <td>43</td>
+                <td>39</td>
+            </tr>
+        </table>    
+      </div>
+ 
+          <div class="col-sm-6" style="text-align: center; margin-top: 30px;">
+            <table id="reduced-html-data-table">
+              <tr>
+                  <th>Independent Variable</th>
+                  <th>X-Dim</th>
+                  <th>Y-Dim</th>
+                  <th>Colors</th>
+ 
+              </tr>
+              <tr>
+                  <td>2</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>Red, Green, Blue</td>
+
+              </tr>
+          </table>    
+        </div>
+          <div id="data-table">
+
+        
+          
+      </div>
+
+
+
     </div>
 
     <div class="row col-sm-12" id="graph-container" style="margin-bottom: 16%;" hidden>
