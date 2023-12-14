@@ -93,6 +93,7 @@
     #var-legend {
       color: white;
     }
+    .button { }
 	body {
 	  margin:0;
         color: white;
@@ -150,10 +151,10 @@
                     <h3>To start you off, the Following Buttons give you an option to run the experiment very quick and easily</h3>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-3">
-                        <button id="submit1" type="submit" style="margin-bottom: 60px; color: white; background-color: blue;">RUN EXPERIMENT</button>
+                        <button id="submit1" type="submit" style="margin-bottom: 60px; color: white; background-color: #4287f5; border-radius: 8px; padding: 6px;">RUN EXPERIMENT</button>
                     </div>
                     <div class="col-sm-3">
-                        <input type="button" id="randomize" value="FILL RANDOM EXPERIMENT" style=" color: white; background-color: blue;" onclick="randomize_inputs();">
+                        <input type="button" id="randomize" value="FILL RANDOM EXPERIMENT" style=" color: white; background-color: #4287f5; border-radius: 8px; padding: 6px;" onclick="randomize_inputs();">
                     </div>
                     <div class="col-sm-3"></div>
                 </fieldset>
@@ -197,8 +198,8 @@
                             // e.keyCode is deprecated (left here for for legacy browsers support)
                             // keyup is not compatible with Jquery select(), Keydown is.
                         </script>
-                        <button type="button" id="addNumber" name="addNumber" style="color: white; background-color: blue;" onclick="addItemToList();">Add Number</button>
-                        <button type="button" id="removeNumber" name="removeNumber" style="color: white; background-color: blue;" onclick="removeItemFromList();">Remove selected Number</button><br><br>
+                        <button type="button" id="addNumber" name="addNumber" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 4px;" onclick="addItemToList();">Add Number</button>
+                        <button type="button" id="removeNumber" name="removeNumber" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 4px;" onclick="removeItemFromList();">Remove selected Number</button><br><br>
                     </div>
                     <div class="col-sm-4 formItems">
                         <label id="repetitions_label" style="font-size: small; display: none;" for="repetitions">Repetitions Value</label>
@@ -314,10 +315,10 @@
             <div class="formItems">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-2">
-                    <button id="submit" type="submit" style="margin-bottom: 60px;color: white; background-color: blue;">Run Experiment!</button>
+                    <button id="submit" type="submit" style="margin-bottom: 60px;color: white; background-color: #4287f5; border-radius: 8px; padding: 5px;">Run Experiment!</button>
                 </div>
                 <div class="col-sm-2">
-                    <button id="reload" type="button" style="margin-bottom: 60px;color: white; background-color: blue;" onclick="location.reload();">Restart Page Inputs</button>
+                    <button id="reload" type="button" style="margin-bottom: 60px;color: white; background-color: #4287f5; border-radius: 8px; padding: 3px;" onclick="location.reload();">Restart Page Inputs</button>
                 </div>
                 <div class="col-sm-4"></div>
             </div>

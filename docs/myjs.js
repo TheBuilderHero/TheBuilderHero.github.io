@@ -577,7 +577,7 @@ const termItemMap = {
   };
 
 
-function showTable() {
+  function showTable() {
     // Create the table
     let table = document.createElement('table');
     table.className = 'table_num1';
@@ -592,60 +592,35 @@ function showTable() {
     }
     table.appendChild(headerRow);
 
-    // Populate the table with data
-    for (let i = 0; i < window.stage_index; i++) {
+    // Create an array to hold your data
+    let data = [];
+    let ind_var = searchParams.get('globalListOfItems').split(','); 
+    for (let i = 0; i < ind_var.length; i++) {
+        data.push({
+            independent_variable: ind_var[i],
+            dependent_variable: document.table_title[0], // Change this to dynamically allocat num of dep. variables choosen
+            color1: searchParams.get('color1'),
+            color2: searchParams.get('color2'),
+            color3: searchParams.get('color3'),
+            stopping_criterion: termItemMap[window.searchParams.get('termItem')],
+            total: window.totalPaintDrops[i],
+            A1: window.color1_drops[i],
+            A2: window.color2_drops[i],
+            A3: window.color3_drops[i],
+            max: window.maxPaintDrops[i],
+            avg: window.averagePaintDrops[i]
+        });
+    }
 
+    // Populate the table with data
+    for (let row of data) {
         let tr = document.createElement('tr');
 
-        let independent_variables = document.createElement('td'); 
-        independent_variables.textContent = "-"; 
-        tr.appendChild(independent_variables); 
-
-        let dependent_variable = document.createElement('td');
-        dependent_variable.textContent = "-";
-        tr.appendChild(dependent_variable);
-
-        let colors_table = document.createElement('td'); 
-        colors_table.textContent =searchParams.get('color1');
-        tr.appendChild(colors_table); 
-
-        let color2_table = document.createElement('td'); 
-        color2_table.textContent = searchParams.get('color2'); 
-        tr.appendChild(color2_table); 
-
-        let color3_table = document.createElement('td'); 
-        color3_table.textContent = searchParams.get('color3'); 
-        tr.appendChild(color3_table); 
-
-
-        let termItem_val = window.searchParams.get('termItem'); 
-        let stopping_criterion = document.createElement('td'); 
-        stopping_criterion.textContent = termItemMap[termItem_val]
-        tr.appendChild(stopping_criterion); 
-
-        let total = document.createElement('td');
-        total.textContent = window.totalPaintDrops[i];
-        tr.appendChild(total);
-
-        let A1_table = document.createElement('td');
-        A1_table.textContent = window.color1_drops[i];
-        tr.appendChild(A1_table);
-
-        let A2_table = document.createElement('td');
-        A2_table.textContent = window.color2_drops[i];
-        tr.appendChild(A2_table);
-
-        let A3_table = document.createElement('td');
-        A3_table.textContent = window.color3_drops[i];
-        tr.appendChild(A3_table);
-
-        let max = document.createElement('td');
-        max.textContent = window.maxPaintDrops[i];
-        tr.appendChild(max);
-
-        let avg = document.createElement('td');
-        avg.textContent = window.averagePaintDrops[i];
-        tr.appendChild(avg);
+        for (let key in row) {
+            let td = document.createElement('td');
+            td.textContent = row[key];
+            tr.appendChild(td);
+        }
 
         table.appendChild(tr);
     }
