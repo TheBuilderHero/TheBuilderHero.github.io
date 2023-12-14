@@ -84,7 +84,7 @@ function addItemToList(){
             else {
                 hideMessage(depErr1); 
             }
-            if(inputValueAsNumber < 0) {
+            if(inputValueAsNumber < 1) {
                 showMessage(depErr4);
             }
             else {
@@ -125,7 +125,7 @@ function addItemToList(){
                 hideMessage(depErr6);
             }
 
-            if(inputValueAsNumber < 0) {
+            if(inputValueAsNumber < 1) {
                 showMessage(depErr4);
             }
             else {
@@ -428,7 +428,7 @@ function change() {
         } else {
             hideMessage(err1);
         }
-        if (input.value < 0) {
+        if (input.value < 1) {
             showMessage(err2);
         } else {
             hideMessage(err2);
@@ -458,7 +458,7 @@ function checkDimY() {
         } else {
             hideMessage(err1);
         }
-        if (input.value < 0) {
+        if (input.value < 1) {
             showMessage(err2);
         } else {
             hideMessage(err2);
@@ -489,7 +489,7 @@ function checkRep() {
         } else {
             hideMessage(err1);
         }
-        if (input.value < 0) {
+        if (input.value < 1) {
             showMessage(err2);
         } else {
             hideMessage(err2);
