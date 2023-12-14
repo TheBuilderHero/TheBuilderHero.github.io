@@ -24,12 +24,20 @@ window.color3_drops = [0];
 window.totalPaintDrops = [0];
 window.maxPaintDrops = [0];
 window.averagePaintDrops = [0];
+window.stage_index_rep = 0;
+window.color1_drops_rep = [0];
+window.color2_drops_rep = [0];
+window.color3_drops_rep = [0];
+window.totalPaintDrops_rep = [0];
+window.maxPaintDrops_rep = [0];
+window.averagePaintDrops_rep = [0];
 window.data_points_max = 60;
 document.y_title = ["",""];
 document.table_title = ["",""];
 //used for size of grid:
 window.x_value = 0;
 window.y_value = 0;
+window.max_val = 0;
 
 var a = 0; // the total number of paint drops put on the canvas before the stopping criterion stops the painting.
 var a1 = 0; // The number of paint drops on the canvas of Color 1.
@@ -249,13 +257,21 @@ function fillXY(x,y,colorChoice){
 					console.log("Stopped1");
                     window.fullStop = true;
                     window.current_repititions += 1;
+                    saveAllValues_rep();
+                    window.color1_drops_rep.push(0);
+                    window.color2_drops_rep.push(0);
+                    window.color3_drops_rep.push(0);
+                    window.totalPaintDrops_rep.push(0);
+                    window.maxPaintDrops_rep.push(0);
+                    window.averagePaintDrops_rep.push(0);
+                    window.stage_index_rep++;
 				}
                 if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
                     window.current_repititions = 1;
                     console.log("REPETITION STOP");
-                    saveAllValues();
+                    saveAllValues_independent();
                     window.color1_drops.push(0);
                     window.color2_drops.push(0);
                     window.color3_drops.push(0);
@@ -264,6 +280,7 @@ function fillXY(x,y,colorChoice){
                     window.averagePaintDrops.push(0);
 
                     window.stage_index++;
+                    window.stage_index_rep = 0;
                     window.fullStop = true;
 
                     window.current_pos += 1;
@@ -284,13 +301,21 @@ function fillXY(x,y,colorChoice){
 					clearInterval(stopId);
                     clearTimeout(stopId);
                     window.current_repititions += 1;
+                    saveAllValues_rep();
+                    window.color1_drops_rep.push(0);
+                    window.color2_drops_rep.push(0);
+                    window.color3_drops_rep.push(0);
+                    window.totalPaintDrops_rep.push(0);
+                    window.maxPaintDrops_rep.push(0);
+                    window.averagePaintDrops_rep.push(0);
+                    window.stage_index_rep++;
 				}
                 if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
                     window.current_repititions = 1;
                     console.log("REPETITION STOP");
-                    saveAllValues();
+                    saveAllValues_independent();
                     window.color1_drops.push(0);
                     window.color2_drops.push(0);
                     window.color3_drops.push(0);
@@ -298,6 +323,7 @@ function fillXY(x,y,colorChoice){
                     window.maxPaintDrops.push(0);
                     window.averagePaintDrops.push(0);
                     window.stage_index++;
+                    window.stage_index_rep = 0;
                     window.fullStop = true;
 
                     window.current_pos += 1;
@@ -320,13 +346,21 @@ function fillXY(x,y,colorChoice){
 					clearInterval(stopId);
                     clearTimeout(stopId);
                     window.current_repititions += 1;
+                    saveAllValues_rep();
+                    window.color1_drops_rep.push(0);
+                    window.color2_drops_rep.push(0);
+                    window.color3_drops_rep.push(0);
+                    window.totalPaintDrops_rep.push(0);
+                    window.maxPaintDrops_rep.push(0);
+                    window.averagePaintDrops_rep.push(0);
+                    window.stage_index_rep++;
 				}
                 if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
                     clearTimeout(stopId);
                     window.current_repititions = 1;
                     console.log("REPETITION STOP");
-                    saveAllValues();
+                    saveAllValues_independent();
                     window.color1_drops.push(0);
                     window.color2_drops.push(0);
                     window.color3_drops.push(0);
@@ -334,6 +368,7 @@ function fillXY(x,y,colorChoice){
                     window.maxPaintDrops.push(0);
                     window.averagePaintDrops.push(0);
                     window.stage_index++;
+                    window.stage_index_rep = 0;
                     window.fullStop = true;
 
                     window.current_pos += 1;
@@ -397,13 +432,7 @@ function paintOne() {
 	console.log("Interval started");
 }
 
-function paintMany() {
-        for (var i = 0; i < repititions; i++) {
-            paintOne();
-        }
-}
-
-function checkPaint(){
+function paintMany(){
     if(window.timeStamp + window.delay <= window.performance.now()) {
         //console.log(window.timeStamp + window.delay, " VS ", window.performance.now());
         //console.log("TIME STAMP HIT!");
@@ -413,7 +442,7 @@ function checkPaint(){
     clearInterval(stopId);
     console.log(!window.fullStop);
     if(!window.fullStop && (window.current_pos != window.max_pos)){
-        stopId = setInterval(checkPaint, 25);
+        stopId = setInterval(paintMany, 25);
     } else if (window.current_pos == window.max_pos) {
         console.log("COMPLETED EXPERIMENT!");
         changeSizeStuff();
@@ -434,8 +463,8 @@ function startPainting(searchParams) {
         if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
         window.timeStamp = window.performance.now();
-        checkPaint();
-        //stopId = setInterval(checkPaint, 25);
+        paintMany();
+        //stopId = setInterval(paintMany, 25);
     } else if(searchParams.get('independent') == 2){
         let DIMXS = searchParams.get('globalListOfItems').split(',');
         window.max_pos = DIMXS.length;
@@ -448,8 +477,8 @@ function startPainting(searchParams) {
         if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
         window.timeStamp = window.performance.now();
-        checkPaint();
-        //stopId = setInterval(checkPaint, 25);
+        paintMany();
+        //stopId = setInterval(paintMany, 25);
     } else if(searchParams.get('independent') == 3){
         let REPS = searchParams.get('globalListOfItems').split(',');
         window.max_pos = REPS.length;
@@ -464,8 +493,8 @@ function startPainting(searchParams) {
         window.y_value = dim_XY;
         if(!window.endExperiment) draw();
         window.timeStamp = window.performance.now();
-        checkPaint();
-        //stopId = setInterval(checkPaint, 25);
+        paintMany();
+        //stopId = setInterval(paintMany, 25);
     } else {
         console.log("INVALID INDEPENDENT VALUE: ", independent_value);
     }
@@ -495,7 +524,7 @@ function unpause(){
     if(window.isPaused){
         window.timeStamp = window.performance.now();
         window.isPaused = false;
-        checkPaint();
+        paintMany();
     }
 }
 
@@ -581,6 +610,8 @@ function show_option(){
 
 function produce_graph() {
     if(document.y_title[0] != "" && document.y_title[1] != ""){
+        window.max_val = Number(window.data_points1.at(window.data_points1.length-1).x)>Number(window.data_points2.at(window.data_points2.length-1).x)?Number(window.data_points1.at(window.data_points1.length-1).x)+Math.round((Number(window.data_points1.at(window.data_points1.length-1).x))/10):Number(window.data_points2.at(window.data_points2.length-1).x)+Math.round((Number(window.data_points2.at(window.data_points2.length-1).x))/10);
+
         let new_string = document.y_title[0] + " and " + document.y_title[1];
         var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
@@ -595,10 +626,10 @@ function produce_graph() {
                 titleFontColor: "#6D78AD",
                 lineColor: "#6D78AD",
                 minimum: 0,
-                maximum: 100,
+                maximum: window.max_val,
                 //valueFormatString: "##",
 
-                interval: 10
+                interval: Math.round((window.max_val)/10)
             },
             axisY: {
                 //logarithmic: true, //change it to false
@@ -633,6 +664,7 @@ function produce_graph() {
         });
         chart.render();
     } else {
+        window.max_val = Number(window.data_points1.at(window.data_points1.length-1).x)+Math.round((Number(window.data_points1.at(window.data_points1.length-1).x))/10);
         var chart = new CanvasJS.Chart("chartContainer", {
             animationEnabled: true,
             zoomEnabled: true,
@@ -646,10 +678,10 @@ function produce_graph() {
                 titleFontColor: "#6D78AD",
                 lineColor: "#6D78AD",
                 minimum: 0,
-                maximum: 100,
+                maximum: window.max_val,
                 //valueFormatString: "##",
 
-                interval: 10
+                interval: Math.round((window.max_val)/10)
             },
             axisY: {
                 //logarithmic: true, //change it to false
@@ -804,9 +836,9 @@ function set_graph_values(){
         if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
         window.timeStamp = window.performance.now();
-        checkPaint();
+        paintMany();
         */
-        //stopId = setInterval(checkPaint, 25);
+        //stopId = setInterval(paintMany, 25);
     } else if(searchParams.get('independent') == 2){
         let DIMXS = searchParams.get('globalListOfItems').split(',');
         window.max_pos = DIMXS.length;
@@ -838,8 +870,8 @@ function set_graph_values(){
         if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
         window.timeStamp = window.performance.now();
-        checkPaint();*/
-        //stopId = setInterval(checkPaint, 25);
+        paintMany();*/
+        //stopId = setInterval(paintMany, 25);
     } else if(searchParams.get('independent') == 3){
         let REPS = searchParams.get('globalListOfItems').split(',');
         window.max_pos = REPS.length;
@@ -873,8 +905,8 @@ function set_graph_values(){
         window.y_value = dim_XY;
         if(!window.endExperiment) draw();
         window.timeStamp = window.performance.now();
-        checkPaint();*/
-        //stopId = setInterval(checkPaint, 25);
+        paintMany();*/
+        //stopId = setInterval(paintMany, 25);
     } else {
         console.log("INVALID INDEPENDENT VALUE: ", independent_value);
     }
@@ -905,37 +937,67 @@ function getyvalue(calc_value,rep){
 
 
 //This needs to be fixed:
-function getTotalPaintDrops(){
+function getTotalPaintDrops_rep(){
     let total = 0;
     for (let iterX = 0; iterX < maxXSquares; iterX++) {
         for (let iterY = 0; iterY < maxYSquares; iterY++) {
-            total += arrOfColors[iterX][iterY][0];
+            total += tempArrOfColors[iterX][iterY][0];
         }
     }
-    return total / window.repititions; //get total averaged over all repetitions
+    return total;
+}
+
+function getMaxPaintDrops_rep(){
+    let max = 0;
+    for (let iterX = 0; iterX < maxXSquares; iterX++) {
+        for (let iterY = 0; iterY < maxYSquares; iterY++) {
+            if(max < tempArrOfColors[iterX][iterY][0]) max = tempArrOfColors[iterX][iterY][0];
+        }
+    }
+    return max;
+}
+function getAveragePaintDrops_rep(){
+    console.log("total paint drops",window.totalPaintDrops_rep[window.stage_index_rep]);
+    console.log("grid",(window.x_value * window.y_value));
+    return (window.totalPaintDrops_rep[window.stage_index_rep] / (window.y_value * window.x_value));
+}
+
+function getTotalPaintDrops(){
+    let total = 0;
+    for (let iter = 0; iter < window.stage_index_rep; iter++) {
+        total += totalPaintDrops_rep[iter];
+    }
+    return total / window.repititions;
 }
 
 function getMaxPaintDrops(){
     let max = 0;
-    for (let iterX = 0; iterX < maxXSquares; iterX++) {
-        for (let iterY = 0; iterY < maxYSquares; iterY++) {
-            if(max < arrOfColors[iterX][iterY][0]) max = arrOfColors[iterX][iterY][0];
-        }
+    for (let iter = 0; iter < window.stage_index_rep; iter++) {
+        if(max < maxPaintDrops_rep[iter]) max = maxPaintDrops_rep[iter];
     }
-    return max / window.repititions; //get max averaged over all repetitions.
+    return max; //get max over all repetitions.
 }
 function getAveragePaintDrops(){
     console.log("total paint drops",window.totalPaintDrops[window.stage_index]);
     console.log("grid",(window.x_value * window.y_value));
-    return (window.totalPaintDrops[window.stage_index] / (window.y_value * window.x_value));///window.repititions; //get the average of the repetitions
+    let total = 0;
+    for (let iter = 0; iter < window.stage_index_rep; iter++) {
+        total += window.averagePaintDrops_rep[iter];
+    }
+    return (total / window.repititions);///window.repititions; //get the average of the repetitions
+}
+function saveAllValues_rep(){
+    window.totalPaintDrops_rep[window.stage_index_rep] = getTotalPaintDrops_rep();
+    window.maxPaintDrops_rep[window.stage_index_rep] = getMaxPaintDrops_rep();
+    window.averagePaintDrops_rep[window.stage_index_rep] = getAveragePaintDrops_rep();
+
 }
 
 
-function saveAllValues(){
-    window.totalPaintDrops[window.stage_index] = Math.floor(getTotalPaintDrops());
-    window.maxPaintDrops[window.stage_index] = Math.floor(getMaxPaintDrops());
-    window.averagePaintDrops[window.stage_index] = getAveragePaintDrops();
-
+function saveAllValues_independent(){
+    window.totalPaintDrops[window.stage_index] = Math.floor(getTotalPaintDrops()); //averaged over repetitions
+    window.maxPaintDrops[window.stage_index] = getMaxPaintDrops(); //true max
+    window.averagePaintDrops[window.stage_index] = getAveragePaintDrops();//averaged over repetitions
 }
 
 function validate_selection(){
