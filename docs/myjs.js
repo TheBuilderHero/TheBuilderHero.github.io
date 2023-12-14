@@ -570,6 +570,12 @@ function startExperiment() {
     showTable();
 }
 
+const termItemMap = {
+    1: "Last unpainted square is painted for the 1st time",
+    2: "1st time any square gets its 2nd paint blob",
+    3: "1st time any square gets its 3rd paint blob"
+  };
+
 
 function showTable() {
     // Create the table
@@ -599,36 +605,38 @@ function showTable() {
         dependent_variable.textContent = "-";
         tr.appendChild(dependent_variable);
 
-        let color1_table = document.createElement('td'); 
-        color1_table.textContent = "-"; 
-        tr.appendChild(color1_table); 
+        let colors_table = document.createElement('td'); 
+        colors_table.textContent =searchParams.get('color1');
+        tr.appendChild(colors_table); 
 
         let color2_table = document.createElement('td'); 
-        color2_table.textContent = "-"; 
+        color2_table.textContent = searchParams.get('color2'); 
         tr.appendChild(color2_table); 
-        
-        let stopping_criterion = document.createElement('td'); 
-        stopping_criterion.textContent = "-"; 
-        tr.appendChild(stopping_criterion); 
 
         let color3_table = document.createElement('td'); 
-        color3_table.textContent = "-"; 
+        color3_table.textContent = searchParams.get('color3'); 
         tr.appendChild(color3_table); 
+
+
+        let termItem_val = window.searchParams.get('termItem'); 
+        let stopping_criterion = document.createElement('td'); 
+        stopping_criterion.textContent = termItemMap[termItem_val]
+        tr.appendChild(stopping_criterion); 
 
         let total = document.createElement('td');
         total.textContent = window.totalPaintDrops[i];
         tr.appendChild(total);
 
         let A1_table = document.createElement('td');
-        A1_table.textContent = "-"
+        A1_table.textContent = window.color1_drops[i];
         tr.appendChild(A1_table);
 
         let A2_table = document.createElement('td');
-        A2_table.textContent = "-"
+        A2_table.textContent = window.color2_drops[i];
         tr.appendChild(A2_table);
 
         let A3_table = document.createElement('td');
-        A3_table.textContent = "-"
+        A3_table.textContent = window.color3_drops[i];
         tr.appendChild(A3_table);
 
         let max = document.createElement('td');
@@ -903,18 +911,7 @@ function set_graph_values(){
                 window.data_points2.push(values2);
             }
         }
-        //window.data_points = [{ x: 1994, y: 25437639 }, { x: 1995, y: 44866595 }, { x: 1996, y: 77583866 }];
-        /*
-        console.log("Running", dim_XY);
-        window.x_value = dim_XY;
-        window.y_value = dim_XY;
-        window.fullStop = false;
-        if(!window.endExperiment) draw();
-        window.repititions = searchParams.get('repetitions');
-        window.timeStamp = window.performance.now();
-        paintMany();
-        */
-        //stopId = setInterval(paintMany, 25);
+        
     } else if(searchParams.get('independent') == 2){
         let DIMXS = searchParams.get('globalListOfItems').split(',');
         window.max_pos = DIMXS.length;
@@ -937,17 +934,6 @@ function set_graph_values(){
                 window.data_points2.push(values2);
             }
         }
-        /*
-        console.log("Running", dim_X);
-        window.fullStop = false;
-        let dim_y = searchParams.get('dim_y');
-        window.x_value = dim_X;
-        window.y_value = dim_y;
-        if(!window.endExperiment) draw();
-        window.repititions = searchParams.get('repetitions');
-        window.timeStamp = window.performance.now();
-        paintMany();*/
-        //stopId = setInterval(paintMany, 25);
     } else if(searchParams.get('independent') == 3){
         let REPS = searchParams.get('globalListOfItems').split(',');
         window.max_pos = REPS.length;
@@ -970,19 +956,7 @@ function set_graph_values(){
                 window.data_points2.push(values2);
             }
         }
-        /*
-        console.log("Running", rep_value);
-        window.repititions = rep_value;
-        console.log([searchParams.get('globalListOfItems').split(',')]);
-        console.log(Number(rep_value));
-        window.fullStop = false;
-        let dim_XY = searchParams.get('dim_Y_X');
-        window.x_value = dim_XY;
-        window.y_value = dim_XY;
-        if(!window.endExperiment) draw();
-        window.timeStamp = window.performance.now();
-        paintMany();*/
-        //stopId = setInterval(paintMany, 25);
+
     } else {
         console.log("INVALID INDEPENDENT VALUE: ", independent_value);
     }
