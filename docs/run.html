@@ -101,26 +101,19 @@
       background-color: unset;
   }
 
-  #html-data-table {
-    border: 1px solid white; /* Add white border around the table */
+  .table_num1 { 
+    background-color: #32373A;
     border-collapse: collapse;
     width: 100%;
-    background-color: #32373A;
     color: white; 
   }
 
-  /* Style table header cells */
-  #html-data-table th {
-    border: 1px solid white; /* Add border to header cells */
+  .table_num1 th, .table_num1 td {
+    border: 1px solid white; 
     padding: 8px;
     text-align: left;
-  }
 
-  /* Style table cells */
-  #html-data-table td {
-    border: 1px solid white; /* Add border to data cells */
-    padding: 8px;
-    }
+  }
 
   #reduced-html-data-table {
     border: 1px solid white; /* Add white border around the table */
@@ -262,13 +255,12 @@
 
       <h3 style="text-align: center;">Please select an experiment value to be Calculated</h3>
         <div class="" style="text-align: center">
-          <!--<label style="font-size: medium; padding-top: 20px">Experiment Value</label><br>-->
           <label for="A" style="font-size: small;">A: the number of paint drops put on the canvas before the painting halts</label><br><input type="checkbox" id="A" name="calc_val" value="1"><br>
           <label for="A1" style="font-size: small;">A1. The number of paint drops on the canvas of Color 1.</label><br><input type="checkbox" id="A1" name="calc_val" value="2"><br>
           <label for="A2" style="font-size: small;">A2. The number of paint drops on the canvas of Color 2.</label><br><input type="checkbox" id="A2" name="calc_val" value="3"><br><br>
           <label for="A3" style="font-size: small;">A3. The number of paint drops on the canvas of Color 3.</label><br><input type="checkbox" id="A3" name="calc_val" value="4"><br><br>
           <label for="B" style="font-size: small;">B: the maximum number of paint drops on any given square when the painting halts (that is, looking at all the squares, what is the largest number of paint drops that fell on one square?)</label><br><input type="checkbox" id="B" name="calc_val" value="5"><br><br>
-          <label for="C" style="font-size: small;">C. the average number of paint drops over all the squares  when the painting for this canvas halts</label><br><input type="checkbox" id="C" name="calc_val" value="6" required><br><br>
+          <label for="C" style="font-size: small;">C. the average number of paint drops over all the squares  when the painting for this csanvas halts</label><br><input type="checkbox" id="C" name="calc_val" value="6" required><br><br>
 
           <button style="margin-bottom: 16%; color: black;" onclick="graph_table_show();">CONTINUE</button>
         </div>
@@ -363,13 +355,19 @@
           <div id="chartContainer" style="height: 370px; width: 100%;"></div>
           <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
         </div>
-        <div class="col-sm-6" style="text-align: center">
-          <table id="html-data-table">
+        <div id = "table1" class="col-sm-6" style="text-align: center">
+          
+            
+
+
+          <!-- <table id="html-data-table">
             <tr>
                 <th>Independent Variable</th>
                 <th>X-Dim</th>
                 <th>Y-Dim</th>
-                <th>Colors</th>
+                <th>Color 1</th>
+                <th>Color 2</th>
+                <th>Color 3</th>
                 <th>Stopping Criteria</th>
                 <th>Repetitions</th>
                 <th>A Min</th>
@@ -382,7 +380,9 @@
                 <td>2</td>
                 <td>2</td>
                 <td>3</td>
-                <td>Red, Green, Blue</td>
+                <td>Red</td>
+                <td>Green</td>
+                <td>Blue</td>
                 <td>2nd Paint Blob</td>
                 <td>4</td>
                 <td>34</td>
@@ -391,33 +391,15 @@
                 <td>43</td>
                 <td>39</td>
             </tr>
-        </table>    
+        </table>     -->
       </div>
  
-          <div class="col-sm-6" style="text-align: center; margin-top: 30px;">
-            <table id="reduced-html-data-table">
-              <tr>
-                  <th>Independent Variable</th>
-                  <th>X-Dim</th>
-                  <th>Y-Dim</th>
-                  <th>Colors</th>
- 
-              </tr>
-              <tr>
-                  <td>2</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>Red, Green, Blue</td>
-
-              </tr>
-          </table>    
+          <div id = "table2" class="col-sm-6" style="text-align: center; margin-top: 30px;">
+            
         </div>
-          <div id="data-table">
 
         
           
-      </div>
-
 
 
     </div>

@@ -550,6 +550,9 @@ function graph_table_show(){
         document.getElementById('graph-container').hidden = false;
         set_graph_values();
         produce_graph();
+
+        saveAllValues_independent();
+        showTable(); 
     } else {
         alert("Please only select One or Two and no more than that for results!");
     }
@@ -560,15 +563,88 @@ function graph_table_show(){
 let independentVariable;
 let dependentVariables;
 
+
 function startExperiment() {
     // Code for setting up and running the experiment
     // Populate the experiment results in the table
     showTable();
 }
 
+
 function showTable() {
-    // Code for displaying the experiment table
-    //document.getElementById("table-container").hidden = false;
+    // Create the table
+    let table = document.createElement('table');
+    table.className = 'table_num1';
+    let headerRow = document.createElement('tr');
+
+    // Create the headers
+    let headers = ['Independent Variables', 'Dependent Variables', 'Color #1', 'Color #2', 'Color #3', 'Stopping Criterion', 'Total', 'A1', 'A2', 'A3', 'Max', 'Avg. Paint Drops'];
+    for (let header of headers) {
+        let th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+    }
+    table.appendChild(headerRow);
+
+    // Populate the table with data
+    for (let i = 0; i < window.stage_index; i++) {
+
+        let tr = document.createElement('tr');
+
+        let independent_variables = document.createElement('td'); 
+        independent_variables.textContent = "-"; 
+        tr.appendChild(independent_variables); 
+
+        let dependent_variable = document.createElement('td');
+        dependent_variable.textContent = "-";
+        tr.appendChild(dependent_variable);
+
+        let color1_table = document.createElement('td'); 
+        color1_table.textContent = "-"; 
+        tr.appendChild(color1_table); 
+
+        let color2_table = document.createElement('td'); 
+        color2_table.textContent = "-"; 
+        tr.appendChild(color2_table); 
+        
+        let stopping_criterion = document.createElement('td'); 
+        stopping_criterion.textContent = "-"; 
+        tr.appendChild(stopping_criterion); 
+
+        let color3_table = document.createElement('td'); 
+        color3_table.textContent = "-"; 
+        tr.appendChild(color3_table); 
+
+        let total = document.createElement('td');
+        total.textContent = window.totalPaintDrops[i];
+        tr.appendChild(total);
+
+        let A1_table = document.createElement('td');
+        A1_table.textContent = "-"
+        tr.appendChild(A1_table);
+
+        let A2_table = document.createElement('td');
+        A2_table.textContent = "-"
+        tr.appendChild(A2_table);
+
+        let A3_table = document.createElement('td');
+        A3_table.textContent = "-"
+        tr.appendChild(A3_table);
+
+        let max = document.createElement('td');
+        max.textContent = window.maxPaintDrops[i];
+        tr.appendChild(max);
+
+        let avg = document.createElement('td');
+        avg.textContent = window.averagePaintDrops[i];
+        tr.appendChild(avg);
+
+        table.appendChild(tr);
+    }
+
+    // Append the table to the body 
+    let table_container = document.getElementById('table1')
+    table_container.appendChild(table);
 }
 
 function showGraph() {
