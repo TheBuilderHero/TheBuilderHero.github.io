@@ -912,7 +912,7 @@ function getTotalPaintDrops(){
             total += arrOfColors[iterX][iterY][0];
         }
     }
-    return total;
+    return total / window.repititions; //get total averaged over all repetitions
 }
 
 function getMaxPaintDrops(){
@@ -922,18 +922,18 @@ function getMaxPaintDrops(){
             if(max < arrOfColors[iterX][iterY][0]) max = arrOfColors[iterX][iterY][0];
         }
     }
-    return max;
+    return max / window.repititions; //get max averaged over all repetitions.
 }
 function getAveragePaintDrops(){
     console.log("total paint drops",window.totalPaintDrops[window.stage_index]);
     console.log("grid",(window.x_value * window.y_value));
-    return (window.totalPaintDrops[window.stage_index] / (window.y_value * window.x_value))/window.repititions; //get the average of the repetitions
+    return (window.totalPaintDrops[window.stage_index] / (window.y_value * window.x_value));///window.repititions; //get the average of the repetitions
 }
 
 
 function saveAllValues(){
-    window.totalPaintDrops[window.stage_index] = getTotalPaintDrops();
-    window.maxPaintDrops[window.stage_index] = getMaxPaintDrops();
+    window.totalPaintDrops[window.stage_index] = Math.floor(getTotalPaintDrops());
+    window.maxPaintDrops[window.stage_index] = Math.floor(getMaxPaintDrops());
     window.averagePaintDrops[window.stage_index] = getAveragePaintDrops();
 
 }
