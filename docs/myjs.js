@@ -595,7 +595,7 @@ function produce_graph() {
                 titleFontColor: "#6D78AD",
                 lineColor: "#6D78AD",
                 minimum: 0,
-                //maximum: window.data_points_max+10,
+                maximum: 100,
                 //valueFormatString: "##",
 
                 interval: 10
@@ -646,7 +646,7 @@ function produce_graph() {
                 titleFontColor: "#6D78AD",
                 lineColor: "#6D78AD",
                 minimum: 0,
-                //maximum: window.data_points_max+10,
+                maximum: 100,
                 //valueFormatString: "##",
 
                 interval: 10
@@ -712,6 +712,9 @@ function set_graph_values(){
         }
     }
     console.log("calc_value (dependent)",calc_value);
+    //reset values:
+    document.y_title = ["",""];
+    document.table_title = ["",""];
     if(calc_value[0] == 1){
         document.table_title[0] = "A: The number of paint drops put on the canvas before the painting halted";
         document.y_title[0] = "Total Paint Drops";
@@ -924,7 +927,7 @@ function getMaxPaintDrops(){
 function getAveragePaintDrops(){
     console.log("total paint drops",window.totalPaintDrops[window.stage_index]);
     console.log("grid",(window.x_value * window.y_value));
-    return window.totalPaintDrops[window.stage_index] / (window.y_value * window.x_value);
+    return (window.totalPaintDrops[window.stage_index] / (window.y_value * window.x_value))/window.repititions; //get the average of the repetitions
 }
 
 
@@ -944,5 +947,6 @@ function validate_selection(){
             if(++index_temp_checked > 2) return false;
         }
     }
+    if(index_temp_checked == 0) return false;
     return true;
 }
