@@ -640,15 +640,31 @@ function showTable() {
     let table = document.createElement('table');
     table.className = 'table_num1';
     let headerRow = document.createElement('tr');
+    let subHeaderRow = document.createElement('tr');
 
     // Create the headers
-    let headers = ['Ind. Variables', 'Dep. Variable #1', 'Dep. Variable #2', 'Colors', 'Stopping Criterion', 'Total', 'A1', 'A2', 'A3', 'Max', 'Avg. Paint Drops'];
+    let headers = ['Ind. Variables', 'Dep. Variable #1', 'Dep. Variable #2', 'Colors', 'Stopping Criterion', 'A', 'A1', 'A2', 'A3', 'B', 'C'];
+    let subHeaders = ['Min', 'Avg', 'Max']; // Add your subheaders here
     for (let header of headers) {
         let th = document.createElement('th');
         th.textContent = header;
+        if (['A', 'A1', 'A2', 'A3', 'B', 'C'].includes(header)) {
+            th.rowSpan = 1;
+            th.colSpan = 3;
+        } else {
+            th.rowSpan = 2;
+        }
         headerRow.appendChild(th);
     }
+    for (let i = 0; i < 6; i++) { // For each of the 6 columns that need subcolumns
+        for (let subHeader of subHeaders) {
+            let th = document.createElement('th');
+            th.textContent = subHeader;
+            subHeaderRow.appendChild(th);
+        }
+    }
     table.appendChild(headerRow);
+    table.appendChild(subHeaderRow);
 
     // Create an array to hold your data
     let data = [];
