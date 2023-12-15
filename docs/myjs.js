@@ -553,6 +553,7 @@ function graph_table_show(){
 
         saveAllValues_independent();
         showTable(); 
+        showReducedTable();
     } else {
         alert("Please only select One or Two and no more than that for results!");
     }
@@ -575,6 +576,59 @@ const termItemMap = {
     2: "1st time any square gets its 2nd paint blob",
     3: "1st time any square gets its 3rd paint blob"
   };
+
+function showReducedTable() { 
+    let table_container2 = document.getElementById('table2');
+    table_container2.innerHTML = '';
+
+    let reduced_table = document.createElement('table');
+    reduced_table.className = 'table_num1';
+    let headerRow = document.createElement('tr');
+
+    let headers = ['Ind. Variables', 'Dep. Variable #1', 'Dep. Variable #2']
+    for (let header of headers) {
+        let th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+    }
+    reduced_table.appendChild(headerRow);
+
+    // Create an array to hold your data
+    let data = [];
+    let ind_var = searchParams.get('globalListOfItems').split(','); 
+    for (let i = 0; i < ind_var.length; i++) {
+        data.push({
+        independent_variable: ind_var[i],
+        dependent_variable: document.table_title[0], // Change this to dynamically allocat num of dep. variables choosen
+        dependent_variable2: document.table_title[1] ? document.table_title[1] : "-",
+        }); 
+    }
+    // Populate the table with data
+    for (let i = 0; i < data.length; i++) {
+        let row = data[i];
+        let tr = document.createElement('tr');
+
+        for (let key in row) {
+            if ((key === 'dependent_variable' || key === 'dependent_variable2') && i !== 0) {
+                continue;
+            }
+
+            let td = document.createElement('td');
+            td.textContent = row[key];
+
+            if ((key === 'dependent_variable' || key === 'dependent_variable2') && i === 0) {
+                td.rowSpan = data.length;
+            }
+
+            tr.appendChild(td);
+        }
+
+        reduced_table.appendChild(tr);
+    }
+
+    // Append the table to the body 
+    table_container2.appendChild(reduced_table);
+}
 
 
 function showTable() {

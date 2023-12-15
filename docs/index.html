@@ -67,6 +67,7 @@
 		grid-template-rows: repeat(auto-fit, minmax(1px, 1fr));
 	}
 
+
 	.container {
 	  display: grid;
 	  grid-gap: 10px;
@@ -81,19 +82,70 @@
 	  border: 3px solid #a07;
 	}
 
-    .formItems{
-        text-align: center;
-        color: white; 
-    }
+  .formItems{
+      text-align: center;
+      color: white; 
+  }
 
-    .sidenav{
-        height: 190%;
-    }
+  .sidenav{
+      height: 190%;
+  }
 
-    #var-legend {
-      color: white;
+  #var-legend {
+    color: white;
+  }
+
+  input[type=radio] {
+    --s: 1em;     /* control the size */
+    --c: #009688; /* the active color */
+  
+    height: var(--s);
+    aspect-ratio: 1;
+    border: calc(var(--s)/8) solid #939393;
+    padding: calc(var(--s)/8);
+    background: 
+      radial-gradient(farthest-side,var(--c) 94%,#0000) 
+      50%/0 0 no-repeat content-box;
+    border-radius: 50%;
+    outline-offset: calc(var(--s)/10);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    font-size: inherit;
+    transition: .3s;
+  }
+
+  input[type=radio]:checked {
+    border-color: var(--c);
+    background-size: 100% 100%;
+  }
+
+  .custom-select select {
+    display: inline-block;
+    border: 2px solid #bbb;
+    padding: 3px 3px 3px 5px;
+    margin: 0;
+    font: inherit;
+    outline:none; /* remove focus ring from Webkit */
+    line-height: 1.2;
+    background: #f8f8f8;
+      
+    -webkit-appearance:none; /* remove the strong OSX influence from Webkit */
+
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+  }
+
+  /* for Webkit's CSS-only solution */
+  @media screen and (-webkit-min-device-pixel-ratio:0) { 
+    .custom-select select {
+      padding-right:25px;    
     }
-    .button { }
+  }
+
+
 	body {
 	  margin:0;
         color: white;
@@ -151,10 +203,10 @@
                     <h3>To start you off, the Following Buttons give you an option to run the experiment very quick and easily</h3>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-3">
-                        <button id="submit1" type="submit" style="margin-bottom: 60px; color: white; background-color: #4287f5; border-radius: 8px; padding: 6px;">RUN EXPERIMENT</button>
+                        <button id="submit1" type="submit" style="margin-bottom: 60px; display: inline-block; outline: 0; text-align: center; cursor: pointer; height: 34px; padding: 0 8px; vertical-align: top; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #4287f5; border-color: #4287f5; color: white; line-height: 16px; font-size: 14px; :hover { background: #4287f5; color: #3d3d3d; }">RUN EXPERIMENT</button>
                     </div>
                     <div class="col-sm-3">
-                        <input type="button" id="randomize" value="FILL RANDOM EXPERIMENT" style=" color: white; background-color: #4287f5; border-radius: 8px; padding: 6px;" onclick="randomize_inputs();">
+                        <input type="button" id="randomize" value="FILL RANDOM EXPERIMENT" style="margin-bottom: 60px; display: inline-block; outline: 0; text-align: center; cursor: pointer; height: 34px; padding: 0 8px; vertical-align: top; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #4287f5; border-color: #4287f5; color: white; line-height: 16px; font-size: 14px; :hover { background: #4287f5; color: #3d3d3d; }" onclick="randomize_inputs();">
                     </div>
                     <div class="col-sm-3"></div>
                 </fieldset>
@@ -198,8 +250,8 @@
                             // e.keyCode is deprecated (left here for for legacy browsers support)
                             // keyup is not compatible with Jquery select(), Keydown is.
                         </script>
-                        <button type="button" id="addNumber" name="addNumber" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 4px;" onclick="addItemToList();">Add Number</button>
-                        <button type="button" id="removeNumber" name="removeNumber" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 4px;" onclick="removeItemFromList();">Remove selected Number</button><br><br>
+                        <button type="button" id="addNumber" name="addNumber" style="display: inline-block; outline: 0; text-align: center; cursor: pointer; height: 34px; padding: 0 8px; vertical-align: top; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #4287f5; border-color: #4287f5; color: white; line-height: 16px; font-size: 14px; :hover { background: #4287f5; color: #3d3d3d; }" onclick="addItemToList();">Add Number</button>
+                        <button type="button" id="removeNumber" name="removeNumber" style="display: inline-block; outline: 0; text-align: center; cursor: pointer; height: 34px; padding: 0 8px; vertical-align: top; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #4287f5; border-color: #4287f5; color: white; line-height: 16px; font-size: 14px; :hover { background: #4287f5; color: #3d3d3d; }" onclick="removeItemFromList();">Remove selected Number</button><br><br>
                     </div>
                     <div class="col-sm-4 formItems">
                         <label id="repetitions_label" style="font-size: small; display: none;" for="repetitions">Repetitions Value</label>
@@ -241,6 +293,7 @@
                     <div class="col-sm-3 formItems">
                         <legend class="formItems">Color Info</legend>
                         <label for="color1">Color 1</label><br>
+                        <div class="custom-select">
                         <select id="color1" name="color1" style="color: black;" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
                             <option id="option0" disabled selected value> -- select an option -- </option>
                             <option id="option1" value="red">red</option>
@@ -280,6 +333,7 @@
                             <option value="black">black</option>
                         </select><br><br>
                     </div>
+                  </div>
 
                 <div class="col-sm-4">
                     <legend class="formItems">Stopping Criteria</legend>
@@ -315,10 +369,10 @@
             <div class="formItems">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-2">
-                    <button id="submit" type="submit" style="margin-bottom: 60px;color: white; background-color: #4287f5; border-radius: 8px; padding: 5px;">Run Experiment!</button>
+                    <button id="submit" type="submit" style="margin-bottom: 60px;display: inline-block; outline: 0; text-align: center; cursor: pointer; height: 34px; padding: 0 8px; vertical-align: top; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #4287f5; border-color: #4287f5; color: white; line-height: 16px; font-size: 14px; :hover { background: #4287f5; color: #3d3d3d; }">Run Experiment!</button>
                 </div>
                 <div class="col-sm-2">
-                    <button id="reload" type="button" style="margin-bottom: 60px;color: white; background-color: #4287f5; border-radius: 8px; padding: 3px;" onclick="location.reload();">Restart Page Inputs</button>
+                    <button id="reload" type="button" style="margin-bottom: 60px;display: inline-block; outline: 0; text-align: center; cursor: pointer; height: 38px; padding: 0 8px; vertical-align: top; border-radius: 3px; border: 1px solid transparent; transition: all .3s ease; background: #4287f5; border-color: #4287f5; color: white; line-height: 16px; font-size: 14px; :hover { background: #4287f5; color: #3d3d3d; }" onclick="location.reload();">Restart Page Inputs</button>
                 </div>
                 <div class="col-sm-4"></div>
             </div>
