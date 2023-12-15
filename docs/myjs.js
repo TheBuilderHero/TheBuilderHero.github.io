@@ -577,14 +577,14 @@ const termItemMap = {
   };
 
 
-  function showTable() {
+function showTable() {
     // Create the table
     let table = document.createElement('table');
     table.className = 'table_num1';
     let headerRow = document.createElement('tr');
 
     // Create the headers
-    let headers = ['Independent Variables', 'Dependent Variables', 'Color #1', 'Color #2', 'Color #3', 'Stopping Criterion', 'Total', 'A1', 'A2', 'A3', 'Max', 'Avg. Paint Drops'];
+    let headers = ['Ind. Variables', 'Dep. Variable #1', 'Dep. Variable #2', 'Colors', 'Stopping Criterion', 'Total', 'A1', 'A2', 'A3', 'Max', 'Avg. Paint Drops'];
     for (let header of headers) {
         let th = document.createElement('th');
         th.textContent = header;
@@ -599,9 +599,8 @@ const termItemMap = {
         data.push({
             independent_variable: ind_var[i],
             dependent_variable: document.table_title[0], // Change this to dynamically allocat num of dep. variables choosen
-            color1: searchParams.get('color1'),
-            color2: searchParams.get('color2'),
-            color3: searchParams.get('color3'),
+            dependent_variable2: document.table_title[1] ? document.table_title[1] : "-",
+            colors: searchParams.get('color1') + ', ' + searchParams.get('color2') + ', ' + searchParams.get('color3'),
             stopping_criterion: termItemMap[window.searchParams.get('termItem')],
             total: window.totalPaintDrops[i],
             A1: window.color1_drops[i],
@@ -613,12 +612,24 @@ const termItemMap = {
     }
 
     // Populate the table with data
-    for (let row of data) {
+    for (let i = 0; i < data.length; i++) {
+        let row = data[i];
         let tr = document.createElement('tr');
 
         for (let key in row) {
+            // Skip creating 'stopping_criterion', 'dependent_variable', and 'dependent_variable2' cells after the first row
+            if ((key === 'stopping_criterion' || key === 'dependent_variable' || key === 'dependent_variable2' || key == 'colors') && i !== 0) {
+                continue;
+            }
+
             let td = document.createElement('td');
             td.textContent = row[key];
+
+            // Apply 'rowspan' to the first 'stopping_criterion', 'dependent_variable', and 'dependent_variable2' cells
+            if ((key === 'stopping_criterion' || key === 'dependent_variable' || key === 'dependent_variable2' || key == 'colors') && i === 0) {
+                td.rowSpan = data.length;
+            }
+
             tr.appendChild(td);
         }
 
@@ -629,6 +640,7 @@ const termItemMap = {
     let table_container = document.getElementById('table1')
     table_container.appendChild(table);
 }
+
 
 function showGraph() {
     // Code for generating and displaying the graph
