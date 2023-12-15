@@ -578,6 +578,10 @@ const termItemMap = {
 
 
 function showTable() {
+    // Clear the table container
+    let table_container1 = document.getElementById('table1');
+    table_container1.innerHTML = '';
+
     // Create the table
     let table = document.createElement('table');
     table.className = 'table_num1';
