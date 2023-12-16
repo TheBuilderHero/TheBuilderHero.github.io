@@ -50,6 +50,7 @@
   </style>
   
 	<style>
+    
 	.grid-container {
 	  display: grid;
 	  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
@@ -185,7 +186,7 @@
 <div class="container-fluid text-center">    
   <div class="row content">
     <div class="col-sm-2 sidenav" style="margin-bottom: 0px; background-color: unset;">
-        <p>Music Choices:</p>
+        <p style = "font-weight: bold;">Music Choices:</p>
         <p><a href="https://www.youtube.com/watch?v=sRkzqLudJPE" target=”_blank”>Larry Owens - The Joy Of Painting</a></p>
         <p><a href="https://www.youtube.com/watch?v=oy2zDJPIgwc" target=”_blank”>Mozart – Eine kleine Nachtmusik</a></p>
         <p><a href="https://www.youtube.com/watch?v=DLi25fgVuRs" target=”_blank”>Puccini – 'O mio babbino caro' from Gianni Schicchi</a></p>
@@ -199,7 +200,7 @@
         <input type="hidden" id="globalListOfItemsInput" name="globalListOfItems" value="">
             <div class="row-sm-12 formItems">
                 <fieldset>
-                    <h1>Welcome Experiment Painting Website</h1>
+                    <h1 style = "font-weight: bold;">Welcome Experiment Painting Website</h1>
                     <h3>To start you off, the Following Buttons give you an option to run the experiment very quick and easily</h3>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-3">
@@ -213,7 +214,7 @@
             </div>
             <div class="row-sm-12 formItems">
                 <fieldset>
-                    <legend id = "var-legend">Dependent and Independent Variables</legend>
+                    <legend id = "var-legend" style = "font-weight: 760;">Dependent and Independent Variables</legend>
 
                     <div class="col-sm-4 formItems">
                         <label style="font-size: medium;">Independent</label><br>
@@ -227,7 +228,7 @@
 
                     <div class="col-sm-4 formItems">
                         <label style="font-size: medium">Independent Value</label><br>
-                        <select id="dependentList" multiple size="3" style="width: 180px; color: black;">
+                        <select id="dependentList" multiple size="4" style="width: 190px; color: black;">
                         </select><br><br>
                         <span id="depErr1" class=" hide error">Nothing entered</span>
                         <span id="depErr2" class="block hide error">Too few items: a minimum of 4</span>
@@ -237,7 +238,7 @@
                         <span id="depErr8" class=" hide error">Max of 40</span>
                         <span id="depErr6" class=" hide error">X-values must be greater than or equal to previous entered</span><br>
                         <!--<p id="depErr7" class="help-block error">Test this!</p>-->
-                        <input type="number" id="numberInput" style="color: black;" required><br><br>
+                        <input type="number" id="numberInput" style="color: black; padding: 5px 4px;" required><br><br>
                         <script>
                             document.getElementById('numberInput').addEventListener('keypress', function(event) {
                                 if (event.key === 'Enter' || event.keyCode == 13) {
@@ -258,21 +259,21 @@
                         <span id="repErr1" class="help-block hide error">Nothing entered for Repetitions</span>
                         <span id="repErr2" class="help-block hide error">Repetitions must be greater than 0</span>
                         <span id="repErr3" class="help-block hide error">Repetitions must be less than 99</span>
-                        <input type="number" id="repetitions" name="repetitions" style="display: none; color: black;">
+                        <input type="number" id="repetitions" name="repetitions" style="display: none; color: black;padding: 5px 4px;">
                         <br><br>
                         
                         <label id="dim_y_label" for="dim_y" onload="checkDimY();" style="font-size: small;display: none;">Dimension Y Value</label>
                         <span id="dimYErr1" class="help-block hide error">Nothing entered for Dimension Y</span>
                         <span id="dimYErr2" class="help-block hide error">Dimension Y must be greater than 0</span>
                         <span id="dimYErr3" class="help-block hide error">Dimension Y must be less than 40</span>
-                        <input type="number" id="dim_y" name="dim_y" value="" style="display: none; color: black;">
+                        <input type="number" id="dim_y" name="dim_y" value="" style="display: none; color: black;padding: 5px 4px;">
                         <br><br>
                         
                         <label id="dim_Y_X_label" for="dim_Y_X" style="font-size: small;display: none;">Square Dimension Value</label>
                         <span id="dimY_XErr1" class="help-block hide error">Nothing entered for Dimension</span>
                         <span id="dimY_XErr2" class="help-block hide error">Dimension must be greater than 0</span>
                         <span id="dimY_XErr3" class="help-block hide error">Dimension must be less than 40</span>
-                        <input type="number" id="dim_Y_X" name="dim_Y_X" value="" style="display: none; color: black;" onchange="setDimY_X();">
+                        <input type="number" id="dim_Y_X" name="dim_Y_X" value="" style="display: none; color: black;padding: 5px 4px;" onchange="setDimY_X();">
                     </div>
 
                     <!--<div class="col-sm-3 formItems">
@@ -291,7 +292,7 @@
                     <!-- <div class="col-sm-6 formItems"> -->
                     <!-- </div> -->
                     <div class="col-sm-3 formItems">
-                        <legend class="formItems">Color Info</legend>
+                        <legend class="formItems" style = "font-weight: 760;">Color Info</legend>
                         <label for="color1">Color 1</label><br>
                         <div class="custom-select">
                         <select id="color1" name="color1" style="color: black;" onchange="updateOtherLists(this);" onfocus="storeOldValue(this);" required>
@@ -336,7 +337,7 @@
                   </div>
 
                 <div class="col-sm-4">
-                    <legend class="formItems">Stopping Criteria</legend>
+                    <legend class="formItems" style = "font-weight: 760;">Stopping Criteria</legend>
                     <div class="formItems">
                         <label style="font-size: medium">When should the experiment to terminate?</label><br>
                         <label for="termItem1" style="font-size: small;">Terminate When: the last unpainted square is painted for the first time.</label><br><input type="radio" id="termItem1" name="termItem" value="1" required><br>
@@ -347,7 +348,7 @@
                     </div>
                 </div>
                 <div class="col-sm-5">
-                    <legend class="formItems">Song Choice</legend>
+                    <legend class="formItems" style = "font-weight: 760;">Song Choice</legend>
                     <div class="formItems">
                         <label style="font-size: medium">What song do you want to play while you paint?</label><br>
                         <div class="formItems col-sm-6">
@@ -382,7 +383,7 @@
 		</div>
 			</div>
 			<div class="col-sm-2 sidenav" style="margin-bottom: 0px; background-color: unset;">
-                <p>Music Choices:</p>
+                <p style = "font-weight: bold;">Music Choices:</p>
                 <p><a href="https://www.youtube.com/watch?v=z69C2Jqp42Q" target=”_blank”>J.S. Bach – Toccata and Fugue in D minor</a></p>
                 <p><a href="https://www.youtube.com/watch?v=W2qW6fOtAMY" target=”_blank”>Beethoven – Symphony No.5 in C minor (shortened)</a></p>
                 <p><a href="https://www.youtube.com/watch?v=_CTYymbbEL4" target=”_blank”>Johann Strauss II - The Blue Danube Waltz</a></p>
