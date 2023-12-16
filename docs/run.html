@@ -220,7 +220,8 @@
               <label for="l_y">Y:</label>
               <input type="number" id="l_y" name="l_y"><br><br>-->
               <button type="button" onclick="pause();" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 5px;">Stop</button>
-              <button type="button" onclick="unpause();" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 5px;">Start</button><br><br>
+              <button type="button" onclick="unpause();" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 5px;">Start</button>
+            <button type="button" onclick="activate_extreme_speed();" style="color: white; background-color: #4287f5; border-radius: 8px; padding: 5px;">Extreme Speed!!!</button><br><br>
               <!--<button type="button" onclick="changeSizeStuff();">Change Size Stuff</button>-->
 
 
@@ -229,11 +230,24 @@
       <h2 style="text-align: center;">Experiment Result Selection and Final Canvas</h2>
       <hr>
     </div>
-    <div class="row col-sm-6" style="text-align: center" id="after_run_div" hidden>
+
+
+    <div id = "table1" class="col-sm-12" style="text-align: center" hidden>
+    </div>
+
+    <div class="col-sm-4" style="text-align: left;" id="update_canvas">
+      <canvas id="canvas" role="presentation"></canvas>
+    </div>
+
+    <div class="row col-sm-12" style="text-align: center" id="after_run_div" hidden>
 
 
 
       <h3 style="text-align: center;">Please select an experiment value to be Calculated</h3>
+
+      <div class="col-sm-12" style="text-align: center;" id="update_canvas_small">
+        <canvas id="canvas_small" role="presentation"></canvas>
+      </div>
         <div class="" style="text-align: center">
           <label for="A" style="font-size: small;">A: the number of paint drops put on the canvas before the painting halts</label><br><input type="checkbox" id="A" name="calc_val" value="1"><br>
           <label for="A1" style="font-size: small;">A1. The number of paint drops on the canvas of Color 1.</label><br><input type="checkbox" id="A1" name="calc_val" value="2"><br>
@@ -245,143 +259,52 @@
           <button style="margin-bottom: 16%; color: black;" onclick="graph_table_show();">CONTINUE</button>
         </div>
     </div>
-    <div class="col-sm-4" style="text-align: left;" id="update_canvas">
-      <canvas id="canvas" role="presentation"></canvas>
-    </div>
     <div class="row col-sm-12" id="graph_table" style="margin-bottom: 100px;" hidden>
-        <div class="col-sm-6" style="text-align: center">
-          <script>
-            window.onload = function () {
+      <div class="col-sm-6" style="text-align: center">
 
-              var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                zoomEnabled: true,
-                theme: "dark2",
-                title: {
-                  text: "Growth in Internet Users Globally"
-                },
-                axisX: {
-                  title: "Year",
-                  valueFormatString: "####",
-                  interval: 1
-                },
-                axisY: {
-                  logarithmic: true, //change it to false
-                  title: "Internet Users (Log)",
-                  titleFontColor: "#6D78AD",
-                  lineColor: "#6D78AD",
-                  gridThickness: 0,
-                  lineThickness: 1,
-                  labelFormatter: addSymbols
-                },
-                axisY2: {
-                  title: "Internet Users",
-                  titleFontColor: "#51CDA0",
-                  logarithmic: false, //change it to true
-                  lineColor: "#51CDA0",
-                  gridThickness: 0,
-                  lineThickness: 1,
-                  labelFormatter: addSymbols
-                },
-                legend: {
-                  verticalAlign: "top",
-                  fontSize: 16,
-                  dockInsidePlotArea: true
-                },
-                data: [{
-                  type: "line",
-                  xValueFormatString: "####",
-                  showInLegend: true,
-                  name: "Log Scale",
-                  dataPoints: [
-                    { x: 1, y: 1 },
-                    { x: 2, y: 2 },
-                    { x: 2, y: 2 },
-                    { x: 2, y: 2 },
-                    { x: 2, y: 2 },
-                  ]
-                },
-                  {
-                    type: "line",
-                    xValueFormatString: "####",
-                    axisYType: "secondary",
-                    showInLegend: true,
-                    name: "Linear Scale",
-                    dataPoints: [
-                      { x: 1, y: 1 },
-                      { x: 2, y: 2 },
-                      { x: 2, y: 2 },
-                      { x: 2, y: 2 },
-                      { x: 2, y: 2 },
-                      { x: 2, y: 2 },
-                    ]
-                  }]
-              });
-              chart.render();
-
-              function addSymbols(e) {
-                var suffixes = ["", "K", "M", "B", "T"];
-
-                var order = Math.max(Math.floor(Math.log(Math.abs(e.value)) / Math.log(1000)), 0);
-                if(order > suffixes.length - 1)
-                  order = suffixes.length - 1;
-
-                var suffix = suffixes[order];
-                return CanvasJS.formatNumber(e.value / Math.pow(1000, order), "#,##0.##") + suffix;
-              }
-
-            }
-          </script>
-          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-          <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
-        </div>
-        <div id = "table1" class="col-sm-6" style="text-align: center">
-          
-            
-
-
-          <!-- <table id="html-data-table">
-            <tr>
-                <th>Independent Variable</th>
-                <th>X-Dim</th>
-                <th>Y-Dim</th>
-                <th>Color 1</th>
-                <th>Color 2</th>
-                <th>Color 3</th>
-                <th>Stopping Criteria</th>
-                <th>Repetitions</th>
-                <th>A Min</th>
-                <th>A Max</th>
-                <th>A Avg</th>
-                <th>B Max</th>
-                <th>C Avg</th>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>3</td>
-                <td>Red</td>
-                <td>Green</td>
-                <td>Blue</td>
-                <td>2nd Paint Blob</td>
-                <td>4</td>
-                <td>34</td>
-                <td>32</td>
-                <td>54</td>
-                <td>43</td>
-                <td>39</td>
-            </tr>
-        </table>     -->
+        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+        <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
       </div>
- 
-          <div id = "table2" class="col-sm-6" style="text-align: center; margin-top: 30px;">
-            
-        </div>
 
-        
-          
+      <div id = "table2" class="col-sm-6" style="text-align: center; margin-top: 30px;">
+
+      </div>
 
 
+
+
+      <!-- <table id="html-data-table">
+        <tr>
+            <th>Independent Variable</th>
+            <th>X-Dim</th>
+            <th>Y-Dim</th>
+            <th>Color 1</th>
+            <th>Color 2</th>
+            <th>Color 3</th>
+            <th>Stopping Criteria</th>
+            <th>Repetitions</th>
+            <th>A Min</th>
+            <th>A Max</th>
+            <th>A Avg</th>
+            <th>B Max</th>
+            <th>C Avg</th>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>2</td>
+            <td>3</td>
+            <td>Red</td>
+            <td>Green</td>
+            <td>Blue</td>
+            <td>2nd Paint Blob</td>
+            <td>4</td>
+            <td>34</td>
+            <td>32</td>
+            <td>54</td>
+            <td>43</td>
+            <td>39</td>
+        </tr>
+    </table>     -->
     </div>
 
     <div class="row col-sm-12" id="graph-container" style="margin-bottom: 16%;" hidden>

@@ -18,17 +18,17 @@ window.colorRGBMap = {
 	black: 'rgb(0,0,0)',
 };
 window.stage_index = 0;
-window.color1_drops = [0];
-window.color2_drops = [0];
-window.color3_drops = [0];
-window.totalPaintDrops = [0];
-window.maxPaintDrops = [0];
-window.averagePaintDrops = [0];
+window.totalPaintDrops = [];
+window.color1_drops = [];
+window.color2_drops = [];
+window.color3_drops = [];
+window.maxPaintDrops = [];
+window.averagePaintDrops = [];
 window.stage_index_rep = 0;
+window.totalPaintDrops_rep = [0];
 window.color1_drops_rep = [0];
 window.color2_drops_rep = [0];
 window.color3_drops_rep = [0];
-window.totalPaintDrops_rep = [0];
 window.maxPaintDrops_rep = [0];
 window.averagePaintDrops_rep = [0];
 window.data_points_max = 60;
@@ -38,6 +38,10 @@ document.table_title = ["",""];
 window.x_value = 0;
 window.y_value = 0;
 window.max_val = 0;
+window.fixed_val_1_name = "";
+window.fixed_val_1 = 0;
+window.fixed_val_2_name = "";
+window.fixed_val_2 = 0;
 
 var a = 0; // the total number of paint drops put on the canvas before the stopping criterion stops the painting.
 var a1 = 0; // The number of paint drops on the canvas of Color 1.
@@ -157,6 +161,10 @@ window.addEventListener("load", (event) => {
 
     audioItem.volume = .10;
 
+
+    //const update_div = document.getElementById('update_canvas');
+    //update_div.hidden = false;
+
     window.current_pos = 0;
     startPainting(searchParams);
 });
@@ -165,13 +173,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
     const display_value = document.getElementById("showspeed");
     const speed = document.getElementById("speed");
     window.delay = 1000/speed.value;
+    display_value.textContent = speed.value;
 
     speed.addEventListener("input", (event) => {
-        display_value.textContent = speed.value;
-        display_value.textContent = event.target.value;
     });
 
     speed.addEventListener("change", (event) => {
+        display_value.textContent = speed.value;
+        display_value.textContent = event.target.value;
         console.log(window.performance.now());
         console.log(1000/speed.value, "ms");
         window.delay = 1000/speed.value;
@@ -180,14 +189,20 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 function setCanvasSize(width, height) {
     let canvas = document.getElementById("canvas");
+    let canvas_small = document.getElementById("canvas_small");
+    canvas_small.width = width;
     canvas.width = width;
+    canvas_small.height = height;
     canvas.height = height;
 }
 
 function drawInitialShape(x,y) {
-    const canvas = document.getElementById("canvas")
+    const canvas = document.getElementById("canvas");
+    const can_small = document.getElementById('canvas_small');
     const ctx = document.getElementById("canvas").getContext("2d");
+    const ctx_small = document.getElementById("canvas_small").getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
+    ctx_small.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
@@ -197,6 +212,11 @@ function drawInitialShape(x,y) {
                 ctx.beginPath();
                 ctx.rect(1+canvasBlockSize*j,1+canvasBlockSize*i,canvasBlockSize-2,canvasBlockSize-2);
                 ctx.stroke();
+
+                ctx_small.strokeStyle = 'rgb(0,0,0)';
+                ctx_small.beginPath();
+                ctx_small.rect(1+canvasBlockSize*j,1+canvasBlockSize*i,canvasBlockSize-2,canvasBlockSize-2);
+                ctx_small.stroke();
             }
         }
     } else {
@@ -208,18 +228,26 @@ function draw() {
     resetTempArrayOfColors();
     x = window.x_value;
     y = window.y_value;
-    const canvas = document.getElementById("canvas")
+    const canvas = document.getElementById("canvas");
+    const canvas_small = document.getElementById("canvas_small");
     const ctx = document.getElementById("canvas").getContext("2d");
+    const ctx_small = document.getElementById("canvas_small").getContext("2d");
     //Make block size based on largest length choice:
     window.canvasBlockSize = Math.floor((defaultWidthOfCanvas/x <= defaultWidthOfCanvas/y) ? defaultWidthOfCanvas/x : defaultWidthOfCanvas/y);
     if(x>=1 && x<= maxXSquares && y>=1 && y <= maxYSquares){
         ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
+        ctx_small.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
         for (let i = 0; i < y; i++) {
             for (let j = 0; j < x; j++) {
                 ctx.strokeStyle = 'rgb(0,0,0)';
                 ctx.beginPath();
                 ctx.rect(1+canvasBlockSize*j,1+canvasBlockSize*i,canvasBlockSize-2,canvasBlockSize-2);
                 ctx.stroke();
+
+                ctx_small.strokeStyle = 'rgb(0,0,0)';
+                ctx_small.beginPath();
+                ctx_small.rect(1+canvasBlockSize*j,1+canvasBlockSize*i,canvasBlockSize-2,canvasBlockSize-2);
+                ctx_small.stroke();
             }
         }
     } else {
@@ -230,6 +258,7 @@ function draw() {
 
 function fillXY(x,y,colorChoice){
     const ctx = document.getElementById("canvas").getContext("2d");
+    const ctx_small = document.getElementById("canvas_small").getContext("2d");
     if (x >= 1 && x <= maxXSquares && y >= 1 && y <= maxYSquares) {
 		var colorRGB = colorRGBMap[colorChoice];
 		//console.log("Painting an element");
@@ -244,9 +273,12 @@ function fillXY(x,y,colorChoice){
         window.tempArrOfColors[x-1][y-1][1] = colorObj.red();
         window.tempArrOfColors[x-1][y-1][2] = colorObj.green();
         window.tempArrOfColors[x-1][y-1][3] = colorObj.blue();
-		ctx.fillStyle = colorRGB;
+        ctx.fillStyle = colorRGB;
+        ctx_small.fillStyle = colorRGB;
         ctx.strokeStyle = 'rgb(0,0,0)';
+        ctx_small.strokeStyle = 'rgb(0,0,0)';
         ctx.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
+        ctx_small.fillRect((2+canvasBlockSize * x)-canvasBlockSize, (2+canvasBlockSize * y)-canvasBlockSize, canvasBlockSize-4, canvasBlockSize-4);
 
 		switch (parseInt(termItem)) {
 			case 1: // Terminate when last unpainted square is painted for the first time
@@ -258,13 +290,16 @@ function fillXY(x,y,colorChoice){
                     window.fullStop = true;
                     window.current_repititions += 1;
                     saveAllValues_rep();
-                    window.color1_drops_rep.push(0);
-                    window.color2_drops_rep.push(0);
-                    window.color3_drops_rep.push(0);
-                    window.totalPaintDrops_rep.push(0);
-                    window.maxPaintDrops_rep.push(0);
-                    window.averagePaintDrops_rep.push(0);
-                    window.stage_index_rep++;
+                    //this if statement prepares for the next wave of values:
+                    if(window.repititions >= window.current_repititions){
+                        window.color1_drops_rep.push(0);
+                        window.color2_drops_rep.push(0);
+                        window.color3_drops_rep.push(0);
+                        window.totalPaintDrops_rep.push(0);
+                        window.maxPaintDrops_rep.push(0);
+                        window.averagePaintDrops_rep.push(0);
+                        window.stage_index_rep++;
+                    }
 				}
                 if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
@@ -272,12 +307,14 @@ function fillXY(x,y,colorChoice){
                     window.current_repititions = 1;
                     console.log("REPETITION STOP");
                     saveAllValues_independent();
-                    window.color1_drops.push(0);
-                    window.color2_drops.push(0);
-                    window.color3_drops.push(0);
-                    window.totalPaintDrops.push(0);
-                    window.maxPaintDrops.push(0);
-                    window.averagePaintDrops.push(0);
+
+                    window.totalPaintDrops_rep = [0];
+                    window.color1_drops_rep = [0];
+                    window.color2_drops_rep = [0];
+                    window.color3_drops_rep = [0];
+                    window.maxPaintDrops_rep = [0];
+                    window.averagePaintDrops_rep = [0];
+
 
                     window.stage_index++;
                     window.stage_index_rep = 0;
@@ -302,13 +339,16 @@ function fillXY(x,y,colorChoice){
                     clearTimeout(stopId);
                     window.current_repititions += 1;
                     saveAllValues_rep();
-                    window.color1_drops_rep.push(0);
-                    window.color2_drops_rep.push(0);
-                    window.color3_drops_rep.push(0);
-                    window.totalPaintDrops_rep.push(0);
-                    window.maxPaintDrops_rep.push(0);
-                    window.averagePaintDrops_rep.push(0);
-                    window.stage_index_rep++;
+                    //this if statement prepares for the next wave of values:
+                    if(window.repititions >= window.current_repititions){
+                        window.color1_drops_rep.push(0);
+                        window.color2_drops_rep.push(0);
+                        window.color3_drops_rep.push(0);
+                        window.totalPaintDrops_rep.push(0);
+                        window.maxPaintDrops_rep.push(0);
+                        window.averagePaintDrops_rep.push(0);
+                        window.stage_index_rep++;
+                    }
 				}
                 if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
@@ -316,12 +356,14 @@ function fillXY(x,y,colorChoice){
                     window.current_repititions = 1;
                     console.log("REPETITION STOP");
                     saveAllValues_independent();
-                    window.color1_drops.push(0);
-                    window.color2_drops.push(0);
-                    window.color3_drops.push(0);
-                    window.totalPaintDrops.push(0);
-                    window.maxPaintDrops.push(0);
-                    window.averagePaintDrops.push(0);
+
+                    window.totalPaintDrops_rep = [0];
+                    window.color1_drops_rep = [0];
+                    window.color2_drops_rep = [0];
+                    window.color3_drops_rep = [0];
+                    window.maxPaintDrops_rep = [0];
+                    window.averagePaintDrops_rep = [0];
+
                     window.stage_index++;
                     window.stage_index_rep = 0;
                     window.fullStop = true;
@@ -347,13 +389,16 @@ function fillXY(x,y,colorChoice){
                     clearTimeout(stopId);
                     window.current_repititions += 1;
                     saveAllValues_rep();
-                    window.color1_drops_rep.push(0);
-                    window.color2_drops_rep.push(0);
-                    window.color3_drops_rep.push(0);
-                    window.totalPaintDrops_rep.push(0);
-                    window.maxPaintDrops_rep.push(0);
-                    window.averagePaintDrops_rep.push(0);
-                    window.stage_index_rep++;
+                    //this if statement prepares for the next wave of values:
+                    if(window.repititions >= window.current_repititions){
+                        window.color1_drops_rep.push(0);
+                        window.color2_drops_rep.push(0);
+                        window.color3_drops_rep.push(0);
+                        window.totalPaintDrops_rep.push(0);
+                        window.maxPaintDrops_rep.push(0);
+                        window.averagePaintDrops_rep.push(0);
+                        window.stage_index_rep++;
+                    }
 				}
                 if(window.repititions < window.current_repititions){
                     clearInterval(stopId);
@@ -361,12 +406,14 @@ function fillXY(x,y,colorChoice){
                     window.current_repititions = 1;
                     console.log("REPETITION STOP");
                     saveAllValues_independent();
-                    window.color1_drops.push(0);
-                    window.color2_drops.push(0);
-                    window.color3_drops.push(0);
-                    window.totalPaintDrops.push(0);
-                    window.maxPaintDrops.push(0);
-                    window.averagePaintDrops.push(0);
+
+                    window.totalPaintDrops_rep = [0];
+                    window.color1_drops_rep = [0];
+                    window.color2_drops_rep = [0];
+                    window.color3_drops_rep = [0];
+                    window.maxPaintDrops_rep = [0];
+                    window.averagePaintDrops_rep = [0];
+
                     window.stage_index++;
                     window.stage_index_rep = 0;
                     window.fullStop = true;
@@ -396,9 +443,9 @@ function fillRandomCellWithRandomColor(){
     rands.randNum2 = Math.floor(Math.random()*window.y_value+1);  // from 1 to y
     var randomColor = Math.floor(Math.random()*3); // from 0 to 2
 
-    if(randomColor == 0) window.color1_drops[window.stage_index]++;
-    if(randomColor == 1) window.color2_drops[window.stage_index]++;
-    if(randomColor == 2) window.color3_drops[window.stage_index]++;
+    if(randomColor == 0) window.color1_drops_rep[window.stage_index_rep]++;
+    if(randomColor == 1) window.color2_drops_rep[window.stage_index_rep]++;
+    if(randomColor == 2) window.color3_drops_rep[window.stage_index_rep]++;
 	var colorChoice = colorOptions[randomColor];
     fillXY(rands.randNum1, rands.randNum2, colorChoice);
 }
@@ -413,17 +460,30 @@ function mixColors(color1, color2R, color2G, color2B) {
 function changeSizeStuff() {
     const can = document.getElementById('canvas');
     const update_div = document.getElementById('update_canvas');
+    const can_small = document.getElementById('canvas_small');
+    const update_div_small = document.getElementById('update_canvas_small');
     const controls = document.getElementById('controls');
     const radio_choice = document.getElementById('after_run_div');
     const radio_choice_heading = document.getElementById('after_run_div1');
-    can.style.width = '300px';
-    can.style.height = '300px';
-    update_div.style.textAlign = 'center';
-    update_div.classList.remove('col-sm-4');
-    update_div.classList.add('col-sm-6');
+    const table1 = document.getElementById('table1');
+    can.style.width = '100px';
+    can.style.height = '100px';
+    can_small.style.width = '100px';
+    can_small.style.height = '100px';
+    //update_div.style.textAlign = 'center';
+    //update_div.classList.remove('col-sm-4');
+    //update_div.classList.add('col-sm-12');
+    update_div.hidden = true;
+    update_div_small.hidden = false;
     controls.hidden = true;
     radio_choice.hidden = false;
     radio_choice_heading.hidden = false;
+    table1.hidden = false;
+
+    set_graph_values();
+    saveAllValues_independent();
+    showTable();
+
 }
 
 function paintOne() {
@@ -460,8 +520,14 @@ function startPainting(searchParams) {
         window.x_value = dim_XY;
         window.y_value = dim_XY;
         window.fullStop = false;
+        window.fixed_val_1_name = "Repetitions: ";
+        window.fixed_val_1 = window.repititions;
         if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
+        window.fixed_val_1_name = "Repetitions: ";
+        window.fixed_val_1 = window.repititions;
+        window.fixed_val_2_name = "";
+        window.fixed_val_2 = "";
         window.timeStamp = window.performance.now();
         paintMany();
         //stopId = setInterval(paintMany, 25);
@@ -476,6 +542,10 @@ function startPainting(searchParams) {
         window.y_value = dim_y;
         if(!window.endExperiment) draw();
         window.repititions = searchParams.get('repetitions');
+        window.fixed_val_1_name = "Repetitions: ";
+        window.fixed_val_1 = window.repititions;
+        window.fixed_val_2_name = "Dimension Y: ";
+        window.fixed_val_2 = dim_y;
         window.timeStamp = window.performance.now();
         paintMany();
         //stopId = setInterval(paintMany, 25);
@@ -489,6 +559,11 @@ function startPainting(searchParams) {
         console.log(Number(rep_value));
         window.fullStop = false;
         let dim_XY = searchParams.get('dim_Y_X');
+        //set fixed value global:
+        window.fixed_val_1_name = "Square Dimension: ";
+        window.fixed_val_1 = dim_XY;
+        window.fixed_val_2_name = "";
+        window.fixed_val_2 = "";
         window.x_value = dim_XY;
         window.y_value = dim_XY;
         if(!window.endExperiment) draw();
@@ -542,17 +617,20 @@ function resetTempArrayOfColors(){
 
 function graph_table_show(){
     if(validate_selection()) {
-        document.getElementById('canvas').hidden = true;
+        //document.getElementById('canvas').hidden = true;
+        document.getElementById('canvas_small').hidden = true;
         document.getElementById('update_canvas').hidden = true;
         document.getElementById('after_run_div').hidden = true;
         document.getElementById('after_run_div1').hidden = true;
+        console.log("INFO:",document.getElementById('graph_table'));
         document.getElementById('graph_table').hidden = false;
         document.getElementById('graph-container').hidden = false;
+        document.getElementById('table1').hidden = true;
         set_graph_values();
         produce_graph();
 
         saveAllValues_independent();
-        showTable(); 
+        //showTable(); //moved to after experiment.
         showReducedTable();
     } else {
         alert("Please only select One or Two and no more than that for results!");
@@ -643,7 +721,7 @@ function showTable() {
     let subHeaderRow = document.createElement('tr');
 
     // Create the headers
-    let headers = ['Ind. Variables', 'Dep. Variable #1', 'Dep. Variable #2', 'Colors', 'Stopping Criterion', 'A', 'A1', 'A2', 'A3', 'B', 'C'];
+    let headers = ['Ind. Variables', 'Fixed #1', 'Fixed #2', 'Colors', 'Stopping Criterion', 'A', 'A1', 'A2', 'A3', 'B', 'C'];
     let subHeaders = ['Min', 'Avg', 'Max']; // Add your subheaders here
     for (let header of headers) {
         let th = document.createElement('th');
@@ -672,16 +750,28 @@ function showTable() {
     for (let i = 0; i < ind_var.length; i++) {
         data.push({
             independent_variable: ind_var[i],
-            dependent_variable: document.table_title[0], // Change this to dynamically allocat num of dep. variables choosen
-            dependent_variable2: document.table_title[1] ? document.table_title[1] : "-",
+            fixed_val: window.fixed_val_1_name+window.fixed_val_1, // Change this to dynamically allocate num of dep. variables chosen
+            fixed_val2: window.fixed_val_2_name ? window.fixed_val_2_name+window.fixed_val_2 : "-",
             colors: searchParams.get('color1') + ', ' + searchParams.get('color2') + ', ' + searchParams.get('color3'),
             stopping_criterion: termItemMap[window.searchParams.get('termItem')],
-            total: window.totalPaintDrops[i],
-            A1: window.color1_drops[i],
-            A2: window.color2_drops[i],
-            A3: window.color3_drops[i],
-            max: window.maxPaintDrops[i],
-            avg: window.averagePaintDrops[i]
+            total_min: window.totalPaintDrops[i][0],
+            total_avg: parseFloat(window.totalPaintDrops[i][1]).toFixed(2),
+            total_max: window.totalPaintDrops[i][2],
+            A1_min: window.color1_drops[i][0],
+            A1_avg: parseFloat(window.color1_drops[i][1]).toFixed(2),
+            A1_max: window.color1_drops[i][2],
+            A2_min: window.color2_drops[i][0],
+            A2_avg: parseFloat(window.color2_drops[i][1]).toFixed(2),
+            A2_max: window.color2_drops[i][2],
+            A3_min: window.color3_drops[i][0],
+            A3_avg: parseFloat(window.color3_drops[i][1]).toFixed(2),
+            A3_max: window.color3_drops[i][2],
+            max_min: window.maxPaintDrops[i][0],
+            max_avg: parseFloat(window.maxPaintDrops[i][1]).toFixed(2),
+            max_max: window.maxPaintDrops[i][2],
+            avg_min: parseFloat(window.averagePaintDrops[i][0]).toFixed(2),
+            avg_avg: parseFloat(window.averagePaintDrops[i][1]).toFixed(2),
+            avg_max: parseFloat(window.averagePaintDrops[i][2]).toFixed(2)
         });
     }
 
@@ -691,16 +781,16 @@ function showTable() {
         let tr = document.createElement('tr');
 
         for (let key in row) {
-            // Skip creating 'stopping_criterion', 'dependent_variable', and 'dependent_variable2' cells after the first row
-            if ((key === 'stopping_criterion' || key === 'dependent_variable' || key === 'dependent_variable2' || key == 'colors') && i !== 0) {
+            // Skip creating 'stopping_criterion', 'fixed_val', and 'fixed_val2' cells after the first row
+            if ((key === 'stopping_criterion' || key === 'fixed_val' || key === 'fixed_val2' || key == 'colors') && i !== 0) {
                 continue;
             }
 
             let td = document.createElement('td');
             td.textContent = row[key];
 
-            // Apply 'rowspan' to the first 'stopping_criterion', 'dependent_variable', and 'dependent_variable2' cells
-            if ((key === 'stopping_criterion' || key === 'dependent_variable' || key === 'dependent_variable2' || key == 'colors') && i === 0) {
+            // Apply 'rowspan' to the first 'stopping_criterion', 'fixed_val', and 'fixed_val2' cells
+            if ((key === 'stopping_criterion' || key === 'fixed_val' || key === 'fixed_val2' || key == 'colors') && i === 0) {
                 td.rowSpan = data.length;
             }
 
@@ -744,12 +834,17 @@ function show_option(){
     //document.getElementById("table-container").hidden = false;
     //document.getElementById("graph-container").hidden = false;
 
-    document.getElementById('canvas').hidden = false;
-    document.getElementById('update_canvas').hidden = false;
+    //document.getElementById('canvas').hidden = false;
+
+    document.getElementById('canvas_small').hidden = false;
+    //document.getElementById('update_canvas').hidden = false;
+    document.getElementById('update_canvas_small').hidden = false;
     document.getElementById('after_run_div').hidden = false;
     document.getElementById('after_run_div1').hidden = false;
     document.getElementById('graph_table').hidden = true;
     document.getElementById('graph-container').hidden = true;
+
+    document.getElementById('table1').hidden = false;
 
 }
 
@@ -1027,22 +1122,22 @@ function set_graph_values(){
 function getyvalue(calc_value,rep){
     console.log("CALC_VALUE: ",calc_value);
     if(calc_value == 1){ //total point drops in a given run.
-        return window.totalPaintDrops[rep];
+        return window.totalPaintDrops[rep][1];
 
     } else if(calc_value == 2){
-        return window.color1_drops[rep];
+        return window.color1_drops[rep][1];
 
     } else if(calc_value == 3){
-        return window.color2_drops[rep];
+        return window.color2_drops[rep][1];
 
     } else if(calc_value == 4){
-        return window.color3_drops[rep];
+        return window.color3_drops[rep][1];
 
     } else if(calc_value == 5){
-        return window.maxPaintDrops[rep];
+        return window.maxPaintDrops[rep][2]; //max max
 
     } else if(calc_value == 6){
-        return window.averagePaintDrops[rep];
+        return window.averagePaintDrops[rep][0]; //min average
     }
 }
 
@@ -1050,18 +1145,19 @@ function getyvalue(calc_value,rep){
 //This needs to be fixed:
 function getTotalPaintDrops_rep(){
     let total = 0;
-    for (let iterX = 0; iterX < maxXSquares; iterX++) {
-        for (let iterY = 0; iterY < maxYSquares; iterY++) {
+    for (let iterX = 0; iterX < window.x_value; iterX++) {
+        for (let iterY = 0; iterY < window.y_value; iterY++) {
             total += tempArrOfColors[iterX][iterY][0];
         }
     }
+    console.log("TOTAL function:",total);
     return total;
 }
 
 function getMaxPaintDrops_rep(){
     let max = 0;
-    for (let iterX = 0; iterX < maxXSquares; iterX++) {
-        for (let iterY = 0; iterY < maxYSquares; iterY++) {
+    for (let iterX = 0; iterX < window.x_value; iterX++) {
+        for (let iterY = 0; iterY < window.y_value; iterY++) {
             if(max < tempArrOfColors[iterX][iterY][0]) max = tempArrOfColors[iterX][iterY][0];
         }
     }
@@ -1073,42 +1169,70 @@ function getAveragePaintDrops_rep(){
     return (window.totalPaintDrops_rep[window.stage_index_rep] / (window.y_value * window.x_value));
 }
 
-function getTotalPaintDrops(){
-    let total = 0;
-    for (let iter = 0; iter < window.stage_index_rep; iter++) {
-        total += totalPaintDrops_rep[iter];
-    }
-    return total / window.repititions;
-}
-
-function getMaxPaintDrops(){
-    let max = 0;
-    for (let iter = 0; iter < window.stage_index_rep; iter++) {
-        if(max < maxPaintDrops_rep[iter]) max = maxPaintDrops_rep[iter];
-    }
-    return max; //get max over all repetitions.
-}
-function getAveragePaintDrops(){
-    console.log("total paint drops",window.totalPaintDrops[window.stage_index]);
-    console.log("grid",(window.x_value * window.y_value));
-    let total = 0;
-    for (let iter = 0; iter < window.stage_index_rep; iter++) {
-        total += window.averagePaintDrops_rep[iter];
-    }
-    return (total / window.repititions);///window.repititions; //get the average of the repetitions
-}
 function saveAllValues_rep(){
+    console.log("TOTAL:",totalPaintDrops_rep);
     window.totalPaintDrops_rep[window.stage_index_rep] = getTotalPaintDrops_rep();
+    console.log("MAX:",maxPaintDrops_rep);
     window.maxPaintDrops_rep[window.stage_index_rep] = getMaxPaintDrops_rep();
+    console.log("AVG:",averagePaintDrops_rep);
     window.averagePaintDrops_rep[window.stage_index_rep] = getAveragePaintDrops_rep();
+    //note color count is updated as it runs.
+
+}
+function getMinAvgMax(itemNum){
+    let arrOfData = [];
+    switch (itemNum) {
+        case 1:{
+            arrOfData = window.totalPaintDrops_rep;
+            break;
+        }
+        case 2:{
+            arrOfData = window.color1_drops_rep;
+            break;
+        }
+        case 3:{
+            arrOfData = window.color2_drops_rep;
+            break;
+        }
+        case 4:{
+            arrOfData = window.color3_drops_rep;
+            break;
+        }
+        case 5:{
+            arrOfData = window.maxPaintDrops_rep;
+            break;
+        }
+        case 6:{
+            arrOfData = window.averagePaintDrops_rep;
+            break;
+        }
+
+    }
+
+    let total = 0;
+    let max = 0;
+    let min = Number(arrOfData[0]);
+    for (let iter = 0; iter < arrOfData.length; iter++) {
+        total += arrOfData[iter];
+        if(max < arrOfData[iter]) max = arrOfData[iter];
+        if(min > arrOfData[iter]) min = arrOfData[iter];
+    }
+    console.log("grid",(window.x_value * window.y_value));
+    console.log("total",total);
+    let avg = total/(arrOfData.length); //length of array indicates number of repetitions. ///(window.x_value * window.y_value)*
+    console.log("MIN AVG MAX:",[min,avg,max]);
+    return [min,avg,max]; //return array of values
 
 }
 
 
 function saveAllValues_independent(){
-    window.totalPaintDrops[window.stage_index] = Math.floor(getTotalPaintDrops()); //averaged over repetitions
-    window.maxPaintDrops[window.stage_index] = getMaxPaintDrops(); //true max
-    window.averagePaintDrops[window.stage_index] = getAveragePaintDrops();//averaged over repetitions
+    window.totalPaintDrops.push(getMinAvgMax(1));
+    window.color1_drops.push(getMinAvgMax(2));
+    window.color2_drops.push(getMinAvgMax(3));
+    window.color3_drops.push(getMinAvgMax(4));
+    window.maxPaintDrops.push(getMinAvgMax(5));
+    window.averagePaintDrops.push(getMinAvgMax(6));
 }
 
 function validate_selection(){
@@ -1122,4 +1246,17 @@ function validate_selection(){
     }
     if(index_temp_checked == 0) return false;
     return true;
+}
+
+function activate_extreme_speed(){
+    const display_value = document.getElementById("showspeed");
+    const speed = document.getElementById("speed");
+
+    let extreme = 40;
+    speed.value = extreme; //maxes out at 10
+
+    display_value.textContent = String(extreme);
+    console.log(window.performance.now());
+    console.log(1000/extreme, "ms");
+    window.delay = 1000/extreme;
 }
