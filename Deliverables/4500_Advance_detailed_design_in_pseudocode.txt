@@ -1,0 +1,240 @@
+# Initialize variables
+checkAll = [0, 0, 0, 0]  # Acts as a "key" for X-dim, Y-dim, repetitions, and x-values
+optionsArray = []  # Declare an empty array to store options
+
+# Function to handle music change
+function change_music(e):
+    e.preventDefault()
+    elm = e.target
+    audio = document.getElementById('backGroundAudio')
+    source = document.getElementById('audio')
+    source.src = elm.getAttribute('data-value')
+    audio.load()  # Preload the audio without playing
+    audio.play()  # Play the song right away
+    audio.stop()
+
+# Event listener on window load to gather options from user input
+window.addEventListener("load", function(event):
+    optionsArray.push(document.getElementById("option1").value)
+    optionsArray.push(document.getElementById("option2").value)
+    optionsArray.push(document.getElementById("option3").value)
+    optionsArray.push(document.getElementById("option4").value)
+    optionsArray.push(document.getElementById("option5").value)
+    optionsArray.push(document.getElementById("option6").value)
+    optionsArray.push(document.getElementById("option7").value)
+    optionsArray.push(document.getElementById("option8").value)
+    optionsArray.push(document.getElementById("option9").value)
+
+# Function to confirm user input
+function confirmInput():
+    # Implementation for confirming input
+
+# Function to store old value on focus and change
+function storeOldValue(ele):
+    document.previousColorSelected = ele.value
+
+# Initialize global variables
+globalListOfItems = []  # Ascending list of x-values
+indValue = ""
+
+# Function to add item to the list
+function addItemToList():
+    # Implementation for adding an item to the list
+
+# Function to remove item from the list
+function removeItemFromList():
+    # Implementation for removing an item from the list
+
+# Function to update other lists based on the selected element
+function updateOtherLists(ele):
+    # Implementation for updating other lists based on the selected element
+
+# Function to show inputs based on the selected independent variable
+function show_inputs_dependent(ele):
+    # Implementation for showing inputs based on the selected independent variable
+
+# Function to remove selected item from a select box
+function removeSelected(selectBox, item):
+    # Implementation for removing selected item from a select box
+
+# Function to remove all items excluding the selected ones from a select box
+function removeAllExcludingSelected(selectBox):
+    # Implementation for removing all items excluding the selected ones from a select box
+
+# Function to check if two arrays are equal
+function arraysEqual(a, b):
+    # Implementation for checking if two arrays are equal
+
+# Function to show a message
+function showMessage(id):
+    id.classList.remove("hide")
+    id.classList.add("show")
+
+# Function to hide a message
+function hideMessage(id):
+    id.classList.remove("show")
+    id.classList.add("hide")
+
+# Function to handle change in input values
+function change():
+    # Implementation for handling change in input values
+
+# Function to register event listeners
+function register():
+    # Implementation for registering event listeners
+
+# Function to check dimensions for Y_X
+function checkDimXY():
+    # Implementation for checking dimensions for Y_X
+
+# Function to check dimension Y
+function checkDimY():
+    # Implementation for checking dimension Y
+
+# Function to check repetitions
+function checkRep():
+    # Implementation for checking repetitions
+
+# Function to check the form before submission
+function submitCheck():
+    # Implementation for checking the form before submission
+
+# Function to set dimension Y_X based on dimension Y
+function setDimY_X():
+    # Implementation for setting dimension Y_X based on dimension Y
+
+# Function to get a random integer
+function getRandomInt(max):
+    # Implementation for getting a random integer
+
+# Function for three-color picker
+function three_color_picker(colorItems):
+    # Implementation for three-color picker
+
+# Function to clear select list
+function clearSelectList():
+    # Implementation for clearing select list
+
+# Function to randomize inputs
+function randomize_inputs():
+    # Implementation for randomizing inputs
+
+
+# HTML Document Structure
+Start HTML document
+Start HTML head
+    Include title tag with text "Painting Grid"
+    Include meta tags for character set and viewport
+    Include Bootstrap CSS and JavaScript libraries
+    Include local JavaScript and CSS files
+End HTML head
+
+Start HTML body with onload event "register()"
+    Start navigation bar with Bootstrap styling
+        Include brand logo and navigation links
+    End navigation bar
+
+    Start container with Bootstrap styling for the main content
+        Start row with content and sidebar
+            Start sidebar with music choices
+                Display music links
+            End sidebar
+
+            Start main content column
+                Start form for the color experiment with action "./run.html" and method "get" and onsubmit event "submitCheck()"
+                    Include hidden input for global list of items
+                    Display welcome message and quick run buttons
+                    Display dependent and independent variables form
+                    Display color information, stopping criteria, and song choice forms
+                    Display submit and restart buttons
+                End form
+
+                Start grid container
+                End grid container
+            End main content column
+
+            Start sidebar with additional music choices
+                Display additional music links
+            End sidebar
+        End row
+    End container
+
+    Start footer with copyright information
+End HTML body
+End HTML document
+
+
+
+
+1. Initialize HTML document with language set to "en".
+2. Create head section:
+   a. Set document title to "Painting Grid".
+   b. Specify character set as UTF-8.
+   c. Set viewport for responsive design.
+   d. Include Bootstrap CSS from CDN.
+   e. Include jQuery and Bootstrap JS from CDN.
+   f. Include custom JavaScript from "./myjs.js".
+   g. Include another version of jQuery from CDN (version 3.7.1).
+   h. Define internal styles for the document.
+
+3. Create body section:
+   a. Create a navigation bar using Bootstrap.
+      i. Include a collapsible button for small screens.
+      ii. Add a logo in the navigation bar.
+      iii. Include navigation links for "Home" and "Usage".
+   b. Create a fluid container for the main content.
+      i. Create a row with two columns: one empty column and one column for the main content.
+      ii. Inside the content column:
+          - Display a heading "Basic usage".
+          - Provide a brief description of the application.
+          - Display an image ("using_site.gif").
+          - Provide information about the main independent value and its requirements.
+          - Explain how to input other information and personalize the experiment.
+          - Add a link to start the experiment.
+          - Display a grid container (empty in the pseudocode).
+   c. Create a fixed footer with copyright information.
+      i. Include a copyright notice with the current year and the website owner.
+      ii. (Optional) Include a link to a painting music playlist.
+
+4. Close the HTML document.
+
+
+
+
+1. Initialize HTML document with language set to "en".
+2. Create head section:
+   a. Set document title to "Painting Grid".
+   b. Specify character set as UTF-8.
+   c. Set viewport for responsive design.
+   d. Include Bootstrap CSS, jQuery, Bootstrap JS, custom JavaScript, and another version of jQuery from CDNs.
+   e. Include YouTube iframe API for audio.
+
+
+   f. Include color mixing scripts from CDNs.
+   g. Define internal styles for the document.
+
+3. Create body section:
+   a. Create a navigation bar using Bootstrap.
+      i. Include a collapsible button for small screens.
+      ii. Add a logo in the navigation bar.
+      iii. Include navigation links for "Home," "Usage," and "Experiment."
+   b. Create a fluid container for the main content.
+      i. Create a row with one column for the experiment details.
+         - Display a heading "Running Experiment!".
+         - Provide a warning not to reload the page.
+         - Display experiment controls (speed slider, stop/start buttons, extreme speed button).
+      ii. Create another row with three columns for result selection, final canvas, and calculated values.
+         - Display a canvas for the experiment.
+         - Provide options for terminating conditions, speed control, and buttons for start, stop, and extreme speed.
+         - Display checkboxes for selecting experiment values to be calculated.
+         - Show buttons for continuing, displaying graphs/tables, and completing the experiment.
+   c. Create a container for the result selection and final canvas.
+      - Display the experiment result selection, final canvas, and calculated values.
+   d. Create a container for the graph and table.
+      - Display a graph using CanvasJS and a table with the selected experiment values.
+   e. Create a container for additional buttons.
+      - Display buttons for making a new table/graph, abandoning the experiment, and quitting the program.
+
+4. Create a fixed footer with copyright information and an optional YouTube audio player.
+
+5. Close the HTML document.
